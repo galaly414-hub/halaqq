@@ -1,0 +1,505 @@
+/* ==========================================================================
+   Hero — the first impression, and the only screen that has to sell the shop
+   ---------------------------------------------------------------------------
+   Layout is mobile-first: content first, availability panel below, then a
+   two-column split from 64rem up.
+
+   Restraint is the brief here. No grid overlay, no glow, no shine sweeping
+   across the call to action. What is left instead is a very large headline,
+   a hairline-ruled spec row, and a panel that looks like a piece of
+   equipment rather than a floating div.
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  padding-block: clamp(2.5rem, 5vw, 4.5rem) clamp(3.5rem, 7vw, 6rem);
+  overflow: hidden;
+  background: var(--surface-page);
+}
+
+/* A single warm pool of light behind the panel. One gradient, low contrast,
+   and it exists only so the right-hand column is not sitting on flat black. */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 4%;
+  inset-inline-end: -12%;
+  z-index: -1;
+  width: min(46rem, 80vw);
+  aspect-ratio: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    var(--brand-softer) 0%,
+    transparent 68%
+  );
+}
+
+.hero__inner {
+  display: grid;
+  gap: var(--space-12);
+  align-items: center;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 64rem) {
+  .hero__inner {
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Copy column
+   --------------------------------------------------------------------- */
+.hero__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+  max-width: 38rem;
+}
+
+.hero__title {
+  font-size: var(--text-display);
+  line-height: 1.06;
+  font-weight: var(--font-weight-black);
+  letter-spacing: var(--letter-spacing-arabic);
+  /* Arabic display type sits on a taller box than Latin — the default
+     leading clips the descenders of ج and ح at this weight. */
+  padding-block-end: 0.08em;
+}
+.hero__title-line {
+  display: block;
+}
+
+/* The accent line is set in the editorial face, not just a different colour.
+   Same word, different voice: that is what keeps it from reading as a
+   highlighted keyword. Naskh has far taller ascenders than Cairo, so it gets
+   its own leading rather than inheriting the display line-height. */
+.hero__title-accent {
+  display: block;
+  font-family: var(--font-editorial);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.32;
+  color: var(--brand);
+  margin-block-start: 0.1em;
+  padding-block-end: 0.08em;
+}
+
+.hero__desc {
+  font-size: var(--text-lede);
+  line-height: var(--line-height-loose);
+  color: var(--text-secondary);
+  max-width: 48ch;
+}
+
+/* ---------------------------------------------------------------------
+   The two calls to action
+   --------------------------------------------------------------------- */
+.hero__actions {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: 1fr;
+  width: 100%;
+}
+
+@media (min-width: 30rem) {
+  .hero__actions {
+    grid-template-columns: 1.2fr 1fr;
+  }
+}
+
+.hero__actions .btn {
+  width: 100%;
+  min-height: 3.5rem;
+}
+
+/* ---------------------------------------------------------------------
+   Trust row — a ruled spec list, not a row of chips
+
+   The vertical hairlines between items are the whole effect. On four items
+   they read as a specification sheet; without them they read as four
+   unrelated words that happened to sit next to each other.
+
+   The showcase page documents this block under its older name, so both
+   spellings resolve to the same rules rather than drifting apart.
+   --------------------------------------------------------------------- */
+.hero__highlights,
+.hero__trust {
+  display: grid;
+  gap: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  margin-block-start: var(--space-2);
+  padding-block-start: var(--space-5);
+  border-block-start: 1px solid var(--border-subtle);
+}
+
+.hero__highlight,
+.hero__trust-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-3);
+  margin-inline-start: calc(var(--space-3) * -1);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+  color: var(--text-secondary);
+  position: relative;
+}
+
+/* Hairline before every item except the first in its row */
+.hero__highlight::before,
+.hero__trust-item::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block: var(--space-2);
+  width: 1px;
+  background: var(--border-hairline);
+}
+
+.hero__highlight:nth-child(-n + 2)::before,
+.hero__trust-item:nth-child(-n + 2)::before {
+  display: none;
+}
+
+@media (min-width: 34rem) {
+  .hero__highlights,
+  .hero__trust {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .hero__highlight:nth-child(-n + 2)::before,
+  .hero__trust-item:nth-child(-n + 2)::before {
+    display: block;
+  }
+
+  .hero__highlight:first-child::before,
+  .hero__trust-item:first-child::before {
+    display: none;
+  }
+}
+
+.hero__highlight .icon,
+.hero__trust-item .icon {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+  color: var(--brand);
+  stroke-width: 2;
+}
+
+/* ---------------------------------------------------------------------
+   Availability panel
+   --------------------------------------------------------------------- */
+.hero__visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.hero__panel {
+  position: relative;
+  width: 100%;
+  max-width: 26rem;
+  /* Extra room at the foot so the proof chip can straddle the bottom edge
+     without ever landing on top of the panel's own note. */
+  padding: var(--space-5) var(--space-5) var(--space-12);
+  background: var(--surface-base);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl), var(--edge-light);
+}
+
+@media (min-width: 40rem) {
+  .hero__panel {
+    padding: var(--space-6) var(--space-6) var(--space-12);
+  }
+}
+
+/* A brass hairline down the inline-start edge, fading out — the only accent
+   the panel needs. */
+.hero__panel::before {
+  content: "";
+  position: absolute;
+  inset-block: 1.5rem;
+  inset-inline-start: -1px;
+  width: 2px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--brand) 30%,
+    var(--brand) 70%,
+    transparent
+  );
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.hero__panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block-end: var(--space-4);
+  margin-block-end: var(--space-1);
+  border-block-end: 1px solid var(--border-hairline);
+}
+
+.hero__panel-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.3;
+}
+
+/* "Open now" indicator */
+.hero__open {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--success);
+  white-space: nowrap;
+}
+
+.hero__open-dot {
+  position: relative;
+  width: 0.4rem;
+  height: 0.4rem;
+  flex: none;
+  border-radius: 50%;
+  background: var(--success);
+}
+
+/* Slot list — divided rows, no per-row fill. A table, not a stack of chips. */
+.hero__slots {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+
+.hero__slot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block: var(--space-3);
+  border-block-end: 1px solid var(--border-hairline);
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+
+.hero__slot:last-child {
+  border-block-end: 0;
+}
+
+.hero__slot-time {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+  direction: ltr;
+  unicode-bidi: isolate;
+  line-height: 1.3;
+}
+
+.hero__slot-barber {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Availability state is carried by a label and an icon, not colour alone */
+.hero__slot-state {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+}
+
+.hero__slot-state .icon {
+  width: 0.8rem;
+  height: 0.8rem;
+  stroke-width: 2.25;
+}
+
+.hero__slot--available .hero__slot-state {
+  color: var(--success);
+}
+
+.hero__slot--soon .hero__slot-state {
+  color: var(--warning);
+}
+
+.hero__slot--full {
+  opacity: 0.55;
+}
+
+.hero__slot--full .hero__slot-state {
+  color: var(--text-muted);
+}
+
+/* Panel footer note */
+.hero__panel-foot {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin-block-start: var(--space-4);
+  padding-block-start: var(--space-4);
+  border-block-start: 1px solid var(--border-hairline);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-snug);
+  color: var(--text-muted);
+}
+
+.hero__panel-foot .icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  flex: none;
+  margin-block-start: 0.15rem;
+  color: var(--brand);
+}
+
+/* ---------------------------------------------------------------------
+   Panel row — the showcase variant of the slot list
+
+   Same ruled row, a different payload: an icon tile, a name, a duration and
+   a price instead of a time and an availability state. The row itself is
+   shared with .hero__slot; only the inside differs.
+   --------------------------------------------------------------------- */
+.hero__panel-list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+
+.hero__panel-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block: var(--space-3);
+  border-block-end: 1px solid var(--border-hairline);
+}
+
+.hero__panel-row:last-child {
+  border-block-end: 0;
+}
+
+.hero__panel-row-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.hero__panel-row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.hero__panel-row-name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  line-height: var(--line-height-snug);
+}
+
+.hero__panel-row-meta {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+/* ---------------------------------------------------------------------
+   Floating proof chip
+
+   Kept because it is content, not decoration: it is the shop's rating and
+   its client count, and it is the only place either appears above the fold.
+   --------------------------------------------------------------------- */
+.hero__float {
+  position: absolute;
+  inset-block-end: -1.375rem;
+  inset-inline-end: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-overlay);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg), var(--edge-light);
+  z-index: var(--z-base);
+  max-width: calc(100% - 1rem);
+}
+
+@media (min-width: 40rem) {
+  .hero__float {
+    inset-inline-end: var(--space-6);
+  }
+}
+
+.hero__float-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+  min-width: 0;
+}
+
+.hero__float-title {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
+
+.hero__float-sub {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+.hero__float-sub .icon {
+  width: 0.8rem;
+  height: 0.8rem;
+  color: var(--brand);
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+/* ---------------------------------------------------------------------
+   Narrow phones
+
+   The proof chip overlaps the panel's bottom edge by design, so the panel
+   needs room below it or the chip sits on top of the last slot.
+   --------------------------------------------------------------------- */
+@media (max-width: 26rem) {
+  .hero__visual {
+    flex-direction: column;
+  }
+
+  .hero__panel {
+    padding-block-end: var(--space-5);
+  }
+
+  .hero__float {
+    position: static;
+    width: 100%;
+    max-width: none;
+    margin-block-start: var(--space-3);
+    box-shadow: none;
+  }
+}

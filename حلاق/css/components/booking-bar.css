@@ -1,0 +1,181 @@
+/* ==========================================================================
+   Booking bar — sticky mobile call to action
+   ---------------------------------------------------------------------------
+   Appears on small screens once the hero CTAs have scrolled out of view,
+   and disappears again near the footer so it never covers the contact
+   details. Hidden entirely from 64rem, where the header CTA is always
+   reachable.
+
+   Both buttons are inert for now — the booking flow is the next milestone.
+   ========================================================================== */
+
+.booking-bar {
+  position: fixed;
+  inset-block-end: 0;
+  inset-inline: 0;
+  z-index: var(--z-sticky);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--container-pad-inline);
+  padding-block-end: calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+  background: var(--surface-page);
+  border-block-start: 1px solid var(--border-hairline);
+  box-shadow: 0 -10px 30px -18px rgba(0, 0, 0, 0.8);
+
+  /* Slides up from below the fold */
+  transform: translateY(100%);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform var(--duration-slow) var(--ease-out),
+    opacity var(--duration-base) var(--ease-out),
+    visibility var(--duration-base);
+}
+
+.booking-bar.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.booking-bar__price {
+  display: none;
+  flex-direction: column;
+  line-height: 1.25;
+  min-width: 0;
+}
+
+@media (min-width: 26rem) {
+  .booking-bar__price {
+    display: flex;
+  }
+}
+
+.booking-bar__from {
+  font-size: var(--font-size-2xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.booking-bar__amount {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.booking-bar__actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-2);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.booking-bar__actions .btn {
+  width: 100%;
+}
+
+@media (min-width: 64rem) {
+  .booking-bar {
+    display: none;
+  }
+}
+
+/* Space for the bar so it never covers page content */
+.has-booking-bar .app-main {
+  padding-block-end: var(--space-24);
+}
+
+@media (min-width: 64rem) {
+  .has-booking-bar .app-main {
+    padding-block-end: 0;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Closing call to action band
+
+   The one full-width statement on the page, so it is the one place the
+   editorial serif is allowed at size. Everything above it is sans.
+   --------------------------------------------------------------------- */
+.cta-band {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(2.75rem, 5.5vw, 4.5rem) clamp(1.5rem, 4vw, 4rem);
+  text-align: center;
+  background: var(--surface-base);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-lg), var(--edge-light);
+}
+
+.cta-band::before {
+  content: "";
+  position: absolute;
+  inset-block-start: -60%;
+  /* Centred without physical offsets: equal insets + auto margins */
+  inset-inline: 0;
+  margin-inline: auto;
+  z-index: -1;
+  width: 34rem;
+  max-width: 110%;
+  aspect-ratio: 1;
+  pointer-events: none;
+  background: radial-gradient(circle, var(--brand-softer) 0%, transparent 64%);
+}
+
+.cta-band__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  max-width: 42rem;
+  margin-inline: auto;
+}
+
+.cta-band__title {
+  font-family: var(--font-editorial);
+  font-size: clamp(1.75rem, 1.25rem + 2.2vw, 2.75rem);
+  line-height: 1.25;
+  font-weight: var(--font-weight-regular);
+}
+
+.cta-band__desc {
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-loose);
+  color: var(--text-secondary);
+  max-width: 48ch;
+}
+
+.cta-band__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: center;
+  width: 100%;
+}
+
+@media (min-width: 34rem) {
+  .cta-band__actions .btn {
+    min-width: 13rem;
+  }
+}
+
+.cta-band__note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}
+
+.cta-band__note .icon {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+  color: var(--success);
+  stroke-width: 2.25;
+}

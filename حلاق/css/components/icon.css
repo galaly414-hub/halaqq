@@ -1,0 +1,234 @@
+/* ==========================================================================
+   Icon — sizes, alignment and the shared sprite class
+   All icons ship as inline <svg><use href="#icon-name"></svg> pairs.
+   ========================================================================== */
+
+.icon {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: none;
+  vertical-align: middle;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  overflow: visible;
+}
+
+.icon--xs {
+  width: 0.875rem;
+  height: 0.875rem;
+  stroke-width: 2;
+}
+
+.icon--sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+.icon--lg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.icon--xl {
+  width: 2rem;
+  height: 2rem;
+}
+
+.icon--2xl {
+  width: 2.75rem;
+  height: 2.75rem;
+  stroke-width: 1.25;
+}
+
+.icon--brand {
+  color: var(--brand);
+}
+
+.icon--muted {
+  color: var(--text-muted);
+}
+
+.icon--success {
+  color: var(--success);
+}
+.icon--warning {
+  color: var(--warning);
+}
+.icon--danger {
+  color: var(--danger);
+}
+.icon--info {
+  color: var(--info);
+}
+
+/* Filled variants for stars and solid marks */
+.icon--fill {
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+/* ---------------------------------------------------------------------
+   Icon tile — icon in a soft rounded square
+
+   One rule repeated everywhere a glyph needs weight: soft brand fill, no
+   border, and a radius that matches the card it sits in.
+   ----------------------------------------------------------------------- */
+.icon-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  color: var(--brand);
+  background: var(--brand-soft);
+  border-radius: var(--radius-md);
+}
+
+.icon-tile--lg {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: var(--radius-lg);
+}
+
+.icon-tile--sm {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-sm);
+}
+
+.icon-tile--neutral {
+  color: var(--text-secondary);
+  background: var(--surface-overlay);
+}
+
+.icon-tile--success {
+  color: var(--success);
+  background: var(--success-soft);
+}
+.icon-tile--warning {
+  color: var(--warning);
+  background: var(--warning-soft);
+}
+.icon-tile--danger {
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+.icon-tile--info {
+  color: var(--info);
+  background: var(--info-soft);
+}
+
+.icon-tile .icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.icon-tile--lg .icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.icon-tile--sm .icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* ---------------------------------------------------------------------
+   Avatar
+   ----------------------------------------------------------------------- */
+.avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--brand-mark-fg);
+  background: var(--brand-plate-bg);
+  box-shadow: var(--brand-plate-edge);
+  border-radius: 50%;
+  user-select: none;
+}
+
+.avatar--sm {
+  width: 2rem;
+  height: 2rem;
+  font-size: var(--font-size-xs);
+}
+
+.avatar--lg {
+  width: 3.5rem;
+  height: 3.5rem;
+  font-size: var(--font-size-md);
+}
+
+.avatar--xl {
+  width: 5rem;
+  height: 5rem;
+  font-size: var(--font-size-xl);
+}
+
+.avatar--square {
+  border-radius: var(--radius-lg);
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar__presence {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  border: 2px solid var(--surface-base);
+  background: var(--text-disabled);
+}
+
+.avatar__presence--online {
+  background: var(--success);
+}
+.avatar__presence--busy {
+  background: var(--warning);
+}
+
+/* ---------------------------------------------------------------------
+   Logo mark used in the footer
+   ----------------------------------------------------------------------- */
+.logo-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.logo-lockup__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: none;
+  border-radius: var(--radius-md);
+  background: var(--brand-plate-bg);
+  box-shadow: var(--brand-plate-edge);
+  color: var(--brand-mark-fg);
+}
+
+.logo-lockup__mark .icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}

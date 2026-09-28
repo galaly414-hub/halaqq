@@ -1,0 +1,592 @@
+/* ==========================================================================
+   Halaq Admin — Dashboard
+   ---------------------------------------------------------------------------
+   The arrangement of the landing screen. Everything it is made of already
+   exists — cards, stat tiles, charts, tables and badges are 06-ui.css and
+   11-reports.css — so this file only decides the order, the proportion, and
+   the three composites the dashboard needs and no other screen does: the
+   attention band, the lede, and the paired columns.
+
+   Three rules the whole screen follows:
+
+     1. The number that answers "how is today going" is the largest thing on
+        the page. Everything else is supporting it, not competing with it.
+     2. A block that describes something always sits beside a way to act on it.
+        A dashboard that can only be looked at is a screenshot.
+     3. Nothing is drawn from a colour alone. Every tone here travels with a
+        glyph and a word, which is the same rule the rest of the admin follows
+        and the reason the alert band is a list and not a coloured bar.
+
+   Direction: the document is RTL, so every offset below is a logical property
+   and nothing needs flipping.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   The paired columns
+
+   Two cards side by side, of whatever heights they need — the cards stretch so
+   the pair reads as one band, and the content inside each sits at the top.
+
+   Collapsed to one column below 64rem. That is not the phone breakpoint: a
+   900px tablet held in landscape still has room for a chart and its notes
+   together, and splitting there would push the queue list further down the
+   page than anyone needs to scroll to read it.
+   -------------------------------------------------------------------------- */
+
+.dash-duo {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+.dash-duo > .card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.dash-duo > .card > .card__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* The rhythm between the things a dashboard card stacks: a lede, then a chart,
+   then a note. The card's own padding is a block and does not supply it. */
+.dash-body {
+  gap: var(--space-5);
+}
+
+@media (max-width: 63.999rem) {
+  .dash-duo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   The attention band
+
+   Above the numbers, because a screen that opens with eight tiles and no
+   instruction makes the reader sort them into a problem themselves.
+
+   Two states, both real: a list of things to act on, and a plain sentence
+   saying there is nothing. The clear state is stated rather than left blank —
+   a band that appears and disappears with the data reads as a glitch.
+   -------------------------------------------------------------------------- */
+
+.alert-band {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.alert {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  border-inline-start: 2px solid var(--accent, var(--warning));
+  background: var(--surface-base);
+  box-shadow: var(--shadow-xs), var(--edge-light);
+  transition: box-shadow var(--duration-base) var(--ease-out);
+}
+
+.alert:hover {
+  box-shadow: var(--shadow-sm), var(--edge-light);
+}
+
+.alert.is-warning {
+  --accent: var(--warning);
+  --tint: var(--warning-soft);
+}
+.alert.is-danger {
+  --accent: var(--danger);
+  --tint: var(--danger-soft);
+}
+.alert.is-info {
+  --accent: var(--info);
+  --tint: var(--info-soft);
+}
+.alert.is-success {
+  --accent: var(--success);
+  --tint: var(--success-soft);
+}
+.alert.is-neutral {
+  --accent: var(--text-muted);
+  --tint: var(--surface-sunken);
+}
+
+.alert__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-md);
+  color: var(--accent);
+  background: var(--tint);
+}
+
+.alert__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.alert__title {
+  margin: 0;
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.alert__text {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-snug);
+  color: var(--text-secondary);
+}
+
+.alert .btn {
+  flex: none;
+}
+
+/* The clear state keeps the band's shape but loses the accent edge, because
+   there is nothing here to act on and nothing to be alarmed about. */
+.alert-band.is-clear {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-base);
+  box-shadow: var(--shadow-xs), var(--edge-light);
+}
+
+.alert-band__mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-md);
+  color: var(--success);
+  background: var(--success-soft);
+}
+
+.alert-band__title {
+  margin: 0;
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.alert-band__text {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+@media (max-width: 47.999rem) {
+  .alert,
+  .alert-band.is-clear {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  /* The way out goes to its own line rather than being squeezed to nothing
+     beside a sentence that has already wrapped twice — and it lines up under
+     the sentence, not under the icon. */
+  .alert .btn {
+    margin-inline-start: calc(var(--space-5) + 2rem + var(--space-4));
+  }
+}
+
+/* --------------------------------------------------------------------------
+   The lede
+
+   The one place on the page where a figure is allowed to be large, because
+   this is the figure somebody opened the screen to see. The facts beside it are
+   not decoration: a total cannot be read without knowing how many bills it
+   came from, and the number still owed is what stops a good day being read as
+   a finished one.
+   -------------------------------------------------------------------------- */
+
+.dash-lede {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-5) var(--space-6);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-sunken);
+  box-shadow: var(--edge-light);
+}
+
+.dash-lede__main {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
+.dash-lede__label {
+  margin: 0 0 var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+}
+
+.dash-lede__value {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--font-size-4xl);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.dash-lede__note {
+  margin: var(--space-3) 0 0;
+  max-width: 28rem;
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-snug);
+}
+
+/* ---- the figures beside it ---- */
+
+.dash-facts {
+  display: grid;
+  gap: var(--space-4) var(--space-5);
+  grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+  flex: 2 1 18rem;
+  margin: 0;
+}
+
+.dash-fact {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dash-fact__label {
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
+
+.dash-fact__value {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------------------
+   The waiting range
+
+   Both ends of the store's own estimate. An average on its own hides the one
+   person who has been waiting an hour, which is the person the desk needs to
+   hear about.
+   -------------------------------------------------------------------------- */
+
+.dash-range {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+}
+
+.dash-range__end {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  border-inline-start: 2px solid var(--accent, var(--text-muted));
+  background: var(--surface-base);
+}
+
+.dash-range__end.is-success {
+  --accent: var(--success);
+}
+.dash-range__end.is-warning {
+  --accent: var(--warning);
+}
+.dash-range__end.is-danger {
+  --accent: var(--danger);
+}
+
+.dash-range__label {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.dash-range__value {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.dash-range__who {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  min-width: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+}
+
+.dash-range__who .icon {
+  flex: none;
+  color: var(--text-disabled);
+}
+
+.dash-range__who span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* A line of context under a block, with a glyph so it does not read as body
+   copy that lost its place. */
+.dash-note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-snug);
+}
+
+.dash-note .icon {
+  flex: none;
+}
+
+/* --------------------------------------------------------------------------
+   The lanes
+
+   The queue, compressed. Not a second queue screen: the lane letter, who it is
+   and what they are doing right now, with the way through to the real thing.
+   -------------------------------------------------------------------------- */
+
+.dash-lanes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dash-lane {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-base);
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.dash-lane:hover {
+  border-color: var(--border-default);
+}
+
+/* The lane letter as a plate, so the column of them lines up and can be read
+   down before it is read across. */
+.dash-lane__letter {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-sm);
+  background: var(--brand-soft);
+  color: var(--brand);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand) 24%, transparent);
+  font-size: var(--font-size-sm);
+  font-weight: 800;
+}
+
+.dash-lane__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dash-lane__note {
+  margin: 0;
+  min-width: 0;
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dash-lane__end {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.dash-lane__wait {
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   The team
+
+   Availability, which is the only question the dashboard asks of the roster.
+   The mark is the barber's initial, as on their card in the public site, so
+   the same person is recognisable in both places.
+   -------------------------------------------------------------------------- */
+
+.dash-team {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dash-team__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-base);
+}
+
+.dash-team__row.is-on {
+  border-inline-start: 2px solid var(--success);
+}
+
+.dash-team__mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-md);
+  color: var(--brand);
+  background: var(--brand-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand) 20%, transparent);
+  font-size: var(--font-size-sm);
+  font-weight: 800;
+}
+
+.dash-team__row.is-on .dash-team__mark {
+  color: var(--success);
+  background: var(--success-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--success) 24%, transparent);
+}
+
+.dash-team__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dash-team__name {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+}
+
+.dash-team__hours {
+  margin: 0;
+  min-width: 0;
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Phone
+
+   The lede stops competing with the facts: on a narrow screen the figure keeps
+   the top line to itself rather than being squeezed beside three labels, and
+   the figures take the width underneath it.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 47.999rem) {
+  .dash-lede {
+    align-items: stretch;
+    gap: var(--space-4);
+  }
+
+  .dash-lede__main,
+  .dash-facts {
+    flex: 1 1 100%;
+  }
+
+  .dash-lede__value {
+    font-size: var(--font-size-3xl);
+  }
+
+  .dash-lane__end {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-1);
+  }
+
+  .dash-team__row,
+  .dash-lane {
+    gap: var(--space-3);
+    padding-inline: var(--space-3);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Motion
+
+   The band and the rows settle; nothing slides, and nothing on this screen
+   animates in on load. A dashboard that fades in is a dashboard somebody has
+   to wait for before they can read the number they came for.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .alert,
+  .dash-lane {
+    transition: none;
+  }
+}

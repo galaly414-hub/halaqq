@@ -1,0 +1,205 @@
+/* ==========================================================================
+   Steps — the "how it works" journey
+   ---------------------------------------------------------------------------
+   Single column on mobile, three columns from 48rem. The connector line
+   between markers is decorative and hidden on narrow screens where the
+   steps stack.
+
+   These cards are not clickable, so they do not lift on hover. A surface
+   that moves when you pass the mouse over it is a promise that something
+   happens, and here nothing does.
+   ========================================================================== */
+
+.steps {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: 1fr;
+  list-style: none;
+  counter-reset: step;
+}
+
+@media (min-width: 48rem) {
+  .steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Step
+
+   Number, title, prose — read down the column like a printed procedure.
+   The marker is a numeral rather than a circled icon: a number says where
+   you are in a sequence, a glyph only says what the step is about.
+
+   The connector is a hairline that runs between the numerals, so the
+   sequence is legible even before the text is read. On narrow screens the
+   connector turns vertical and runs down the inline-start edge.
+   --------------------------------------------------------------------- */
+.step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-block: var(--space-6);
+  padding-inline: calc(var(--space-8) + var(--space-3)) var(--space-4);
+  border-block-end: 1px solid var(--border-hairline);
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+
+.step:last-child {
+  border-block-end: 0;
+}
+
+.step:hover {
+  background: var(--surface-raised);
+}
+
+.step:active {
+  background: var(--surface-overlay);
+}
+
+@media (min-width: 48rem) {
+  .step {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-5);
+    padding: var(--space-5) var(--space-5) var(--space-8);
+    border-block-end: 0;
+  }
+
+  .step:last-child {
+    padding-block-end: var(--space-5);
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Numeral
+   --------------------------------------------------------------------- */
+.step__index {
+  position: absolute;
+  inset-block-start: var(--space-6);
+  inset-inline-start: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--brand);
+}
+
+@media (min-width: 48rem) {
+  .step__index {
+    position: static;
+    flex: none;
+    width: 2.5rem;
+  }
+}
+
+.step__number {
+  font-family: var(--font-display);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-black);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  /* The outline numeral: quiet enough to sit behind the text in the
+     hierarchy, structural enough to hold the sequence together. */
+  color: transparent;
+  -webkit-text-stroke: 1px var(--brand);
+  transition: color var(--duration-base) var(--ease-out);
+}
+
+.step:hover .step__number {
+  color: var(--brand);
+}
+
+.step__icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: none;
+  color: var(--brand);
+  opacity: 0.7;
+}
+
+/* ---------------------------------------------------------------------
+   Connector
+
+   Vertical on mobile, running through the numeral column; horizontal on
+   desktop, running from one numeral to the next.
+   --------------------------------------------------------------------- */
+.step:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  inset-block: calc(var(--space-6) + 2.5rem);
+  inset-inline-start: 1rem;
+  width: 1px;
+  background: var(--border-hairline);
+}
+
+@media (min-width: 48rem) {
+  .step:not(:last-child)::before {
+    inset-block: calc(var(--space-5) + 1.35rem) auto;
+    inset-inline: calc(2.5rem + var(--space-2)) calc(-1 * var(--space-5));
+    width: auto;
+    height: 1px;
+  }
+}
+
+.step__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+/* ---------------------------------------------------------------------
+   Copy
+   ----------------------------------------------------------------------- */
+.step__title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-snug);
+  color: var(--text-primary);
+}
+
+.step__desc {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-loose);
+  color: var(--text-secondary);
+  max-width: 32ch;
+}
+
+/* ---------------------------------------------------------------------
+   Compact variant for a three-up summary strip
+   ----------------------------------------------------------------------- */
+.steps--compact .step {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4) 0;
+  border-block-end: 0;
+}
+
+.steps--compact .step:hover {
+  background: transparent;
+}
+
+.steps--compact .step__index {
+  position: static;
+  width: auto;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.steps--compact .step__number {
+  font-size: var(--font-size-lg);
+}
+
+.steps--compact .step:not(:last-child)::before {
+  display: none;
+}
+
+.steps--compact .step__desc {
+  max-width: none;
+}

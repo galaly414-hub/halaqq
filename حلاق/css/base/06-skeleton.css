@@ -1,0 +1,184 @@
+/* ==========================================================================
+   Loading placeholders
+   ---------------------------------------------------------------------------
+   The shape of the thing it replaces, so nothing jumps when the real content
+   lands on top of it.
+
+   It lives in the base layer rather than in either product's component set
+   because three places need it and they must not drift apart: the booking
+   flow's service and barber panels, the tracking page's verification, and the
+   admin's first load. One sweep, one set of tokens, one product.
+
+   The animation is one slow gradient pass. No pulse, no rotation, no bounce —
+   a loading state that performs is a loading state that has to be watched. The
+   whole block is decorative and is hidden from assistive technology by the
+   builder, so what gets announced is the sentence beside it, not sixteen
+   empty rectangles.
+   ========================================================================== */
+
+.skel {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+}
+
+.skel__bar {
+  display: block;
+  inline-size: 100%;
+  block-size: 0.75rem;
+  border-radius: var(--radius-xs);
+  background: linear-gradient(
+    90deg,
+    var(--border-subtle) 0%,
+    var(--border-default) 45%,
+    var(--border-subtle) 90%
+  );
+  background-size: 220% 100%;
+  animation: skel-sweep 1500ms ease-in-out infinite;
+}
+
+/* Ragged by design. A stack of equal bars reads as a broken bar chart, which is
+   a worse thing to put on screen than an honest blank. */
+.skel__bar.is-mid {
+  inline-size: 72%;
+}
+
+.skel__bar.is-short {
+  inline-size: 44%;
+}
+
+/* A figure that will become a number: taller, and not a hairline. */
+.skel__bar.is-figure {
+  inline-size: 34%;
+  block-size: 2.5rem;
+  border-radius: var(--radius-sm);
+}
+
+/* A whole area — a chart plot, a list body, a table. */
+.skel__bar.is-block {
+  inline-size: 100%;
+  block-size: 5.5rem;
+  border-radius: var(--radius-md);
+}
+
+.skel__bar.is-plate {
+  inline-size: 100%;
+  block-size: 4.5rem;
+  border-radius: var(--radius-lg);
+}
+
+/* The stagger is capped rather than generated, so a long list does not drift
+   further out of phase the further down it goes. */
+.skel__bar:nth-child(2) {
+  animation-delay: 90ms;
+}
+.skel__bar:nth-child(3) {
+  animation-delay: 180ms;
+}
+.skel__bar:nth-child(4) {
+  animation-delay: 270ms;
+}
+.skel__bar:nth-child(5) {
+  animation-delay: 360ms;
+}
+
+@keyframes skel-sweep {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+/* ---- the sentence that says what is happening ---------------------------
+   The bars are hidden from assistive technology, so this is the only part of
+   a loading state that is read. It is never decorative and never optional. */
+
+.skel-note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-snug);
+}
+
+.skel-note .icon {
+  flex: none;
+  animation: skel-turn 1400ms linear infinite;
+}
+
+@keyframes skel-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---- a card that is only placeholders ---------------------------------- */
+
+.skel-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-block-size: 7.5rem;
+}
+
+/* The placeholder grid for a list of pickable options, so the skeleton is
+   option-shaped rather than a stack of loose lines. */
+.skel-options {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+
+.skel-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--surface-base);
+}
+
+.skel-option__mark {
+  flex: none;
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  border-radius: var(--radius-md);
+  background: linear-gradient(
+      90deg,
+      var(--border-subtle) 0%,
+      var(--border-default) 45%,
+      var(--border-subtle) 90%
+    ),
+    var(--surface-sunken);
+  background-size: 220% 100%;
+  animation: skel-sweep 1500ms ease-in-out infinite;
+}
+
+.skel-option__body {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.skel-option__body .skel__bar {
+  animation-delay: 120ms;
+}
+
+/* ---- reduced motion ------------------------------------------------------
+   The bars stop moving and hold the mid-tone of the sweep, which is the same
+   thing they were animating through — a still frame of the animation, not a
+   different design. */
+
+@media (prefers-reduced-motion: reduce) {
+  .skel__bar,
+  .skel-note .icon,
+  .skel-option__mark {
+    animation: none;
+  }
+}

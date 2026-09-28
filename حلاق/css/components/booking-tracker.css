@@ -1,0 +1,1430 @@
+/* ==========================================================================
+   Halaq — Booking tracker
+   ---------------------------------------------------------------------------
+   track.html only.
+
+   The page is composed as a service, not a dashboard. It answers in the order
+   a waiting customer actually asks:
+
+     1. what is my number          the inked plate, the loudest thing here
+     2. whose turn is it           a separate plate, never merged with mine
+     3. how far away is that       two ruled figures
+     4. where am I on the line     the rail
+     5. what did I book            the ledger
+
+   Three rules shape everything below:
+
+   1. Nothing is colour alone. Every state carries a glyph, a word and a
+      colour, so the page survives a monochrome screen, a colour-blind reader
+      and a black-and-white printout.
+
+   2. Latin numbers stay Latin. The page is RTL, and a booking number or a
+      count inside an Arabic sentence will otherwise be reordered by the bidi
+      algorithm into something unreadable. Every figure carries .num.
+
+   3. The ink plate is rationed. It appears exactly once per view — on the
+      customer's own number — because a page where everything shouts is a page
+      where nothing is heard.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Shell
+   -------------------------------------------------------------------------- */
+
+.tracker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.tracker__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.tracker__title {
+  margin: 0;
+  font-size: var(--font-size-2xl);
+  line-height: var(--line-height-tight);
+  font-weight: 800;
+}
+
+.tracker__lede {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
+  max-inline-size: 46ch;
+}
+
+.tracker__h2 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-4);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.tracker__h2::after {
+  content: "";
+  flex: none;
+  inline-size: 1.5rem;
+  block-size: 1px;
+  background: var(--border-strong);
+}
+
+/* --------------------------------------------------------------------------
+   Form
+   -------------------------------------------------------------------------- */
+
+.tracker__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background: var(--surface-base);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm), var(--edge-light);
+}
+
+.tracker__form-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+
+.tracker__field {
+  margin: 0;
+}
+
+.tracker__field .input {
+  /* The number and the phone are both typed LTR even inside the RTL form, so
+     the caret and the reading order agree with what the customer wrote. */
+  letter-spacing: var(--letter-spacing-arabic);
+}
+
+.tracker__error[hidden] {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   What the page will answer — the pre-search state
+   -------------------------------------------------------------------------- */
+
+.tracker__preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border: 1px dashed var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+}
+
+.tracker__preview-label {
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-muted);
+}
+
+.tracker__preview-list {
+  display: grid;
+  gap: var(--space-2) var(--space-5);
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tracker__preview-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.tracker__preview-item .icon {
+  color: var(--brand);
+  flex: none;
+}
+
+/* --------------------------------------------------------------------------
+   Messages — error and the like
+   -------------------------------------------------------------------------- */
+
+.tracker__message {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
+  background: var(--surface-base);
+  box-shadow: var(--shadow-sm), var(--edge-light);
+}
+
+.tracker__message.is-error {
+  /* --message-accent drives the icon, the inset rule and the action, so the
+     error reads the same whichever side the language puts first. */
+  --message-accent: var(--danger);
+
+  color: var(--text-primary);
+  background: var(--danger-soft);
+  border-color: var(--message-accent);
+  box-shadow: inset 3px 0 0 var(--message-accent);
+}
+
+.tracker__message.is-warning {
+  --message-accent: var(--warning);
+}
+
+.tracker__message-mark {
+  display: grid;
+  place-items: center;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  flex: none;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--message-accent, var(--info)) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--message-accent, var(--info)) 38%, transparent);
+  color: var(--message-accent, var(--info));
+}
+
+.tracker__message-text {
+  display: grid;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.tracker__message-title {
+  margin: 0;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.tracker__message-body {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  max-inline-size: 52ch;
+}
+
+.tracker__message-action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  justify-self: start;
+  margin-block-start: var(--space-1);
+  color: var(--message-accent, var(--brand));
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+}
+
+.tracker__message-action:hover {
+  text-decoration: underline;
+}
+
+.tracker__message-action:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* --------------------------------------------------------------------------
+   Loading
+
+   The skeleton is the shape of the board it replaces, so nothing jumps when
+   the real figures land. One slow sweep, no pulse, no rotation.
+   -------------------------------------------------------------------------- */
+
+.tracker__skeleton {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-base);
+}
+
+.tracker__skeleton.is-plate {
+  background: var(--surface-ink);
+  border-color: var(--surface-ink-edge);
+}
+
+.tracker__skeleton-bar,
+.tracker__skeleton-line {
+  display: block;
+  block-size: 0.75rem;
+  border-radius: var(--radius-xs);
+  background: linear-gradient(
+    90deg,
+    var(--border-subtle) 0%,
+    var(--border-default) 45%,
+    var(--border-subtle) 90%
+  );
+  background-size: 220% 100%;
+  animation: skeleton-sweep 1500ms ease-in-out infinite;
+}
+
+.tracker__skeleton-bar.is-tall {
+  block-size: 2.5rem;
+  inline-size: 46% !important;
+}
+
+.tracker__skeleton.is-plate .tracker__skeleton-bar {
+  background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 0%,
+      rgba(255, 255, 255, 0.14) 45%,
+      rgba(255, 255, 255, 0.06) 90%
+    ),
+    var(--surface-ink);
+}
+
+.tracker__skeleton-line {
+  inline-size: 9rem;
+  margin-block-end: var(--space-2);
+}
+
+.tracker__skeleton-line.is-short {
+  inline-size: 5.5rem;
+}
+
+@keyframes skeleton-sweep {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.tracker__loading-note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}
+
+.tracker__loading-note .icon {
+  animation: loading-turn 1400ms linear infinite;
+}
+
+@keyframes loading-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   The live board
+   -------------------------------------------------------------------------- */
+
+.tracker__result-body {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.tracker__live {
+  /* --accent is set by the is-* modifier and used for the live dot, the
+     eyebrow, the status word and the plate icon, so one status always reads
+     the same wherever it appears. */
+  --accent: var(--info);
+
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-base);
+  box-shadow: var(--shadow-md), var(--edge-light);
+}
+
+.tracker__live.is-warning {
+  --accent: var(--warning);
+}
+.tracker__live.is-brand {
+  --accent: var(--brand);
+}
+.tracker__live.is-success {
+  --accent: var(--success);
+}
+.tracker__live.is-danger {
+  --accent: var(--danger);
+}
+
+/* --- status head ------------------------------------------------------- */
+.tracker__live-head {
+  display: grid;
+  /* Two tracks only. The badge takes the whole first row on its own, and the
+     status icon has to land in the last column of the second one — a spare
+     `auto` column would leave the icon stranded mid-row. */
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  padding-block-end: var(--space-4);
+  border-block-end: 1px solid var(--border-hairline);
+}
+
+.tracker__live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  grid-column: 1 / -1;
+  justify-self: start;
+  padding: 0.15rem var(--space-2);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-sunken);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-muted);
+}
+
+/* The one continuously moving thing on the page. A slow breath, not a blink:
+   the eye should notice it once and then ignore it. */
+.tracker__live-dot {
+  inline-size: 0.4375rem;
+  block-size: 0.4375rem;
+  flex: none;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent);
+  animation: live-breathe 3200ms var(--ease-out) infinite;
+}
+
+@keyframes live-breathe {
+  0%,
+  70%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  35% {
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 0%, transparent);
+  }
+}
+
+.tracker__live-text {
+  display: grid;
+  gap: 0.1rem;
+  min-inline-size: 0;
+}
+
+.tracker__live-label {
+  margin: 0;
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  line-height: var(--line-height-tight);
+  color: var(--accent);
+  border-radius: var(--radius-xs);
+}
+
+.tracker__live-note {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.tracker__live-icon {
+  display: grid;
+  place-items: center;
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  flex: none;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
+  color: var(--accent);
+}
+
+/* --- the three plates -------------------------------------------------- */
+.tracker__board {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* The customer's own number spans the board at every width. It is the one
+   figure that must never be squeezed. */
+.tracker__mine {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 34rem) {
+  .tracker__board {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 62rem) {
+  .tracker__board {
+    grid-template-columns: 1.15fr 1fr 0.95fr;
+  }
+
+  .tracker__mine {
+    grid-column: auto;
+  }
+}
+
+/* --- mine: the inked plate --------------------------------------------- */
+.tracker__mine {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-1);
+  padding: var(--space-5) var(--space-4);
+  border: 1px solid var(--surface-ink-edge);
+  border-radius: var(--radius-md);
+  background: var(--surface-ink);
+  text-align: center;
+}
+
+.tracker__mine-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--on-ink-muted);
+}
+
+.tracker__mine-eyebrow .icon {
+  color: var(--brand-on-ink);
+}
+
+.tracker__mine-number {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: var(--font-weight-black);
+  line-height: 1;
+  letter-spacing: var(--letter-spacing-arabic);
+  color: var(--brand-on-ink);
+  font-variant-numeric: tabular-nums;
+  border-radius: var(--radius-xs);
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 34rem) {
+  .tracker__mine-number {
+    font-size: 4.5rem;
+  }
+}
+
+@media (max-width: 26rem) {
+  .tracker__mine-number {
+    font-size: 3.25rem;
+  }
+}
+
+.tracker__mine-foot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  inline-size: 100%;
+  margin-block-start: var(--space-2);
+  padding-block-start: var(--space-3);
+  border-block-start: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.tracker__lane {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.tracker__lane-label {
+  font-size: var(--font-size-2xs);
+  color: var(--on-ink-muted);
+}
+
+.tracker__lane-chip {
+  display: grid;
+  place-items: center;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  flex: none;
+  border-radius: var(--radius-pill);
+  background: var(--brand-on-ink);
+  color: var(--surface-ink);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+}
+
+.tracker__mine-state {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--on-ink);
+}
+
+/* --- serving: whose turn it is ------------------------------------------
+   Visually distinct from the plate above it: outlined, not inked. The two
+   must never be mistaken for each other, and the "هذا دورك" flag is what
+   says so in words. */
+.tracker__serving {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  text-align: center;
+}
+
+.tracker__serving.is-you {
+  border-color: var(--brand);
+  background: var(--brand-softer);
+  box-shadow: var(--shadow-brand);
+}
+
+.tracker__serving-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-muted);
+}
+
+.tracker__serving-eyebrow .icon {
+  color: var(--brand);
+}
+
+.tracker__serving-number {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-black);
+  line-height: 1.1;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  border-radius: var(--radius-xs);
+}
+
+.tracker__serving-number.is-empty {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-muted);
+}
+
+.tracker__serving.is-you .tracker__serving-number {
+  color: var(--brand);
+  font-size: var(--font-size-3xl);
+}
+
+.tracker__serving-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0.1rem var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--brand);
+  color: var(--text-on-primary);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
+}
+
+.tracker__serving-note {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  line-height: var(--line-height-snug);
+  max-inline-size: 26ch;
+}
+
+/* --- figures: how far away --------------------------------------------- */
+.tracker__figures {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+.tracker__figure {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-3);
+  min-inline-size: 0;
+}
+
+/* A rule between the two, not a gap, so they read as one measurement. */
+.tracker__figure + .tracker__figure {
+  border-inline-start: 1px solid var(--border-hairline);
+}
+
+.tracker__figure-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-2xs);
+  color: var(--text-muted);
+}
+
+.tracker__figure-label .icon {
+  color: var(--brand);
+}
+
+.tracker__figure-value {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-black);
+  line-height: 1.1;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  border-radius: var(--radius-xs);
+}
+
+.tracker__figure-value.is-empty {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--brand);
+}
+
+@media (min-width: 62rem) {
+  .tracker__figures {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tracker__figure {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .tracker__figure + .tracker__figure {
+    border-inline-start: 0;
+    border-block-start: 1px solid var(--border-hairline);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   The queue rail
+
+   One mark per person, connected by a rail that is brass up to and
+   including whoever is in the chair. State differs by glyph, by word, by
+   colour and by border style, so the rail still reads with colour removed.
+   -------------------------------------------------------------------------- */
+
+.tracker__queue {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+}
+
+.tracker__queue--empty {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  border-style: solid;
+  background: var(--surface-base);
+  border-color: var(--success);
+  box-shadow: var(--shadow-xs), var(--edge-light);
+}
+
+.tracker__queue-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  padding-block-end: var(--space-3);
+  border-block-end: 1px solid var(--border-hairline);
+}
+
+.tracker__queue-title {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.tracker__queue-title .icon {
+  color: var(--brand);
+}
+
+.tracker__queue-meta {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+/* --- the empty lane ----------------------------------------------------- */
+.tracker__empty-mark {
+  display: grid;
+  place-items: center;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  flex: none;
+  border-radius: var(--radius-sm);
+  background: var(--success-soft);
+  border: 1px solid var(--success);
+  color: var(--success);
+}
+
+.tracker__empty-text {
+  display: grid;
+  gap: 0.15rem;
+  min-inline-size: 0;
+}
+
+.tracker__empty-title {
+  margin: 0;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
+
+.tracker__empty-note {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+/* --- the rail ----------------------------------------------------------- */
+.tracker__rail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5) var(--space-4);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tracker__mark {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  min-inline-size: 3.5rem;
+  padding-block-start: var(--space-3);
+  text-align: center;
+}
+
+/* The connector to the next person. It lives on the item that has been
+   reached, which is what makes the served part of the line read as a fill
+   without a single calculated width. */
+.tracker__mark:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  inset-block-start: calc(var(--space-3) + 0.875rem);
+  inset-inline-end: 0;
+  inline-size: var(--space-4);
+  block-size: 2px;
+  margin-inline-end: calc(var(--space-4) * -1);
+  background: var(--border-default);
+}
+
+.tracker__mark.is-done::after,
+.tracker__mark.is-in_service::after {
+  background: var(--brand);
+}
+
+.tracker__mark-dot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  border-radius: var(--radius-pill);
+  background: var(--surface-base);
+  color: var(--text-muted);
+  /* The hollow ring is the "waiting" shape. */
+  border: 2px solid var(--border-strong);
+}
+
+.tracker__mark.is-done .tracker__mark-dot {
+  background: var(--success);
+  border-color: var(--success);
+  color: var(--text-on-primary);
+}
+
+/* The person in the chair gets a brass ring that breathes, and a thicker
+   border than anyone else, so they are findable without reading a word. */
+.tracker__mark.is-in_service .tracker__mark-dot {
+  background: var(--brand);
+  border-color: var(--brand);
+  border-width: 3px;
+  color: var(--brand-mark-fg);
+  animation: chair-breathe 3200ms var(--ease-out) infinite;
+}
+
+@keyframes chair-breathe {
+  0%,
+  70%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--brand) 45%, transparent);
+  }
+  35% {
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--brand) 0%, transparent);
+  }
+}
+
+.tracker__mark.is-attended .tracker__mark-dot {
+  border-color: var(--warning);
+  color: var(--warning);
+}
+
+.tracker__mark.is-waiting .tracker__mark-dot {
+  border-style: dashed;
+  border-color: var(--border-strong);
+  color: var(--text-muted);
+}
+
+/* The customer, marked on the rail as well as in the plate above it: a
+   filled disc, a solid border, a word and a flag. Four cues for one fact. */
+.tracker__mark.is-you .tracker__mark-dot {
+  background: var(--brand);
+  border-style: solid;
+  border-color: var(--brand);
+  border-width: 3px;
+  color: var(--brand-mark-fg);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 22%, transparent);
+}
+
+.tracker__mark.is-you .tracker__mark-word {
+  color: var(--brand);
+  font-weight: var(--font-weight-bold);
+}
+
+.tracker__mark.is-you .tracker__mark-number {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+.tracker__mark-flag {
+  position: absolute;
+  inset-block-start: -0.625rem;
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-pill);
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text-on-primary);
+  background: var(--brand);
+  white-space: nowrap;
+}
+
+.tracker__mark-text {
+  display: grid;
+  justify-items: center;
+  gap: 0.1rem;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.tracker__mark-word {
+  font-size: var(--font-size-2xs);
+  color: var(--text-muted);
+  line-height: 1.3;
+  max-inline-size: 7rem;
+}
+
+.tracker__mark-number {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+}
+
+.tracker__mark--more .tracker__mark-word {
+  margin-block-start: calc(var(--space-3) + 1.75rem);
+}
+
+/* --------------------------------------------------------------------------
+   Details — the booking itself
+   -------------------------------------------------------------------------- */
+
+.tracker__details {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-base);
+  box-shadow: var(--shadow-sm), var(--edge-light);
+}
+
+/* The appointment is a band of its own rather than one cell among seven: it
+   is the second thing a customer looks for after their number. */
+.tracker__when {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-inline-start: 2px solid var(--brand);
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+}
+
+.tracker__when-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-muted);
+}
+
+.tracker__when-eyebrow .icon {
+  color: var(--brand);
+}
+
+.tracker__when-body {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+}
+
+.tracker__when-time {
+  font-family: var(--font-display);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-black);
+  line-height: 1.1;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.tracker__when-date {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.tracker__barber {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-4);
+  border-block: 1px solid var(--border-hairline);
+}
+
+.tracker__barber-mark {
+  display: grid;
+  place-items: center;
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  flex: none;
+  border-radius: var(--radius-sm);
+  background: var(--brand-plate-bg);
+  box-shadow: var(--brand-plate-edge);
+  color: var(--brand-mark-fg);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+}
+
+.tracker__barber-text {
+  display: grid;
+  gap: 0.05rem;
+  min-inline-size: 0;
+}
+
+.tracker__barber-label {
+  font-size: var(--font-size-2xs);
+  color: var(--text-muted);
+}
+
+.tracker__barber-name {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-snug);
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+
+.tracker__barber-note {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+.tracker__facts {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+}
+
+.tracker__fact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.tracker__fact--wide {
+  grid-column: 1 / -1;
+}
+
+.tracker__fact-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.tracker__fact-label .icon {
+  color: var(--brand);
+  flex: none;
+}
+
+.tracker__fact-value {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  /* A long booking number must wrap rather than push the grid wide. */
+  overflow-wrap: anywhere;
+}
+
+/* Payment state: the amount was already given above, so this line is about
+   whether it has been settled, and it says so in a word. */
+.tracker__payment {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+}
+
+.tracker__payment .icon {
+  flex: none;
+  margin-block-start: 0.15rem;
+  color: var(--text-muted);
+}
+
+.tracker__payment.is-paid {
+  border-color: var(--success);
+  background: var(--success-soft);
+}
+
+.tracker__payment.is-paid .icon {
+  color: var(--success);
+}
+
+.tracker__payment-text {
+  display: grid;
+  gap: 0.1rem;
+  min-inline-size: 0;
+}
+
+.tracker__payment-state {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.tracker__payment.is-paid .tracker__payment-state {
+  color: var(--success);
+}
+
+.tracker__payment-note {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   The ticket, reused from the confirmation step
+   -------------------------------------------------------------------------- */
+
+.tracker__ticket {
+  padding: var(--space-5);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-base);
+  box-shadow: var(--shadow-sm), var(--edge-light);
+}
+
+.tracker__ticket .ticket {
+  /* The ticket brings its own frame; inside a card it only needs breathing
+     room, and the perforated edge must not sit on the card's border. */
+  margin: 0;
+  box-shadow: none;
+}
+
+/* --------------------------------------------------------------------------
+   Actions and the freshness stamp
+   -------------------------------------------------------------------------- */
+
+.tracker__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.tracker__actions .btn {
+  border-radius: var(--radius-sm);
+}
+
+.tracker__stamp {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-snug);
+  max-inline-size: 60ch;
+}
+
+.tracker__stamp .icon {
+  flex: none;
+  margin-block-start: 0.15rem;
+}
+
+/* --------------------------------------------------------------------------
+   Value changes
+
+   A queue that moves silently is a queue nobody trusts. Each figure that
+   changes gets one short highlight, and nothing else on the page moves.
+   -------------------------------------------------------------------------- */
+
+.is-updated {
+  animation: value-flash var(--flash, 2000ms) var(--ease-out) both;
+}
+
+@keyframes value-flash {
+  0% {
+    background-color: color-mix(in srgb, var(--brand) 26%, transparent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 26%, transparent);
+    transform: translateY(-2px);
+  }
+  22% {
+    background-color: color-mix(in srgb, var(--brand) 26%, transparent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 26%, transparent);
+    transform: none;
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: 0 0 0 4px transparent;
+    transform: none;
+  }
+}
+
+/* On the inked plate the flash is a light sweep instead, because a dark
+   brand wash on charcoal reads as dirt. */
+.tracker__mine .is-updated {
+  animation-name: value-flash-on-ink;
+}
+
+@keyframes value-flash-on-ink {
+  0% {
+    background-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.16);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: 0 0 0 4px transparent;
+  }
+}
+
+/* A whole row of the figures changing at once gets one gentle lift. */
+.tracker__figures:has(.is-updated) {
+  border-color: var(--brand);
+}
+
+/* --------------------------------------------------------------------------
+   Demo samples
+   -------------------------------------------------------------------------- */
+
+.tracker__samples {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border-default);
+  background: var(--surface-sunken);
+  font-size: var(--font-size-sm);
+}
+
+.tracker__samples-summary {
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.tracker__sample-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  margin: var(--space-3) 0 0;
+  padding: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Narrow screens
+
+   320px is the floor. The two form fields stack well before that, the
+   actions go full width, and the plates keep their type sizes rather than
+   shrinking until the numbers stop being the loudest thing on screen.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 34rem) {
+  .tracker__form,
+  .tracker__live,
+  .tracker__details,
+  .tracker__ticket {
+    padding: var(--space-4);
+  }
+
+  .tracker__title {
+    font-size: var(--font-size-xl);
+  }
+
+  .tracker__live-head {
+    align-items: start;
+  }
+
+  .tracker__live-label {
+    font-size: var(--font-size-lg);
+  }
+
+  .tracker__live-icon {
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+  }
+
+  .tracker__rail {
+    gap: var(--space-4) var(--space-3);
+  }
+
+  .tracker__mark:not(:last-child)::after {
+    inline-size: var(--space-3);
+    margin-inline-end: calc(var(--space-3) * -1);
+  }
+
+  .tracker__mark {
+    min-inline-size: 3rem;
+  }
+
+  .tracker__mark-word {
+    max-inline-size: 5.5rem;
+  }
+
+  .tracker__actions {
+    flex-direction: column;
+  }
+
+  .tracker__actions .btn {
+    inline-size: 100%;
+    justify-content: center;
+  }
+
+  .tracker__preview,
+  .tracker__message {
+    padding-inline: var(--space-4);
+  }
+}
+
+@media (max-width: 23rem) {
+  .tracker__figures {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tracker__figure + .tracker__figure {
+    border-inline-start: 0;
+    border-block-start: 1px solid var(--border-hairline);
+  }
+
+  .tracker__preview-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Motion
+
+   Everything above is a single pass or a slow breath. Someone who has asked
+   for less motion gets the same information, held still.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .tracker__live-dot,
+  .tracker__mark.is-in_service .tracker__mark-dot,
+  .tracker__loading-note .icon,
+  .tracker__skeleton-bar,
+  .tracker__skeleton-line {
+    animation: none !important;
+  }
+
+  .is-updated {
+    animation: none !important;
+    background-color: color-mix(in srgb, var(--brand) 20%, transparent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 20%, transparent);
+  }
+
+  .tracker__mine .is-updated {
+    background-color: rgba(255, 255, 255, 0.14);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.14);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Print
+
+   The queue is the thing a customer might want on paper, so the board and the
+   rail print; the form, the skeleton and the actions do not.
+   -------------------------------------------------------------------------- */
+
+@media print {
+  .tracker__form,
+  .tracker__preview,
+  .tracker__samples,
+  .tracker__actions,
+  .tracker__stamp,
+  .tracker__result .tracker__message {
+    display: none;
+  }
+
+  .tracker__live,
+  .tracker__details,
+  .tracker__ticket,
+  .tracker__queue {
+    break-inside: avoid;
+    box-shadow: none;
+  }
+
+  .tracker__mine,
+  .queue__card {
+    background: #ededed !important;
+    border-color: #000 !important;
+  }
+
+  .tracker__mine-number,
+  .tracker__serving-number,
+  .tracker__figure-value,
+  .tracker__when-time,
+  .tracker__barber-name,
+  .tracker__mark-number,
+  .tracker__mark-word,
+  .tracker__live-label,
+  .tracker__lane-chip,
+  .tracker__mark-dot {
+    color: #000 !important;
+    background: #fff !important;
+    box-shadow: none !important;
+  }
+
+  .tracker__lane-chip,
+  .tracker__mark-dot {
+    border: 0.5pt solid #000;
+  }
+
+  .tracker__mark:not(:last-child)::after {
+    background: #999 !important;
+  }
+}

@@ -1,0 +1,191 @@
+/* ==========================================================================
+   Halaq Admin — Shell layout
+   ---------------------------------------------------------------------------
+   The workspace frame: a fixed navigation column and a scrolling content
+   area that owns the only scroll on the page.
+
+   This is the one place that differs from the public site, and it is worth
+   saying why. A back-office screen is used for hours at a stretch by someone
+   with one hand on a mouse, so the navigation must not scroll away and the
+   header must not scroll away either. A customer page is read once, top to
+   bottom, and needs neither.
+
+   Direction: the document is RTL, so the navigation column sits at the start,
+   which renders on the right. All offsets use logical properties throughout
+   (inline-start / inline-end, not left / right) so nothing needs flipping if
+   the direction ever changes.
+   ========================================================================== */
+
+:root {
+  /* The one breakpoint JS also reads, so the drawer logic and the layout
+     cannot disagree about when the sidebar becomes a drawer. */
+  --admin-mobile-breakpoint: 768px;
+  --admin-rail-breakpoint: 1024px;
+
+  --admin-sidebar-w: 16.5rem;
+  --admin-rail-w: 4.5rem;
+  --admin-topbar-h: 4rem;
+  --admin-content-max: 84rem;
+}
+
+body.admin {
+  min-height: 100dvh;
+  background: var(--surface-page);
+  /* The shell manages its own scrolling regions, so the page itself must not
+     bounce behind the sticky header. */
+  overflow: hidden;
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  height: 100dvh;
+  min-height: 0;
+}
+
+/* When the rail is collapsed the column narrows to the icons only. */
+.shell:has(.is-sidebar-collapsed) {
+  --admin-sidebar-w: var(--admin-rail-w);
+}
+
+.shell__aside {
+  grid-column: 1;
+  min-width: 0;
+  min-height: 0;
+  height: 100dvh;
+  border-inline-end: 1px solid var(--border-hairline);
+  background: var(--surface-base);
+  transition: width var(--motion-fast, 180ms) ease;
+}
+
+.shell__body {
+  grid-column: 2;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+}
+
+.shell__main {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-gutter: stable;
+}
+
+.shell__main:focus {
+  outline: none;
+}
+
+.shell__inner {
+  max-width: var(--admin-content-max);
+  margin-inline: auto;
+  padding: var(--space-8) var(--space-6) var(--space-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+
+  /* The shell is built in script and swapped into the page, so this is the one
+     moment a transition is worth spending. A single short fade, once, on the
+     region the user is about to read — not on each section, and not on the
+     numbers, which have to be legible the instant they appear. */
+  animation: shell-settle var(--duration-slow) var(--ease-out) backwards;
+}
+
+@keyframes shell-settle {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 80rem) {
+  .shell__inner {
+    padding-inline: var(--space-8);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Where the admin skips to
+   -------------------------------------------------------------------------- */
+
+.skip-link-admin {
+  position: absolute;
+  inset-block-start: var(--space-2);
+  inset-inline-start: var(--space-2);
+  z-index: 100;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--brand);
+  color: var(--text-on-primary);
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip-link-admin:focus-visible {
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   The rail is collapsed by the user, not by the viewport
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 64rem) {
+  .shell__aside {
+    width: var(--admin-sidebar-w);
+  }
+}
+
+/* Between tablet and desktop the sidebar is always a rail: there is not enough
+   width for labels, and a half-legible full sidebar is worse than a clean one. */
+@media (min-width: 48rem) and (max-width: 63.999rem) {
+  .shell__aside {
+    width: var(--admin-rail-w);
+  }
+}
+
+/* Below the rail breakpoint the sidebar lives inside the drawer dialog instead.
+   The column is not merely empty then — left in place it keeps a grid track
+   and a border, and the content area is narrower for nothing. */
+@media (max-width: 47.999rem) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .shell__aside {
+    display: none;
+  }
+
+  .shell__body {
+    grid-column: 1;
+  }
+
+  /* The narrowest phones cannot afford the desktop gutters, and every pixel
+     here is a pixel the content does not get. */
+  .shell__inner {
+    padding: var(--space-4) var(--space-4) var(--space-12);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Motion
+
+   The sidebar width animates; nothing else does. A dashboard that fades in
+   while someone is trying to work in it is an irritation.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .shell__aside,
+  .drawer,
+  .drawer__panel {
+    transition: none;
+  }
+
+  .shell__inner {
+    animation: none;
+  }
+}

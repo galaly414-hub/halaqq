@@ -1,0 +1,411 @@
+/* ==========================================================================
+   Service menu — the filterable services catalogue
+   ---------------------------------------------------------------------------
+   Composes the existing card component with a filter bar and a
+   price/duration block. The filter is client-side only; it never changes
+   the service data, it just hides non-matching cards.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------
+   Filter bar
+   --------------------------------------------------------------------- */
+.service-filter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.service-filter__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.service-filter__count {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}
+
+.service-filter__count strong {
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The scroll container's landmark wrapper. Block-level so the list below it
+   is the thing that scrolls, not the whole section. */
+.service-filter__list-wrap {
+  display: block;
+  min-width: 0;
+}
+
+/* Horizontally scrollable on narrow screens, wraps from 40rem */
+.service-filter__list {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: nowrap;
+  padding-block-end: var(--space-1);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: inline proximity;
+}
+
+.service-filter__list::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 40rem) {
+  .service-filter__list {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+}
+
+.service-filter__item {
+  scroll-snap-align: start;
+  white-space: nowrap;
+  flex: none;
+}
+
+/* ---------------------------------------------------------------------
+   Grid — cards animate in and out of the filtered set
+   --------------------------------------------------------------------- */
+.service-grid {
+  display: grid;
+  gap: var(--grid-gap, var(--space-5));
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 36rem) {
+  .service-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 72rem) {
+  .service-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.service-grid__item {
+  display: flex;
+  min-width: 0;
+}
+
+.service-grid__item > .card {
+  width: 100%;
+}
+
+/* Filtered-out cards leave the layout instead of leaving a hole */
+.service-grid__item[hidden] {
+  display: none;
+}
+
+/* Empty state when a filter matches nothing */
+.service-empty {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-10) var(--space-5);
+  text-align: center;
+  color: var(--text-muted);
+  background: var(--surface-base);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.service-empty.is-visible {
+  display: flex;
+}
+
+.service-empty .icon {
+  width: 2rem;
+  height: 2rem;
+  color: var(--border-strong);
+}
+
+/* ---------------------------------------------------------------------
+   Service card layout
+   --------------------------------------------------------------------- */
+.service-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.service-card__top {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-5) 0;
+}
+
+.service-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: none;
+  color: var(--brand);
+  background: var(--brand-soft);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-md);
+  transition: color var(--duration-base) var(--ease-out),
+    background-color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out);
+}
+
+.service-card:hover .service-card__icon {
+  background: var(--brand-softer);
+  border-color: color-mix(in srgb, var(--brand) 26%, transparent);
+}
+
+.service-card__icon .icon {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.service-card__heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.service-card__name {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-snug);
+  color: var(--text-primary);
+}
+
+.service-card__category {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+.service-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  flex: 1 1 auto;
+}
+
+.service-card__desc {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-loose);
+  color: var(--text-secondary);
+}
+
+/* The inclusions are supporting detail. On a phone the card is already
+   carrying the name, price, duration and two buttons, so the list is
+   dropped rather than allowed to push the action out of the first screen. */
+.service-card__includes {
+  display: none;
+}
+
+@media (min-width: 40rem) {
+  .service-card__includes {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding-block-start: var(--space-1);
+    list-style: none;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Ruled footer
+
+   The price and the button that acts on it share one rule, at one weight,
+   on the same eye-line. The number is what the customer came for and the
+   button is the only control on the card, so nothing else competes here.
+   --------------------------------------------------------------------- */
+.service-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-block-start: auto;
+  padding: var(--space-4) var(--space-5);
+  border-block-start: 1px solid var(--border-hairline);
+  background: var(--surface-sunken);
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+
+.service-card:hover .service-card__foot {
+  background: var(--surface-raised);
+}
+
+.service-card__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.service-card__price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.2rem;
+  font-family: var(--font-display);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-black);
+  line-height: 1;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.service-card__price .currency {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-muted);
+}
+
+.service-card__duration {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.service-card__duration .icon {
+  width: 0.85rem;
+  height: 0.85rem;
+  flex: none;
+}
+
+.service-card__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex: none;
+  /* The card's title owns a stretched link that covers the whole surface.
+     A positioned element with a positive z-index paints above it, which is
+     what keeps these buttons clickable instead of opening the details
+     dialog underneath the pointer. */
+  position: relative;
+  z-index: calc(var(--z-base) + 1);
+}
+
+.service-card__book {
+  min-width: 9.5rem;
+}
+
+.service-card__details {
+  color: var(--text-muted);
+}
+
+.service-card__details:hover {
+  color: var(--text-primary);
+  background: var(--surface-overlay);
+}
+
+.service-card__details:active {
+  color: var(--text-primary);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-inset);
+}
+
+/* On the narrowest phones the footer stacks and the primary action goes
+   full width, so the thumb lands on the same button every time. */
+@media (max-width: 26rem) {
+  .service-card__foot {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-4);
+  }
+
+  .service-card__meta {
+    justify-content: space-between;
+  }
+
+  .service-card__actions {
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Featured treatment — a solid brass edge, not a colour-only cue
+   --------------------------------------------------------------------- */
+.service-card--featured {
+  border-color: var(--border-default);
+  box-shadow: var(--shadow-md), var(--edge-light);
+}
+
+.service-card--featured::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 2px;
+  background: var(--brand);
+}
+
+/* ---------------------------------------------------------------------
+   Include list shown on the card when space allows
+   --------------------------------------------------------------------- */
+.service-card__includes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  list-style: none;
+}
+
+.service-card__includes li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-snug);
+  color: var(--text-muted);
+}
+
+.service-card__includes .icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  flex: none;
+  margin-block-start: 0.2rem;
+  color: var(--success);
+  stroke-width: 2.5;
+}
+
+/* ---------------------------------------------------------------------
+   Price guide strip under the grid
+   --------------------------------------------------------------------- */
+.service-note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-loose);
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-md);
+}
+
+.service-note .icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: none;
+  margin-block-start: 0.1rem;
+  color: var(--brand);
+}
+
+.service-note strong {
+  color: var(--text-primary);
+}

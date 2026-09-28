@@ -1,0 +1,365 @@
+/* ==========================================================================
+   Halaq Admin — forms
+   ---------------------------------------------------------------------------
+   The shared base in components/form.css already styles a single labelled
+   control, a checkbox and a switch. What is here is what a form needs once it
+   has more than one of them: a field that spans the grid, a group of checkboxes
+   that behaves as one question, a switch with its state written out in words,
+   and the row-based hours editor.
+
+   Everything here is still the base's own vocabulary — .field, .choice,
+   .switch, .input — extended rather than replaced, so a form on the admin
+   reads as the same control the customer sees on the booking flow.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   A field that takes the whole row
+   -------------------------------------------------------------------------- */
+
+.field--wide {
+  grid-column: 1 / -1;
+}
+
+/* --------------------------------------------------------------------------
+   A group of checkboxes
+
+   A fieldset, not a div, so the browser announces the legend as the name of
+   the whole group and a screen reader says "2 من 8" as a question rather than
+   reading eight unlabelled boxes. The count beside the legend is the visible
+   half of that: without it, a receptionist adding a barber cannot tell
+   whether the group took until they scroll back up.
+   -------------------------------------------------------------------------- */
+
+.checkgroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--surface-sunken);
+  margin: 0;
+}
+
+.checkgroup__legend {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 0 0 var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+}
+
+.checkgroup__count {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.checkgroup__grid {
+  display: grid;
+  gap: var(--space-2) var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+}
+
+/* The base .choice puts the box and one line of text side by side. A service
+   has a name and a category, so the row is given its own body column and the
+   two lines are allowed to wrap independently. */
+.choice__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.choice__label {
+  color: inherit;
+}
+
+.choice__note {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  font-weight: var(--font-weight-regular);
+}
+
+/* --------------------------------------------------------------------------
+   A switch with a heading
+
+   The base .switch is a control with a track. On its own that is not enough
+   here: a barber's availability is a decision, and the two states need to be
+   nameable, so both are written out and the track only shows which one is
+   currently true. The switch is never the only carrier of the meaning.
+   -------------------------------------------------------------------------- */
+
+.switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  padding: var(--space-3) 0;
+}
+
+.switch-row__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+  flex: 1 1 12rem;
+}
+
+.switch-row__label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+}
+
+.switch-row__note {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+/* A switch with no text beside it: the hours rows use this, where the
+   "مغلق" caption above the track already says what the control is. */
+.switch--bare {
+  gap: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Hours
+
+   One row per group of days, because "الأحد – الخميس 10:00 – 20:00" is a
+   single fact and five identical rows would be five edits to change it.
+   -------------------------------------------------------------------------- */
+
+.hours {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--surface-sunken);
+  margin: 0;
+}
+
+.hours__legend {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 0 0 var(--space-1);
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+}
+
+.hours__legend-hint {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-muted);
+}
+
+.hours-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.hours-row {
+  display: grid;
+  gap: var(--space-2) var(--space-3);
+  grid-template-columns: minmax(0, 1fr) 5.5rem 5.5rem auto auto;
+  align-items: end;
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-base);
+}
+
+.hours-row__cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.hours-row__label {
+  color: var(--text-muted);
+  font-size: var(--font-size-2xs);
+  font-weight: 600;
+}
+
+.hours-row__cell--off {
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.hours__foot {
+  display: flex;
+  gap: var(--space-2);
+}
+
+/* --------------------------------------------------------------------------
+   The form shell
+   -------------------------------------------------------------------------- */
+
+.barber-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* Reuses the base's .form__grid so the gap and the two-column breakpoint stay
+   the ones every other form in the project already uses. */
+.barber-form .form__grid {
+  gap: var(--space-4);
+}
+
+@media (min-width: 34rem) {
+  .barber-form .form__grid--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* The save button sits in the dialog footer, outside the <form>, so the error
+   has to be written somewhere the Enter key's submit can reach and a screen
+   reader will find without moving focus. */
+.form-error {
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--danger);
+}
+
+.form-error:empty {
+  display: none;
+}
+
+.modal__footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+/* --------------------------------------------------------------------------
+   Icon-only button
+
+   Used for removing a row. It carries a visible text alternative through
+   aria-label, and the glyph alone is never the instruction.
+   -------------------------------------------------------------------------- */
+
+.icon-btn {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    background-color var(--duration-base) var(--ease-out);
+}
+
+.icon-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+.icon-btn:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.icon-btn--danger:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: var(--danger-soft);
+}
+
+/* --------------------------------------------------------------------------
+   Tag
+
+   A read-only token: a specialty, or a service a barber takes. Not a chip —
+   a chip is something you can remove, and these are not removable.
+   -------------------------------------------------------------------------- */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--surface-overlay);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+}
+
+.tag--service {
+  background: var(--brand-soft);
+  border-color: transparent;
+  color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   The confirm dialog's subject line
+   -------------------------------------------------------------------------- */
+
+.confirm__subject {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  overflow-wrap: anywhere;
+}
+
+/* --------------------------------------------------------------------------
+   Narrow screens
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 34rem) {
+  .hours-row {
+    /* Four controls and a delete button cannot share a 320px line. The days
+       take the full width and the two times share the row beneath it. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .hours-row__cell--days {
+    grid-column: 1 / -1;
+  }
+
+  .hours-row__cell--off {
+    align-items: flex-start;
+  }
+
+  .modal__footer-actions {
+    width: 100%;
+  }
+
+  .modal__footer-actions .btn {
+    flex: 1;
+  }
+}

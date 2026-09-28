@@ -1,0 +1,350 @@
+/* ==========================================================================
+   Halaq Admin — Sidebar
+   ---------------------------------------------------------------------------
+   One markup set, three presentations:
+
+     full    labels and group headings, the default on a desktop
+     rail    icons only, the labels revealed on hover and on focus
+     drawer  the same full markup, inside a <dialog> on a phone
+
+   The rail is not a separate component. It is the full sidebar with its
+   labels clipped, so a new section appears correctly in all three at once.
+
+   Accessibility note on the rail: labels that are hidden visually are still
+   read out, and the link carries a title attribute as well, so a hovered or
+   focused icon is never a mystery.
+   ========================================================================== */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.sidebar__inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+/* ---- brand ---- */
+
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: none;
+  height: var(--admin-topbar-h);
+  padding-inline: var(--space-4);
+  border-bottom: 1px solid var(--border-hairline);
+  text-decoration: none;
+  color: inherit;
+}
+
+.sidebar__brand-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-md);
+  color: var(--brand-mark-fg);
+  background: var(--brand-plate-bg);
+  box-shadow: var(--shadow-brand), var(--brand-plate-edge);
+}
+
+.sidebar__brand-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: var(--line-height-tight);
+}
+
+.sidebar__brand-name {
+  font-size: var(--font-size-md);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.sidebar__brand-sub {
+  color: var(--text-muted);
+  font-size: var(--font-size-2xs);
+  white-space: nowrap;
+}
+
+/* ---- sections ---- */
+
+.sidebar__nav {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-5) var(--space-3) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.sidebar__group-title {
+  margin: 0 0 var(--space-3);
+  padding-inline: var(--space-3);
+  color: var(--text-disabled);
+  font-size: var(--font-size-2xs);
+  font-weight: 700;
+  letter-spacing: var(--letter-spacing-arabic);
+  white-space: nowrap;
+}
+
+.sidebar__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar__item {
+  min-width: 0;
+}
+
+.sidebar__link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 2.625rem;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.sidebar__link:hover {
+  color: var(--text-primary);
+  background: var(--surface-raised);
+}
+
+/* The press, and the only cue there is on a touch screen where hover never
+   fires. Inset rather than a shadow, so the item looks pressed into the rail
+   rather than lifted off it. */
+.sidebar__link:active {
+  color: var(--text-primary);
+  background: var(--surface-overlay);
+  box-shadow: var(--shadow-inset);
+}
+
+.sidebar__site-link:active {
+  background: var(--surface-overlay);
+}
+
+.sidebar__link:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+.sidebar__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 1.5rem;
+  color: var(--text-disabled);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.sidebar__link:hover .sidebar__icon {
+  color: var(--text-muted);
+}
+
+.sidebar__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* A count for "3 waiting" style badges. Empty until a section fills it, so it
+   costs no space on the sections that have no count. */
+.sidebar__badge {
+  margin-inline-start: auto;
+  min-width: 1.25rem;
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-2xs);
+  font-weight: 700;
+  line-height: 1.25rem;
+  text-align: center;
+  color: var(--brand);
+  background: var(--brand-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand) 26%, transparent);
+}
+
+.sidebar__badge:empty {
+  display: none;
+}
+
+/* ---- the current section ---- */
+
+.sidebar__link.is-current {
+  color: var(--text-primary);
+  background: var(--brand-soft);
+  font-weight: 600;
+}
+
+.sidebar__link.is-current .sidebar__icon {
+  color: var(--brand);
+}
+
+/* A bar on the inline-start edge, so the current section is marked by shape as
+   well as by tint. */
+.sidebar__link.is-current::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block: var(--space-2);
+  width: 2px;
+  border-radius: var(--radius-pill);
+  background: var(--brand);
+}
+
+/* ---- footer ---- */
+
+.sidebar__foot {
+  flex: none;
+  padding: var(--space-3);
+  border-top: 1px solid var(--border-hairline);
+}
+
+.sidebar__site-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.sidebar__site-link:hover {
+  color: var(--text-primary);
+  background: var(--surface-raised);
+}
+
+.sidebar__site-link .icon {
+  flex: none;
+  width: 1.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   Rail — icons only
+
+   Reached three ways, all the same result: the user pinned it closed on a
+   desktop, the viewport is tablet-sized, or the sidebar has been moved into
+   the drawer (where the full version is wanted, so it is excluded).
+   -------------------------------------------------------------------------- */
+
+:where(.is-sidebar-collapsed) .sidebar__label,
+:where(.is-sidebar-collapsed) .sidebar__group-title,
+:where(.is-sidebar-collapsed) .sidebar__brand-text,
+:where(.is-sidebar-collapsed) .sidebar__site-link span {
+  /* Kept in the accessibility tree and out of the layout: the link still
+     announces its name while showing nothing but the glyph. */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+:where(.is-sidebar-collapsed) .sidebar__brand,
+:where(.is-sidebar-collapsed) .sidebar__link,
+:where(.is-sidebar-collapsed) .sidebar__site-link {
+  justify-content: center;
+  padding-inline: var(--space-2);
+}
+
+:where(.is-sidebar-collapsed) .sidebar__nav {
+  padding-inline: var(--space-2);
+}
+
+:where(.is-sidebar-collapsed) .sidebar__group-title {
+  /* An empty heading still separates the groups, so it keeps its space and
+     its border instead of vanishing and merging two lists together. */
+  height: 1px;
+  margin-block: var(--space-3);
+  overflow: hidden;
+  background: var(--border-subtle);
+}
+
+/* Tablet, before anyone has touched the toggle. */
+@media (min-width: 48rem) and (max-width: 63.999rem) {
+  .sidebar__label,
+  .sidebar__group-title,
+  .sidebar__brand-text,
+  .sidebar__site-link span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .sidebar__brand,
+  .sidebar__link,
+  .sidebar__site-link {
+    justify-content: center;
+    padding-inline: var(--space-2);
+  }
+
+  .sidebar__nav {
+    padding-inline: var(--space-2);
+  }
+
+  .sidebar__group-title {
+    height: 1px;
+    margin-block: var(--space-3);
+    background: var(--border-subtle);
+  }
+}
+
+/* A hover or focus on a rail item reveals its name in a floating chip, so the
+   icon is never the only clue. */
+@media (min-width: 48rem) {
+  :where(.is-sidebar-collapsed) .sidebar__link[data-section]:hover::after,
+  :where(.is-sidebar-collapsed) .sidebar__link[data-section]:focus-visible::after {
+    content: attr(title);
+    position: absolute;
+    inset-inline-start: calc(100% + var(--space-2));
+    inset-block-start: 50%;
+    transform: translateY(-50%);
+    z-index: 20;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-primary);
+    background: var(--surface-overlay);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-md);
+    white-space: nowrap;
+  }
+}

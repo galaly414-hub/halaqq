@@ -1,0 +1,150 @@
+/* ==========================================================================
+   Motion — subtle entrance and emphasis animations
+   ---------------------------------------------------------------------------
+   Everything here is decorative. The global prefers-reduced-motion rule in
+   02-reset.css collapses all of it to a near-zero duration, and every
+   animation starts from a state that is still readable if it never runs.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------
+   Entrance — hero content only
+   Elements marked [data-animate] fade up once, shortly after load.
+   --------------------------------------------------------------------- */
+[data-animate] {
+  animation: enter-up var(--duration-slower) var(--ease-out) backwards;
+}
+
+/* Stagger is driven by --stagger-index set in the markup or by JS, so the
+   delay lives in one place instead of being repeated per element. */
+[data-animate="1"] {
+  animation-delay: 40ms;
+}
+[data-animate="2"] {
+  animation-delay: 120ms;
+}
+[data-animate="3"] {
+  animation-delay: 200ms;
+}
+[data-animate="4"] {
+  animation-delay: 280ms;
+}
+[data-animate="5"] {
+  animation-delay: 350ms;
+}
+[data-animate="6"] {
+  animation-delay: 420ms;
+}
+
+@keyframes enter-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Gentle attention pulse — used once on the live availability dot so the
+   hero reads as "open right now" without any motion being required.
+   --------------------------------------------------------------------- */
+.pulse {
+  position: relative;
+}
+
+.pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid currentColor;
+  opacity: 0;
+  animation: pulse-ring 3000ms var(--ease-out) infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Underline sweep on text links inside prose
+   --------------------------------------------------------------------- */
+.link-sweep {
+  position: relative;
+  color: var(--brand);
+  font-weight: var(--font-weight-semibold);
+  padding-inline-end: 0.15em;
+}
+
+.link-sweep::after {
+  content: "";
+  position: absolute;
+  inset-block-end: -0.15em;
+  inset-inline-end: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: inline-end;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.link-sweep:hover::after,
+.link-sweep:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* ---------------------------------------------------------------------
+   Number emphasis for stat cards
+   --------------------------------------------------------------------- */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------------
+   Section heading accent — a short rule that grows into place
+   --------------------------------------------------------------------- */
+.rule-grow {
+  display: block;
+  width: 2.5rem;
+  height: 2px;
+  border-radius: var(--radius-pill);
+  background: var(--brand);
+  transform-origin: inline-start;
+  animation: rule-grow 700ms var(--ease-out) 500ms backwards;
+}
+
+@keyframes rule-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Reduced motion — belt and braces on top of the global reset
+   --------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  [data-animate],
+  .pulse::after,
+  .rule-grow {
+    animation: none !important;
+  }
+
+  [data-animate] {
+    opacity: 1;
+    transform: none;
+  }
+}

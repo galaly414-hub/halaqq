@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0e0d0c" />
+    <meta
+      name="description"
+      content="حلاق — صالون حلاقة في حي العليا بالرياض منذ 2014. قصّ شعر ولحية، تحديد جوانب، وصبغات بأسعار واضحة، مع حجز يحفظ وقتك."
+    />
+    <meta name="color-scheme" content="dark light" />
+    <title>حلاق | صالون حلاقة في الرياض</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/main.css" />
+    <!-- Home page composition. Customer home page only. -->
+    <link rel="stylesheet" href="css/home.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='6' cy='6' r='3'/%3E%3Ccircle cx='6' cy='18' r='3'/%3E%3Cpath d='M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12'/%3E%3C/svg%3E"
+    />
+  </head>
+
+  <body class="page-home">
+    <!-- ==================================================================
+         Icon sprite on a 24x24 grid, stroked with currentColor.
+         To add one, drop in a <symbol> with a unique id, then reference it
+         as #icon-your-id. Every page carries a copy of this block, because
+         external sprite references do not resolve under file:// — so after
+         editing here, re-run build-track.js for track.html.
+         ================================================================== -->
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      style="display: none"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <!-- Brand / barber -->
+      <symbol id="icon-scissors" viewBox="0 0 24 24">
+        <circle cx="6" cy="6" r="3" />
+        <circle cx="6" cy="18" r="3" />
+        <path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12" />
+      </symbol>
+      <symbol id="icon-comb" viewBox="0 0 24 24">
+        <path d="M2 6h20M4 6v12M8 6v12M12 6v12M16 6v12M20 6v12" />
+      </symbol>
+      <symbol id="icon-razor" viewBox="0 0 24 24">
+        <path d="M3 21 9 15M9 15l6-6 4 4-6 6z" />
+        <path d="M13 5 19 11M15.5 2.5 21.5 8.5" />
+      </symbol>
+      <symbol id="icon-quote" viewBox="0 0 24 24">
+        <path
+          d="M9.5 5.5C6.4 6.8 4.5 9.5 4.5 13v5.5h6V12H7.8c.1-1.9 1-3.3 2.7-4.2zM19.5 5.5C16.4 6.8 14.5 9.5 14.5 13v5.5h6V12h-2.7c.1-1.9 1-3.3 2.7-4.2z"
+        />
+      </symbol>
+      <symbol id="icon-arrow-left" viewBox="0 0 24 24">
+        <path d="M19 12H5M11 18l-6-6 6-6" />
+      </symbol>
+
+      <symbol id="icon-crown" viewBox="0 0 24 24">
+        <path
+          d="M11.56 3.27a.5.5 0 0 1 .88 0L15.39 8.87a1 1 0 0 0 1.52.29L21.18 5.5a.5.5 0 0 1 .8.52l-2.83 10.25a1 1 0 0 1-.96.73H5.81a1 1 0 0 1-.96-.73L2.02 6.02a.5.5 0 0 1 .8-.52l4.27 3.66a1 1 0 0 0 1.52-.29z"
+        />
+        <path d="M5 21h14" />
+      </symbol>
+
+      <!-- Interface -->
+      <symbol id="icon-home" viewBox="0 0 24 24">
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+        <path d="M9 22V12h6v10" />
+      </symbol>
+      <symbol id="icon-grid" viewBox="0 0 24 24">
+        <rect width="7" height="7" x="3" y="3" rx="1" />
+        <rect width="7" height="7" x="14" y="3" rx="1" />
+        <rect width="7" height="7" x="14" y="14" rx="1" />
+        <rect width="7" height="7" x="3" y="14" rx="1" />
+      </symbol>
+      <symbol id="icon-layers" viewBox="0 0 24 24">
+        <path
+          d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"
+        />
+        <path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65" />
+        <path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65" />
+      </symbol>
+      <symbol id="icon-palette" viewBox="0 0 24 24">
+        <circle cx="13.5" cy="6.5" r=".6" />
+        <circle cx="17.5" cy="10.5" r=".6" />
+        <circle cx="8.5" cy="7.5" r=".6" />
+        <circle cx="6.5" cy="12.5" r=".6" />
+        <path
+          d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.65-.75 1.65-1.69 0-.44-.18-.83-.44-1.12-.29-.29-.44-.65-.44-1.13a1.64 1.64 0 0 1 1.67-1.67h2c3.05 0 5.56-2.5 5.56-5.55C21.97 6.01 17.46 2 12 2Z"
+        />
+      </symbol>
+      <symbol id="icon-droplet" viewBox="0 0 24 24">
+        <path
+          d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7Z"
+        />
+      </symbol>
+      <symbol id="icon-sparkles" viewBox="0 0 24 24">
+        <path
+          d="m12 3-1.91 5.81a2 2 0 0 1-1.28 1.28L3 12l5.81 1.91a2 2 0 0 1 1.28 1.28L12 21l1.91-5.81a2 2 0 0 1 1.28-1.28L21 12l-5.81-1.91a2 2 0 0 1-1.28-1.28Z"
+        />
+        <path d="M5 3v4M19 17v4M3 5h4M17 19h4" />
+      </symbol>
+      <symbol id="icon-handshake" viewBox="0 0 24 24">
+        <path d="m11 17 2 2a1 1 0 1 0 3-3" />
+        <path
+          d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"
+        />
+        <path d="m21 3 1 11h-2M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3M3 4h8" />
+      </symbol>
+
+      <!-- People -->
+      <symbol id="icon-user" viewBox="0 0 24 24">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+      </symbol>
+      <symbol id="icon-users" viewBox="0 0 24 24">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+      </symbol>
+      <symbol id="icon-award" viewBox="0 0 24 24">
+        <circle cx="12" cy="8" r="6" />
+        <path d="M15.48 12.89 17 22l-5-3-5 3 1.52-9.11" />
+      </symbol>
+      <symbol id="icon-shield" viewBox="0 0 24 24">
+        <path
+          d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+        />
+        <path d="m9 12 2 2 4-4" />
+      </symbol>
+      <symbol id="icon-lock" viewBox="0 0 24 24">
+        <rect width="18" height="11" x="3" y="11" rx="2" />
+        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+      </symbol>
+
+      <!-- Scheduling -->
+      <symbol id="icon-calendar" viewBox="0 0 24 24">
+        <rect width="18" height="18" x="3" y="4" rx="2" />
+        <path d="M16 2v4M8 2v4M3 10h18" />
+      </symbol>
+      <symbol id="icon-calendar-check" viewBox="0 0 24 24">
+        <path d="M8 2v4M16 2v4" />
+        <rect width="18" height="18" x="3" y="4" rx="2" />
+        <path d="m9 14 2 2 4-4" />
+      </symbol>
+      <symbol id="icon-clock" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 6v6l4 2" />
+      </symbol>
+
+      <!-- Contact -->
+      <symbol id="icon-phone" viewBox="0 0 24 24">
+        <path
+          d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.2 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.7 2.63a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.85.37 1.73.58 2.63.7A2 2 0 0 1 22 16.92Z"
+        />
+      </symbol>
+      <symbol id="icon-mail" viewBox="0 0 24 24">
+        <rect width="20" height="16" x="2" y="4" rx="2" />
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+      </symbol>
+      <symbol id="icon-map-pin" viewBox="0 0 24 24">
+        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+        <circle cx="12" cy="10" r="3" />
+      </symbol>
+      <symbol id="icon-navigation" viewBox="0 0 24 24">
+        <path d="m3 11 19-9-9 19-2-8Z" />
+      </symbol>
+
+      <!-- Status and feedback -->
+      <symbol id="icon-check" viewBox="0 0 24 24">
+        <path d="M20 6 9 17l-5-5" />
+      </symbol>
+      <symbol id="icon-hourglass" viewBox="0 0 24 24">
+        <path d="M5 22h14M5 2h14" />
+        <path
+          d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"
+        />
+      </symbol>
+      <symbol id="icon-user-check" viewBox="0 0 24 24">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="m16 11 2 2 4-4" />
+      </symbol>
+      <symbol id="icon-user-x" viewBox="0 0 24 24">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="m17 8 5 5M22 8l-5 5" />
+      </symbol>
+      <symbol id="icon-check-double" viewBox="0 0 24 24">
+        <path d="M18 6 7 17l-5-5" />
+        <path d="m22 10-7.5 7.5L13 16" />
+      </symbol>
+      <symbol id="icon-ban" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <path d="m4.9 4.9 14.2 14.2" />
+      </symbol>
+      <!-- Admin shell: section glyphs, chrome and form icons. -->
+      <symbol id="icon-layout-dashboard" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="7" height="9" rx="1" />
+        <rect x="14" y="3" width="7" height="5" rx="1" />
+        <rect x="14" y="12" width="7" height="9" rx="1" />
+        <rect x="3" y="16" width="7" height="5" rx="1" />
+      </symbol>
+      <symbol id="icon-list" viewBox="0 0 24 24">
+        <path d="M8 6h13M8 12h13M8 18h13" />
+        <path d="M3 6h.01M3 12h.01M3 18h.01" />
+      </symbol>
+      <symbol id="icon-contact" viewBox="0 0 24 24">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+        <path d="M17 12h4v8h-4zM9.5 12H5v8h4.5z" />
+      </symbol>
+      <symbol id="icon-bar-chart" viewBox="0 0 24 24">
+        <path d="M3 3v16a2 2 0 0 0 2 2h16" />
+        <path d="M7 16V11M12 16V7M17 16v-4" />
+      </symbol>
+      <symbol id="icon-log-out" viewBox="0 0 24 24">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+        <path d="M16 17 21 12l-5-5M21 12H9" />
+      </symbol>
+      <symbol id="icon-chevron-down" viewBox="0 0 24 24">
+        <path d="m6 9 6 6 6-6" />
+      </symbol>
+      <symbol id="icon-filter" viewBox="0 0 24 24">
+        <path d="M22 3H2l8 9.46V19l4 2v-8.54Z" />
+      </symbol>
+      <symbol id="icon-bell" viewBox="0 0 24 24">
+        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+      </symbol>
+      <symbol id="icon-credit-card" viewBox="0 0 24 24">
+        <rect x="2" y="5" width="20" height="14" rx="2" />
+        <path d="M2 10h20" />
+      </symbol>
+      <symbol id="icon-eye" viewBox="0 0 24 24">
+        <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+        <circle cx="12" cy="12" r="3" />
+      </symbol>
+      <symbol id="icon-eye-off" viewBox="0 0 24 24">
+        <path d="M10.7 5.1A10.9 10.9 0 0 1 12 5c6.5 0 10 7 10 7a18.5 18.5 0 0 1-3.2 4.1M6.6 6.6A18.5 18.5 0 0 0 2 12s3.5 7 10 7a10.8 10.8 0 0 0 5.4-1.4" />
+        <path d="M14.1 14.1a3 3 0 1 1-4.2-4.2M3 3l18 18" />
+      </symbol>
+      <symbol id="icon-shield-check" viewBox="0 0 24 24">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+        <path d="m9 12 2 2 4-4" />
+      </symbol>
+      <symbol id="icon-panel-right" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M15 3v18" />
+      </symbol>
+      <symbol id="icon-inbox" viewBox="0 0 24 24">
+        <path d="M22 12h-6l-2 3h-4l-2-3H2" />
+        <path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1Z" />
+      </symbol>
+      <!-- Admin shell: section glyphs, chrome and form icons. -->
+      <symbol id="icon-trending-up" viewBox="0 0 24 24">
+        <path d="M22 7 13.5 15.5 8.5 10.5 2 17" />
+        <path d="M16 7h6v6" />
+      </symbol>
+      <symbol id="icon-trending-down" viewBox="0 0 24 24">
+        <path d="M22 17 13.5 8.5 8.5 13.5 2 7" />
+        <path d="M16 17h6v-6" />
+      </symbol>
+      <symbol id="icon-activity" viewBox="0 0 24 24">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+      </symbol>
+      <symbol id="icon-clipboard" viewBox="0 0 24 24">
+        <rect width="8" height="4" x="8" y="2" rx="1" />
+        <path
+          d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+        />
+        <path d="M12 11h4M12 16h4M8 11h.01M8 16h.01" />
+      </symbol>
+      <symbol id="icon-ticket" viewBox="0 0 24 24">
+        <path
+          d="M2 9a3 3 0 0 0 0 6v3a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-3a3 3 0 0 0 0-6V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"
+        />
+        <path d="M13 5v2M13 17v2M13 11v2" />
+      </symbol>
+      <symbol id="icon-qr-code" viewBox="0 0 24 24">
+        <rect width="5" height="5" x="3" y="3" rx="1" />
+        <rect width="5" height="5" x="16" y="3" rx="1" />
+        <rect width="5" height="5" x="3" y="16" rx="1" />
+        <path d="M21 16h-3a2 2 0 0 0-2 2v3M16 21v-3a2 2 0 0 0-2-2h-3M21 21h.01" />
+      </symbol>
+      <symbol id="icon-printer" viewBox="0 0 24 24">
+        <path d="M6 9V3h12v6" />
+        <path
+          d="M6 18H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"
+        />
+        <rect width="12" height="8" x="6" y="14" rx="1" />
+      </symbol>
+      <symbol id="icon-check-circle" viewBox="0 0 24 24">
+        <path d="M21.8 11.1V12a10 10 0 1 1-5.93-9.14" />
+        <path d="M22 4 12 14.01l-3-3" />
+      </symbol>
+      <symbol id="icon-info" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 16v-4M12 8h.01" />
+      </symbol>
+      <symbol id="icon-alert-triangle" viewBox="0 0 24 24">
+        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+        <path d="M12 9v4M12 17h.01" />
+      </symbol>
+      <symbol id="icon-close" viewBox="0 0 24 24">
+        <path d="M18 6 6 18M6 6l12 12" />
+      </symbol>
+      <symbol id="icon-star" viewBox="0 0 24 24">
+        <path
+          d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01Z"
+        />
+      </symbol>
+      <symbol id="icon-heart" viewBox="0 0 24 24">
+        <path
+          d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+        />
+      </symbol>
+      <symbol id="icon-thumbs-up" viewBox="0 0 24 24">
+        <path d="M7 10v12" />
+        <path
+          d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"
+        />
+      </symbol>
+
+      <!-- Commerce -->
+      <symbol id="icon-banknote" viewBox="0 0 24 24">
+        <rect width="20" height="12" x="2" y="6" rx="2" />
+        <circle cx="12" cy="12" r="2.5" />
+        <path d="M6 12h.01M18 12h.01" />
+      </symbol>
+      <symbol id="icon-tag" viewBox="0 0 24 24">
+        <path
+          d="M12.59 2.59A2 2 0 0 0 11.17 2H4a2 2 0 0 0-2 2v7.17a2 2 0 0 0 .59 1.42l8.7 8.7a2.43 2.43 0 0 0 3.42 0l6.58-6.58a2.43 2.43 0 0 0 0-3.42Z"
+        />
+        <circle cx="7.5" cy="7.5" r=".8" />
+      </symbol>
+      <symbol id="icon-gift" viewBox="0 0 24 24">
+        <rect x="3" y="8" width="18" height="4" rx="1" />
+        <path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7" />
+        <path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5" />
+      </symbol>
+
+      <!-- Actions -->
+      <symbol id="icon-plus" viewBox="0 0 24 24">
+        <path d="M5 12h14M12 5v14" />
+      </symbol>
+      <symbol id="icon-minus" viewBox="0 0 24 24">
+        <path d="M5 12h14" />
+      </symbol>
+      <symbol id="icon-menu" viewBox="0 0 24 24">
+        <path d="M4 6h16M4 12h16M4 18h16" />
+      </symbol>
+      <symbol id="icon-search" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.3-4.3" />
+      </symbol>
+      <symbol id="icon-settings" viewBox="0 0 24 24">
+        <path
+          d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2Z"
+        />
+        <circle cx="12" cy="12" r="3" />
+      </symbol>
+      <symbol id="icon-chevron-left" viewBox="0 0 24 24">
+        <path d="m15 18-6-6 6-6" />
+      </symbol>
+      <symbol id="icon-chevron-right" viewBox="0 0 24 24">
+        <path d="m9 18 6-6-6-6" />
+      </symbol>
+      <symbol id="icon-refresh" viewBox="0 0 24 24">
+        <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8M21 3v5h-5" />
+        <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16M8 16H3v5" />
+      </symbol>
+      <symbol id="icon-zap" viewBox="0 0 24 24">
+        <path
+          d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14Z"
+        />
+      </symbol>
+      <symbol id="icon-wifi" viewBox="0 0 24 24">
+        <path d="M12 20h.01" />
+        <path d="M2 8.82a15 15 0 0 1 20 0M5 12.86a10 10 0 0 1 14 0" />
+        <path d="M8.5 16.43a5 5 0 0 1 7 0" />
+      </symbol>
+      <symbol id="icon-coffee" viewBox="0 0 24 24">
+        <path d="M10 2v2M14 2v2M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1Z" />
+        <path d="M6 2v2" />
+      </symbol>
+      <symbol id="icon-message" viewBox="0 0 24 24">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z" />
+        <path d="M8 9h8M8 13h5" />
+      </symbol>
+      <symbol id="icon-send" viewBox="0 0 24 24">
+        <path d="m22 2-7 20-4-9-9-4Z" />
+        <path d="M22 2 11 13" />
+      </symbol>
+
+      <!-- Theme -->
+      <symbol id="icon-sun" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="4" />
+        <path
+          d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+        />
+      </symbol>
+      <symbol id="icon-moon" viewBox="0 0 24 24">
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+      </symbol>
+
+      <!-- Social -->
+      <symbol id="icon-instagram" viewBox="0 0 24 24">
+        <rect width="20" height="20" x="2" y="2" rx="5" />
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z" />
+        <path d="M17.5 6.5h.01" />
+      </symbol>
+      <symbol id="icon-facebook" viewBox="0 0 24 24">
+        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3Z" />
+      </symbol>
+      <symbol id="icon-whatsapp" viewBox="0 0 24 24">
+        <path
+          d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8Z"
+        />
+      </symbol>
+      <symbol id="icon-x" viewBox="0 0 24 24">
+        <path
+          d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23Zm-1.16 17.52h1.83L7.08 4.13H5.12Z"
+        />
+      </symbol>
+    </svg>
+
+    <a class="skip-link" href="#main">تخطَّ إلى المحتوى الرئيسي</a>
+
+    <div class="app-shell">
+      <!-- ==================================================================
+           Header
+           ================================================================== -->
+      <header class="site-header" data-site-header>
+        <div class="container site-header__inner">
+          <a class="brand" href="index.html" aria-label="حلاق — الصفحة الرئيسية">
+            <span class="brand__mark" aria-hidden="true">
+              <svg class="icon"><use href="#icon-scissors"></use></svg>
+            </span>
+            <span class="brand__text">
+              <span class="brand__name">حلاق</span>
+              <span class="brand__tagline">صالون الحلاق الراقي</span>
+            </span>
+          </a>
+
+          <nav class="nav" aria-label="التنقل الرئيسي" data-mount="nav-desktop"></nav>
+
+          <div class="site-header__actions">
+            <a class="btn btn--ghost btn--sm header-cta" href="tel:+966551234567">
+              <svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg>
+              <span>اتصل بنا</span>
+            </a>
+
+            <button
+              type="button"
+              class="btn btn--primary btn--sm header-cta"
+              data-booking-cta
+            >
+              <svg class="icon" aria-hidden="true"><use href="#icon-calendar-check"></use></svg>
+              <span>احجز موعدك</span>
+            </button>
+
+            <button
+              type="button"
+              class="btn btn--ghost btn--icon header-cta"
+              data-theme-toggle
+              aria-label="تفعيل الوضع الفاتح"
+              title="تفعيل الوضع الفاتح"
+            >
+              <svg class="icon icon--sun" aria-hidden="true"><use href="#icon-sun"></use></svg>
+              <svg class="icon icon--moon" aria-hidden="true" style="display: none">
+                <use href="#icon-moon"></use>
+              </svg>
+            </button>
+
+            <button
+              type="button"
+              class="btn btn--ghost btn--icon header-burger"
+              data-drawer-trigger
+              aria-label="فتح قائمة التنقل"
+              aria-expanded="false"
+              aria-controls="mobile-drawer"
+            >
+              <svg class="icon icon--menu" aria-hidden="true"><use href="#icon-menu"></use></svg>
+              <svg class="icon icon--close" aria-hidden="true"><use href="#icon-close"></use></svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Mobile drawer navigation -->
+      <dialog class="drawer" id="mobile-drawer" data-drawer aria-label="قائمة التنقل">
+        <div class="drawer__panel">
+          <div class="drawer__header">
+            <span class="logo-lockup">
+              <span class="logo-lockup__mark" aria-hidden="true">
+                <svg class="icon"><use href="#icon-scissors"></use></svg>
+              </span>
+              <span class="brand__name">حلاق</span>
+            </span>
+            <button
+              type="button"
+              class="btn btn--ghost btn--icon"
+              data-drawer-close
+              aria-label="إغلاق القائمة"
+            >
+              <svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+            </button>
+          </div>
+
+          <div class="drawer__body">
+            <div data-mount="nav-drawer"></div>
+
+            <div class="drawer-nav__section">
+              <p class="drawer-nav__heading">تواصل مباشر</p>
+              <ul class="contact-list" role="list">
+                <li class="contact-list__item">
+                  <span class="contact-list__icon" aria-hidden="true">
+                    <svg class="icon"><use href="#icon-phone"></use></svg>
+                  </span>
+                  <span>
+                    <span class="contact-list__label">الهاتف</span>
+                    <a class="contact-list__value" href="tel:+966551234567" dir="ltr">
+                      055 123 4567
+                    </a>
+                  </span>
+                </li>
+                <li class="contact-list__item">
+                  <span class="contact-list__icon" aria-hidden="true">
+                    <svg class="icon"><use href="#icon-map-pin"></use></svg>
+                  </span>
+                  <span>
+                    <span class="contact-list__label">الموقع</span>
+                    <span class="contact-list__value">حي العليا، الرياض</span>
+                  </span>
+                </li>
+                <li class="contact-list__item">
+                  <span class="contact-list__icon" aria-hidden="true">
+                    <svg class="icon"><use href="#icon-clock"></use></svg>
+                  </span>
+                  <span>
+                    <span class="contact-list__label">ساعات العمل</span>
+                    <span class="contact-list__value num">10:00 – 22:00</span>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="drawer__footer">
+            <button
+              type="button"
+              class="btn btn--primary btn--block"
+              data-booking-cta
+            >
+              <svg class="icon" aria-hidden="true"><use href="#icon-calendar-check"></use></svg>
+              <span>احجز موعدك</span>
+            </button>
+          </div>
+        </div>
+      </dialog>
+
+      <!-- ==================================================================
+           Main
+           ================================================================== -->
+      <main class="app-main" id="main" tabindex="-1">
+        <!-- ==============================================================
+             Hero
+             ============================================================== -->
+        <section class="hero" id="home" data-booking-hero>
+          <div class="container hero__inner">
+            <div class="hero__content">
+              <span class="eyebrow" data-animate="1">صالون حلاقة في حي العليا — الرياض</span>
+
+              <h1 class="hero__title" data-animate="2">
+                <span class="hero__title-line">قصّة على مقاسك</span>
+                <span class="hero__title-line hero__title-accent">وميعاد تحفظه لك</span>
+              </h1>
+
+              <p class="hero__desc" data-animate="3">
+                حلاقة شعر ولحية وتصبغات، بسعر معلن قبل الحجز. اختر الخدمة
+                والحلاق والوقت، واحجز في أقل من دقيقة.
+              </p>
+
+              <div class="hero__actions" data-animate="4">
+                <button
+                  type="button"
+                  class="btn btn--primary btn--lg hero__cta"
+                  data-booking-cta
+                >
+                  <svg class="icon" aria-hidden="true"><use href="#icon-calendar-check"></use></svg>
+                  <span class="hero__cta-label">احجز موعدك الآن</span>
+                  <span class="hero__cta-note">يأخذ أقل من دقيقة</span>
+                </button>
+
+                <a
+                  class="hero__alt"
+                  href="track.html"
+                  data-existing-booking
+                >
+                  <svg class="icon" aria-hidden="true"><use href="#icon-ticket"></use></svg>
+                  <span>لدي حجز بالفعل — تابعه هنا</span>
+                  <svg class="icon hero__alt-arrow" aria-hidden="true"><use href="#icon-arrow-left"></use></svg>
+                </a>
+              </div>
+
+              <div class="hero__highlights" data-animate="5" data-mount="hero-highlights"></div>
+            </div>
+
+            <div class="hero__visual" data-animate="6">
+              <div class="hero__panel">
+                <div class="hero__panel-head">
+                  <span class="hero__panel-title">أقرب المواعيد المتاحة</span>
+                  <span class="hero__open">
+                    <span class="hero__open-dot pulse" aria-hidden="true"></span>
+                    <span>مفتوح الآن</span>
+                  </span>
+                </div>
+
+                <ul class="hero__slots" role="list" data-mount="hero-slots"></ul>
+
+                <button
+                  type="button"
+                  class="btn btn--primary hero__panel-cta"
+                  data-booking-cta
+                >
+                  <svg class="icon" aria-hidden="true"><use href="#icon-calendar-check"></use></svg>
+                  <span>اختر موعدك</span>
+                </button>
+
+                <p class="hero__panel-foot">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-info"></use></svg>
+                  <span>تختار موعدك وتثبّته، ونتأكد من الحجز عند وصولك إلى الصالون.</span>
+                </p>
+              </div>
+
+              <div class="hero__float">
+                <span class="icon-tile icon-tile--sm icon-tile--success">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-thumbs-up"></use></svg>
+                </span>
+                <span class="hero__float-text">
+                  <span class="hero__float-title">1,300+ عميل</span>
+                  <span class="hero__float-sub">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-star"></use></svg>
+                    <span class="num">4.8</span> من 5
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==============================================================
+             Numbers
+             ============================================================== -->
+        <section class="section section--tight" aria-label="أرقام الصالون">
+          <div class="container">
+            <div class="stat-band" data-mount="stats" data-reveal></div>
+          </div>
+        </section>
+
+        <!-- ==============================================================
+             Services
+             ============================================================== -->
+        <section class="section" id="services">
+          <div class="container">
+            <div class="section__head section__head--split">
+              <div class="stack stack--3">
+                <span class="eyebrow" data-reveal>قائمة الخدمات</span>
+                <h2 class="section__title" data-reveal>أسعار واضحة، بدون مفاجآت</h2>
+                <p class="section__desc" data-reveal>
+                  كل خدمة لها سعر ومدة محددان مسبقاً. اختر ما يناسبك، وستعرف
+                  التكلفة والوقت قبل أن تحجز.
+                </p>
+              </div>
+              <button
+                type="button"
+                class="btn btn--secondary"
+                data-booking-cta
+                data-reveal
+              >
+                <svg class="icon" aria-hidden="true"><use href="#icon-calendar-check"></use></svg>
+                <span>احجز موعدك</span>
+              </button>
+            </div>
+
+            <!-- Category filter -->
+            <div class="service-filter" data-reveal>
+              <div class="service-filter__head">
+                <h3 class="h6" id="services-filter-label">تصفية حسب التصنيف</h3>
+                <p class="service-filter__count" data-services-count aria-live="polite"></p>
+              </div>
+              <nav
+                class="service-filter__list-wrap"
+                aria-labelledby="services-filter-label"
+                data-mount="service-filter"
+                data-services-filter
+              ></nav>
+            </div>
+
+            <!-- Catalogue -->
+            <div
+              class="service-grid"
+              data-mount="services"
+              data-services-grid
+              data-reveal
+              data-reveal-delay="80"
+            ></div>
+
+            <div class="service-empty" data-services-empty>
+              <svg class="icon" aria-hidden="true"><use href="#icon-search"></use></svg>
+              <p>لا توجد خدمات ضمن هذا التصنيف.</p>
+            </div>
+
+            <p class="service-note mt-6" data-reveal>
+              <svg class="icon" aria-hidden="true"><use href="#icon-info"></use></svg>
+              <span>
+                <strong>ملاحظة:</strong>
+                سعر كل خدمة ومدتها مكتوبان بالتفصيل قبل أن تحجز، ويظهران
+                مجدداً في تذكرة التأكيد. أي إضافة تطلبها في الكرسي تُسجّل على
+                الموعد.
+              </span>
+            </p>
+          </div>
+        </section>
+
+        <!-- ==============================================================
+             How it works
+             ============================================================== -->
+        <section class="section section--sunken" id="how-it-works">
+          <div class="container">
+            <div class="section__head section__head--center">
+              <span class="eyebrow" data-reveal>كيف نحجز</span>
+              <h2 class="section__title" data-reveal>ثلاث خطوات فقط</h2>
+              <p class="section__desc" data-reveal>
+                من اختيار الخدمة إلى دخول الصالون، كل شيء مُهيّأ مسبقاً.
+              </p>
+            </div>
+
+            <ol class="steps" data-mount="how-it-works"></ol>
+
+            <div class="cluster cluster--3 justify-center mt-8" data-reveal>
+              <button type="button" class="btn btn--primary" data-booking-cta>
+                <svg class="icon" aria-hidden="true"><use href="#icon-calendar-check"></use></svg>
+                <span>احجز موعدك</span>
+              </button>
+                <a class="btn btn--ghost" href="track.html" data-existing-booking>
+                  <svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg>
+                  <span>لدي حجز بالفعل</span>
+                </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==============================================================
+             Why choose us
+             ============================================================== -->
+        <section class="section" aria-label="لماذا تختارنا">
+          <div class="container">
+            <div class="section__head section__head--split">
+              <div class="stack stack--3">
+                <span class="eyebrow" data-reveal>لماذا نحن</span>
+                <h2 class="section__title" data-reveal>أربعة أمور لا نتنازل عنها</h2>
+              </div>
+              <p class="section__desc" data-reveal>
+                نلتزم بها في كل زيارة، مهما ازدحم الصالون.
+              </p>
+            </div>
+
+            <div class="pillars" data-mount="features" data-reveal></div>
+          </div>
+        </section>
+
+        <!-- ==============================================================
+             Barbers
+             ============================================================== -->
+        <section class="section section--sunken" id="barbers">
+          <div class="container">
+            <div class="section__head section__head--center">
+              <span class="eyebrow" data-reveal>فريق الصالون</span>
+              <h2 class="section__title" data-reveal>ثلاثة حلاقين، كل واحد في تخصصه</h2>
+              <p class="section__desc" data-reveal>
+                اختر الحلاق الذي تريد، أو اختر «أي حلاق متاح» ويجلس معك من
+                يكون فاضياً في وقتك.
+              </p>
+            </div>
+
+            <div class="barber-grid" data-mount="barbers" data-reveal></div>
+          </div>
+        </section>
+
+        <!-- ==============================================================
+             Gallery
+             ============================================================== -->
+        <section class="section" id="gallery">
+          <div class="container">
+            <div class="section__head section__head--split">
+              <div class="stack stack--3">
+                <span class="eyebrow" data-reveal>المعرض</span>
+                <h2 class="section__title" data-reveal>ما نفعله في الصالون</h2>
+                <p class="section__desc" data-reveal>
+                  الأعمال التي ننفّذها يومياً، من القصّة إلى اللحية والصبغة.
+                </p>
+              </div>
+            </div>
+
+            <div class="grid grid--auto-sm" data-mount="gallery"></div>
+          </div>
+        </section>
+
+        <!-- ==============================================================
+             Reviews
+             ============================================================== -->
+        <section class="section section--sunken" id="reviews">
+          <div class="container">
+            <div class="section__head section__head--center">
+              <span class="eyebrow" data-reveal>آراء العملاء</span>
+              <h2 class="section__title" data-reveal>ماذا يقول زوّارنا</h2>
+              <p class="section__desc" data-reveal>
+                انطباعات الزوّار عن الخدمة والنتيجة.
+              </p>
+            </div>
+
+            <div class="review-grid" data-mount="reviews" data-reveal></div>
+          </div>
+        </section>
+
+        <!-- ==============================================================
+             Closing call to action
+             ============================================================== -->
+        <section class="section" aria-label="احجز موعدك">
+          <div class="container">
+            <div class="cta-band" data-reveal>
+              <div class="cta-band__inner">
+                <span class="icon-tile icon-tile--lg">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-scissors"></use></svg>
+                </span>
+                <h2 class="cta-band__title">جاهز لقصّة على مقاسك؟</h2>
+                <p class="cta-band__desc">
+                  اختر خدمتك وحدّد موعدك في أقل من دقيقة. الموعد محسوب على مدة
+                  خدمتك، ورقم دورك يظهر لك لحظة تأكيد الحجز.
+                </p>
+                <div class="cta-band__actions">
+                  <button
+                    type="button"
+                    class="btn btn--primary btn--lg"
+                    data-booking-cta
+                  >
+                    <svg class="icon" aria-hidden="true"><use href="#icon-calendar-check"></use></svg>
+                    <span>احجز موعدك</span>
+                  </button>
+                  <a
+                    class="btn btn--outline btn--lg"
+                    href="track.html"
+                    data-existing-booking
+                  >
+                    <svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg>
+                    <span>لدي حجز بالفعل</span>
+                  </a>
+                </div>
+                <p class="cta-band__note">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-check-circle"></use></svg>
+                  <span>الحجز متاح قبل 30 يوماً، والدفع يتم في الصالون بعد الخدمة.</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==============================================================
+             Contact
+             ============================================================== -->
+        <section class="section section--sunken" id="contact" data-booking-hide>
+          <div class="container">
+            <div class="section__head">
+              <span class="eyebrow" data-reveal>تواصل معنا</span>
+              <h2 class="section__title" data-reveal>نحن قريبون منك</h2>
+              <p class="section__desc" data-reveal>
+                نحن في قلب حي العليا. اتصل بنا، أو راسلنا على واتساب، وسنرد
+                خلال دقائق في أوقات الدوام.
+              </p>
+            </div>
+
+            <div class="split">
+              <div class="card card--feature" data-reveal>
+                <ul class="contact-list" role="list">
+                  <li class="contact-list__item">
+                    <span class="contact-list__icon" aria-hidden="true">
+                      <svg class="icon"><use href="#icon-map-pin"></use></svg>
+                    </span>
+                    <span>
+                      <span class="contact-list__label">العنوان</span>
+                      <span class="contact-list__value">
+                        طريق الملك فهد، حي العليا، الرياض
+                      </span>
+                    </span>
+                  </li>
+                  <li class="contact-list__item">
+                    <span class="contact-list__icon" aria-hidden="true">
+                      <svg class="icon"><use href="#icon-phone"></use></svg>
+                    </span>
+                    <span>
+                      <span class="contact-list__label">الهاتف</span>
+                      <a class="contact-list__value" href="tel:+966551234567" dir="ltr">
+                        055 123 4567
+                      </a>
+                    </span>
+                  </li>
+                  <li class="contact-list__item">
+                    <span class="contact-list__icon" aria-hidden="true">
+                      <svg class="icon"><use href="#icon-message"></use></svg>
+                    </span>
+                    <span>
+                      <span class="contact-list__label">واتساب</span>
+                      <a
+                        class="contact-list__value"
+                        href="https://wa.me/966551234567"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        dir="ltr"
+                      >
+                        055 123 4567
+                      </a>
+                    </span>
+                  </li>
+                  <li class="contact-list__item">
+                    <span class="contact-list__icon" aria-hidden="true">
+                      <svg class="icon"><use href="#icon-mail"></use></svg>
+                    </span>
+                    <span>
+                      <span class="contact-list__label">البريد الإلكتروني</span>
+                      <a class="contact-list__value" href="mailto:info@halaq.example" dir="ltr">
+                        info@halaq.example
+                      </a>
+                    </span>
+                  </li>
+                  <li class="contact-list__item">
+                    <span class="contact-list__icon" aria-hidden="true">
+                      <svg class="icon"><use href="#icon-credit-card"></use></svg>
+                    </span>
+                    <span>
+                      <span class="contact-list__label">الدفع</span>
+                      <span class="contact-list__value">
+                        نقداً داخل الصالون بعد تقديم الخدمة
+                      </span>
+                    </span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="card card--feature" data-reveal>
+                <div class="stack stack--3" style="width: 100%">
+                  <p class="showcase__label">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-clock"></use></svg>
+                    ساعات العمل
+                  </p>
+                </div>
+                <ul class="contact-list" role="list" data-mount="hours"></ul>
+
+                <p class="service-note">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-shield"></use></svg>
+                  <span>
+                    المقصّات والشفرة تُعقم وتُستبدل بعد كل عميل، والأسعار معلنة
+                    قبل الحجز.
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- ==================================================================
+           Footer
+           ================================================================== -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="site-footer__top">
+            <div class="site-footer__pitch">
+              <p class="site-footer__pitch-title">مقعدك جاهز</p>
+              <p class="site-footer__pitch-text">
+                اختر خدمتك وحدّد موعدك، وسنكون بانتظارك في الموعد بالضبط.
+              </p>
+            </div>
+            <div class="site-footer__top-actions">
+              <button
+                type="button"
+                class="btn btn--primary"
+                data-booking-cta
+              >
+                <svg class="icon" aria-hidden="true"><use href="#icon-calendar-check"></use></svg>
+                <span>احجز موعدك</span>
+              </button>
+              <a class="btn btn--secondary" href="tel:+966551234567">
+                <svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg>
+                <span>اتصل بنا</span>
+              </a>
+            </div>
+          </div>
+
+          <ul class="site-footer__trust" role="list">
+            <li class="site-footer__trust-item">
+              <svg class="icon" aria-hidden="true"><use href="#icon-shield-check"></use></svg>
+              <span>أدوات معقّمة لكل عميل</span>
+            </li>
+            <li class="site-footer__trust-item">
+              <svg class="icon" aria-hidden="true"><use href="#icon-clock"></use></svg>
+              <span>مواعيد محسوبة على مدة الخدمة</span>
+            </li>
+            <li class="site-footer__trust-item">
+              <svg class="icon" aria-hidden="true"><use href="#icon-tag"></use></svg>
+              <span>أسعار معلنة قبل الحجز</span>
+            </li>
+            <li class="site-footer__trust-item">
+              <svg class="icon" aria-hidden="true"><use href="#icon-check-double"></use></svg>
+              <span>تذكرة حجز برقم دورك</span>
+            </li>
+          </ul>
+
+          <div class="site-footer__grid">
+            <div class="site-footer__brand">
+              <span class="logo-lockup">
+                <span class="logo-lockup__mark" aria-hidden="true">
+                  <svg class="icon"><use href="#icon-scissors"></use></svg>
+                </span>
+                <span class="brand__text">
+                  <span class="brand__name">حلاق</span>
+                  <span class="brand__tagline">صالون الحلاق الراقي</span>
+                </span>
+              </span>
+              <p class="site-footer__about">
+                صالون حلاقة في حي العليا بالرياض منذ عام 2014. قصّات شعر ولحية
+                وتصبغات، بأدوات تُعقم وتُستبدل بعد كل عميل.
+              </p>
+              <ul class="social-list" role="list">
+                <li>
+                  <a
+                    class="social-link"
+                    href="https://instagram.com"
+                    aria-label="حسابنا على إنستغرام"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <svg class="icon" aria-hidden="true"><use href="#icon-instagram"></use></svg>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="social-link"
+                    href="https://facebook.com"
+                    aria-label="حسابنا على فيسبوك"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <svg class="icon" aria-hidden="true"><use href="#icon-facebook"></use></svg>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="social-link"
+                    href="https://wa.me/966551234567"
+                    aria-label="تواصل معنا عبر واتساب"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="social-link"
+                    href="https://x.com"
+                    aria-label="حسابنا على منصة إكس"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <svg class="icon" aria-hidden="true"><use href="#icon-x"></use></svg>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h2 class="site-footer__col-title">روابط سريعة</h2>
+              <ul class="site-footer__list" role="list" data-mount="nav-footer"></ul>
+            </div>
+
+            <div>
+              <h2 class="site-footer__col-title">خدماتنا</h2>
+              <ul class="site-footer__list" role="list">
+                <li>
+                  <a class="site-footer__link" href="#services">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-scissors"></use></svg>
+                    قصّ شعر وتحديد جوانب
+                  </a>
+                </li>
+                <li>
+                  <a class="site-footer__link" href="#services">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-palette"></use></svg>
+                    لحية وحلاقة بالشفرة
+                  </a>
+                </li>
+                <li>
+                  <a class="site-footer__link" href="#services">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-droplet"></use></svg>
+                    صبغات وتمويه الرمادي
+                  </a>
+                </li>
+                <li>
+                  <a class="site-footer__link" href="#services">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-gift"></use></svg>
+                    باقات
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h2 class="site-footer__col-title">تواصل</h2>
+              <ul class="site-footer__list" role="list">
+                <li>
+                  <a class="site-footer__link" href="tel:+966551234567">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg>
+                    <span>055 123 4567</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="site-footer__link" href="mailto:info@halaq.example">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-mail"></use></svg>
+                    <span>info@halaq.example</span>
+                  </a>
+                </li>
+                <li>
+                  <span class="site-footer__link">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-map-pin"></use></svg>
+                    <span>حي العليا، الرياض</span>
+                  </span>
+                </li>
+                <li>
+                  <span class="site-footer__link">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-clock"></use></svg>
+                    <span>يومياً 10:00 – 22:00</span>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="site-footer__bottom">
+            <p>
+              جميع الحقوق محفوظة لـ «حلاق» ©
+              <span data-mount="year"></span>
+            </p>
+            <div class="site-footer__legal">
+              <a href="#contact">سياسة الخصوصية</a>
+              <a href="#contact">الشروط والأحكام</a>
+              <a href="showcase.html">مكتبة المكوّنات</a>
+              <button
+                type="button"
+                class="btn btn--ghost btn--sm"
+                data-theme-toggle
+                aria-label="تبديل المظهر"
+              >
+                <svg class="icon icon--sun" aria-hidden="true"><use href="#icon-sun"></use></svg>
+                <svg class="icon icon--moon" aria-hidden="true" style="display: none">
+                  <use href="#icon-moon"></use>
+                </svg>
+                <span>تبديل المظهر</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- ==================================================================
+         Sticky mobile booking bar
+         ================================================================== -->
+    <div class="booking-bar" data-booking-bar aria-label="إجراءات الحجز">
+      <span class="booking-bar__price">
+        <span class="booking-bar__from">تبدأ من</span>
+        <span class="booking-bar__amount num" data-booking-from-price></span>
+      </span>
+      <div class="booking-bar__actions">
+        <button type="button" class="btn btn--primary btn--sm" data-booking-cta>
+          <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-calendar-check"></use></svg>
+          <span>احجز موعدك</span>
+        </button>
+        <a
+          class="btn btn--ghost btn--sm"
+          href="track.html"
+          data-existing-booking
+        >
+          <span class="booking-bar__more-label">لدي حجز</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         Service details dialog
+         ================================================================== -->
+    <dialog class="modal modal--md" id="service-modal" aria-labelledby="service-modal-title">
+      <div class="modal__panel">
+        <span class="modal__handle" aria-hidden="true"></span>
+        <div class="modal__header">
+          <div>
+            <h2 class="modal__title" id="service-modal-title" data-modal-title>
+              تفاصيل الخدمة
+            </h2>
+            <p class="modal__desc" data-modal-description>
+              مراجعة سريعة قبل اختيار الموعد.
+            </p>
+          </div>
+          <button
+            type="button"
+            class="btn btn--ghost btn--icon modal__close"
+            data-modal-close
+            aria-label="إغلاق"
+          >
+            <svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+          </button>
+        </div>
+        <div class="modal__body">
+          <div class="stack stack--4" data-service-details></div>
+        </div>
+        <div class="modal__footer">
+          <button type="button" class="btn btn--ghost" data-modal-close>إغلاق</button>
+          <button type="button" class="btn btn--primary" data-booking-cta>
+            <svg class="icon" aria-hidden="true"><use href="#icon-calendar-check"></use></svg>
+            <span>احجز هذه الخدمة</span>
+          </button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- ==================================================================
+         Booking flow — steps 1 and 2 (service, then barber)
+         ================================================================== -->
+    <dialog class="modal modal--lg booking-flow" id="booking-flow" aria-labelledby="booking-flow-title">
+      <div class="modal__panel">
+        <span class="modal__handle" aria-hidden="true"></span>
+
+        <div class="modal__header">
+          <div>
+            <p class="booking-flow__eyebrow">حجز موعد جديد</p>
+            <h2 class="modal__title" id="booking-flow-title" data-modal-title>
+              اختر الخدمة
+            </h2>
+            <p class="modal__desc" data-modal-description>
+              الخطوة الأولى: اختر الخدمة التي تناسبك.
+            </p>
+          </div>
+          <button
+            type="button"
+            class="btn btn--ghost btn--icon modal__close"
+            data-modal-close
+            aria-label="إغلاق"
+          >
+            <svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+          </button>
+        </div>
+
+        <ol class="booking-flow__stepper" aria-label="مراحل الحجز">
+          <li class="booking-flow__step is-active" data-stepper-item="1" aria-current="step">
+            <span class="booking-flow__step-marker" aria-hidden="true">
+              <svg class="icon booking-flow__step-icon" data-step-icon>
+                <use href="#icon-scissors"></use>
+              </svg>
+              <svg class="icon booking-flow__step-done" data-step-done hidden>
+                <use href="#icon-check"></use>
+              </svg>
+            </span>
+            <span class="booking-flow__step-text">
+              <span class="booking-flow__step-name">الخدمة</span>
+              <span class="booking-flow__step-note" data-step-note></span>
+            </span>
+          </li>
+          <li class="booking-flow__step" data-stepper-item="2">
+            <span class="booking-flow__step-marker" aria-hidden="true">
+              <svg class="icon booking-flow__step-icon" data-step-icon>
+                <use href="#icon-user"></use>
+              </svg>
+              <svg class="icon booking-flow__step-done" data-step-done hidden>
+                <use href="#icon-check"></use>
+              </svg>
+            </span>
+            <span class="booking-flow__step-text">
+              <span class="booking-flow__step-name">الحلاق</span>
+              <span class="booking-flow__step-note" data-step-note></span>
+            </span>
+          </li>
+          <li class="booking-flow__step" data-stepper-item="3">
+            <span class="booking-flow__step-marker" aria-hidden="true">
+              <svg class="icon booking-flow__step-icon" data-step-icon>
+                <use href="#icon-calendar"></use>
+              </svg>
+              <svg class="icon booking-flow__step-done" data-step-done hidden>
+                <use href="#icon-check"></use>
+              </svg>
+            </span>
+            <span class="booking-flow__step-text">
+              <span class="booking-flow__step-name">الموعد</span>
+              <span class="booking-flow__step-note" data-step-note></span>
+            </span>
+          </li>
+          <li class="booking-flow__step" data-stepper-item="4">
+            <span class="booking-flow__step-marker" aria-hidden="true">
+              <svg class="icon booking-flow__step-icon" data-step-icon>
+                <use href="#icon-message"></use>
+              </svg>
+              <svg class="icon booking-flow__step-done" data-step-done hidden>
+                <use href="#icon-check"></use>
+              </svg>
+            </span>
+            <span class="booking-flow__step-text">
+              <span class="booking-flow__step-name">بيانات</span>
+              <span class="booking-flow__step-note" data-step-note></span>
+            </span>
+          </li>
+          <li class="booking-flow__step" data-stepper-item="5">
+            <span class="booking-flow__step-marker" aria-hidden="true">
+              <svg class="icon booking-flow__step-icon" data-step-icon>
+                <use href="#icon-clipboard"></use>
+              </svg>
+              <svg class="icon booking-flow__step-done" data-step-done hidden>
+                <use href="#icon-check"></use>
+              </svg>
+            </span>
+            <span class="booking-flow__step-text">
+              <span class="booking-flow__step-name">راجع</span>
+              <span class="booking-flow__step-note" data-step-note></span>
+            </span>
+          </li>
+          <li class="booking-flow__step" data-stepper-item="6">
+            <span class="booking-flow__step-marker" aria-hidden="true">
+              <svg class="icon booking-flow__step-icon" data-step-icon>
+                <use href="#icon-ticket"></use>
+              </svg>
+              <svg class="icon booking-flow__step-done" data-step-done hidden>
+                <use href="#icon-check"></use>
+              </svg>
+            </span>
+            <span class="booking-flow__step-text">
+              <span class="booking-flow__step-name">تأكيد</span>
+              <span class="booking-flow__step-note" data-step-note></span>
+            </span>
+          </li>
+        </ol>
+
+        <div class="modal__body booking-flow__body">
+          <!-- Step 1 — service -->
+          <fieldset class="pick-group" data-booking-panel="1">
+            <legend class="sr-only">اختر خدمة واحدة</legend>
+            <p class="pick-group__hint" id="booking-services-hint">
+              اختر خدمة واحدة للمتابعة. السعر والمدة مكتوبان بجانب كل خدمة.
+            </p>
+            <div class="booking-flow__options" data-booking-services aria-describedby="booking-services-hint"></div>
+          </fieldset>
+
+          <!-- Step 2 — barber -->
+          <fieldset class="pick-group" data-booking-panel="2" hidden>
+            <legend class="sr-only">اختر حلاقاً واحداً</legend>
+            <p class="pick-group__hint" id="booking-barbers-hint">
+              اختر حلاقاً واحداً، أو اترك الخيار لأقرب حلاق متاح في وقتك.
+            </p>
+            <div class="booking-flow__options" data-booking-barbers aria-describedby="booking-barbers-hint"></div>
+          </fieldset>
+
+          <!-- Step 3 — date and time -->
+          <fieldset class="pick-group" data-booking-panel="3" hidden>
+            <legend class="sr-only">اختر التاريخ والوقت</legend>
+            <p class="sr-only" id="booking-schedule-hint">
+              اختر يوماً من التقويم، ثم اختر موعداً متاحاً.
+            </p>
+            <div
+              class="booking-flow__options"
+              data-booking-schedule
+              aria-describedby="booking-schedule-hint"
+            ></div>
+          </fieldset>
+
+          <!-- Step 4 — customer details -->
+          <fieldset class="pick-group" data-booking-panel="4" hidden>
+            <legend class="sr-only">بيانات العميل</legend>
+            <div class="booking-flow__options">
+              <h3 class="h5">ملخّص الحجز</h3>
+              <div data-booking-recap></div>
+
+              <h3 class="h5">بياناتك</h3>
+              <p class="pick-group__hint">
+              الاسم ورقم الجوال مطلوبان، ونستخدمهما للتعرف عليك عند الحجز
+              وللبحث عن حجزك لاحقاً. البريد اختياري.
+              </p>
+
+              <div class="form">
+                <div class="field">
+                  <label class="field__label" for="booking-name">
+                    <span>الاسم الكامل</span>
+                    <span class="field__required" aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    class="input"
+                    type="text"
+                    id="booking-name"
+                    name="name"
+                    required
+                    autocomplete="name"
+                    placeholder="مثال: ماجد الحربي"
+                    aria-describedby="booking-name-error"
+                  />
+                  <p class="field__error" id="booking-name-error" data-error-message>
+                    <svg class="icon" aria-hidden="true"><use href="#icon-alert-triangle"></use></svg>
+                    <span></span>
+                  </p>
+                </div>
+
+                <div class="field">
+                  <label class="field__label" for="booking-phone">
+                    <span>رقم الجوال</span>
+                    <span class="field__required" aria-hidden="true">*</span>
+                  </label>
+                  <div class="input-group input-group--trailing">
+                    <span class="input-group__icon" aria-hidden="true">
+                      <svg class="icon"><use href="#icon-phone"></use></svg>
+                    </span>
+                    <input
+                      class="input"
+                      type="tel"
+                      id="booking-phone"
+                      name="phone"
+                      required
+                      autocomplete="tel"
+                      inputmode="tel"
+                      placeholder="0500000000"
+                      aria-describedby="booking-phone-hint booking-phone-error"
+                    />
+                    <span class="input-group__addon">
+                      <span class="badge badge--outline">+966</span>
+                    </span>
+                  </div>
+                  <p class="field__hint" id="booking-phone-hint">
+                    به نستطيع أن نتحقق من الحجز، ونعرفك عند وصولك.
+                  </p>
+                  <p class="field__error" id="booking-phone-error" data-error-message>
+                    <svg class="icon" aria-hidden="true"><use href="#icon-alert-triangle"></use></svg>
+                    <span></span>
+                  </p>
+                </div>
+
+                <div class="field">
+                  <label class="field__label" for="booking-email">
+                    <span>البريد الإلكتروني</span>
+                    <span class="field__optional">اختياري</span>
+                  </label>
+                  <input
+                    class="input"
+                    type="email"
+                    id="booking-email"
+                    name="email"
+                    autocomplete="email"
+                    inputmode="email"
+                    placeholder="name@example.com"
+                    aria-describedby="booking-email-hint booking-email-error"
+                  />
+                  <p class="field__hint" id="booking-email-hint">
+                    اختياري — نحتفظ به في سجل العميل.
+                  </p>
+                  <p class="field__error" id="booking-email-error" data-error-message>
+                    <svg class="icon" aria-hidden="true"><use href="#icon-alert-triangle"></use></svg>
+                    <span></span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Step 5 — review everything before it is issued -->
+          <fieldset class="pick-group" data-booking-panel="5" hidden>
+            <legend class="sr-only">مراجعة الحجز قبل التأكيد</legend>
+            <div class="booking-flow__options" data-booking-review></div>
+          </fieldset>
+
+          <!-- Step 6 — confirmation and the digital ticket -->
+          <fieldset class="pick-group" data-booking-panel="6" hidden>
+            <legend class="sr-only">تأكيد الحجز</legend>
+            <div class="booking-flow__options" data-booking-confirmation></div>
+          </fieldset>
+        </div>
+
+        <div class="modal__footer booking-flow__footer">
+          <button
+            type="button"
+            class="btn btn--ghost booking-flow__back"
+            data-booking-back
+            disabled
+          >
+            <svg class="icon" aria-hidden="true"><use href="#icon-chevron-right"></use></svg>
+            <span>رجوع</span>
+          </button>
+
+          <p class="booking-flow__hint" data-booking-hint role="status"></p>
+
+          <button
+            type="button"
+            class="btn btn--primary booking-flow__next"
+            data-booking-next
+            disabled
+          >
+            <span data-booking-next-label>متابعة</span>
+            <svg class="icon" aria-hidden="true"><use href="#icon-chevron-left"></use></svg>
+          </button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Ticket: the same record as step 6, enlarged -->
+    <dialog
+      class="modal modal--sm ticket-dialog"
+      id="ticket-dialog"
+      aria-labelledby="ticket-dialog-title"
+    >
+      <div class="modal__panel">
+        <div class="modal__head">
+          <div>
+            <h2 class="modal__title" id="ticket-dialog-title" data-modal-title>
+              حجزك
+            </h2>
+            <p class="modal__description" data-modal-description>
+              اعرض هذه التذكرة عند الوصول إلى الصالون.
+            </p>
+          </div>
+          <button
+            type="button"
+            class="modal__close"
+            data-modal-close
+            aria-label="إغلاق"
+          >
+            <svg class="icon" aria-hidden="true"><use href="#icon-x"></use></svg>
+          </button>
+        </div>
+
+        <div class="modal__body ticket-dialog__body">
+          <h3 class="ticket-dialog__label" data-ticket-heading>تذكرة الحجز</h3>
+          <h3 class="ticket-dialog__label" data-ticket-queue-heading hidden>حالة الانتظار</h3>
+          <div data-ticket-body></div>
+        </div>
+
+        <div class="modal__footer ticket-dialog__footer">
+          <button type="button" class="btn btn--ghost" data-modal-close>
+            <span>إغلاق</span>
+          </button>
+          <button type="button" class="btn btn--secondary" data-ticket-print>
+            <svg class="icon" aria-hidden="true"><use href="#icon-printer"></use></svg>
+            <span>طباعة التذكرة</span>
+          </button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Toast live region -->
+    <div
+      class="toast-region"
+      data-toast-region
+      role="region"
+      aria-label="الإشعارات"
+      aria-live="polite"
+    ></div>
+
+    <!-- ==================================================================
+         Scripts — order matters: utilities, data, components, then boot
+         ================================================================== -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/utils/dom.js"></script>
+    <script src="js/utils/format.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/data/brand.js"></script>
+    <script src="js/data/services.js"></script>
+    <script src="js/data/team.js"></script>
+    <script src="js/data/content.js"></script>
+  <script src="js/data/availability.js"></script>
+    <script src="js/data/demo-data.js"></script>
+    <script src="js/components/theme.js"></script>
+    <script src="js/components/toast.js"></script>
+    <script src="js/components/modal.js"></script>
+    <script src="js/components/header.js"></script>
+    <script src="js/components/reveal.js"></script>
+    <script src="js/components/render.js"></script>
+    <script src="js/components/services.js"></script>
+    <script src="js/components/booking-bar.js"></script>
+<script src="js/components/booking-schedule.js"></script>
+<script src="js/components/booking-store.js"></script>
+<script src="js/components/booking-ticket.js"></script>
+<script src="js/components/booking-flow.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

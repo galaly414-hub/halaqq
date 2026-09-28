@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0e0d0c" />
+    <meta name="description" content="لوحة إدارة صالون حلاق: الحجوزات، الطابور، والعملاء." />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="color-scheme" content="dark light" />
+    <title>لوحة التحكم | حلاق</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../css/admin.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='6' cy='6' r='3'/%3E%3Ccircle cx='6' cy='18' r='3'/%3E%3Cpath d='M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12'/%3E%3C/svg%3E"
+    />
+  </head>
+
+    <body class="admin">
+    <!-- ==================================================================
+         Icon sprite, copied from index.html by build-admin.js. External
+         sprite references do not resolve under file://, so every page
+         carries its own copy. 78 symbols on a 24x24 grid.
+         ================================================================== -->
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      style="display: none"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <!-- Brand / barber -->
+      <symbol id="icon-scissors" viewBox="0 0 24 24">
+        <circle cx="6" cy="6" r="3" />
+        <circle cx="6" cy="18" r="3" />
+        <path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12" />
+      </symbol>
+      <symbol id="icon-comb" viewBox="0 0 24 24">
+        <path d="M2 6h20M4 6v12M8 6v12M12 6v12M16 6v12M20 6v12" />
+      </symbol>
+      <symbol id="icon-razor" viewBox="0 0 24 24">
+        <path d="M3 21 9 15M9 15l6-6 4 4-6 6z" />
+        <path d="M13 5 19 11M15.5 2.5 21.5 8.5" />
+      </symbol>
+      <symbol id="icon-crown" viewBox="0 0 24 24">
+        <path
+          d="M11.56 3.27a.5.5 0 0 1 .88 0L15.39 8.87a1 1 0 0 0 1.52.29L21.18 5.5a.5.5 0 0 1 .8.52l-2.83 10.25a1 1 0 0 1-.96.73H5.81a1 1 0 0 1-.96-.73L2.02 6.02a.5.5 0 0 1 .8-.52l4.27 3.66a1 1 0 0 0 1.52-.29z"
+        />
+        <path d="M5 21h14" />
+      </symbol>
+
+      <!-- Interface -->
+      <symbol id="icon-home" viewBox="0 0 24 24">
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+        <path d="M9 22V12h6v10" />
+      </symbol>
+      <symbol id="icon-grid" viewBox="0 0 24 24">
+        <rect width="7" height="7" x="3" y="3" rx="1" />
+        <rect width="7" height="7" x="14" y="3" rx="1" />
+        <rect width="7" height="7" x="14" y="14" rx="1" />
+        <rect width="7" height="7" x="3" y="14" rx="1" />
+      </symbol>
+      <symbol id="icon-layers" viewBox="0 0 24 24">
+        <path
+          d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"
+        />
+        <path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65" />
+        <path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65" />
+      </symbol>
+      <symbol id="icon-palette" viewBox="0 0 24 24">
+        <circle cx="13.5" cy="6.5" r=".6" />
+        <circle cx="17.5" cy="10.5" r=".6" />
+        <circle cx="8.5" cy="7.5" r=".6" />
+        <circle cx="6.5" cy="12.5" r=".6" />
+        <path
+          d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.65-.75 1.65-1.69 0-.44-.18-.83-.44-1.12-.29-.29-.44-.65-.44-1.13a1.64 1.64 0 0 1 1.67-1.67h2c3.05 0 5.56-2.5 5.56-5.55C21.97 6.01 17.46 2 12 2Z"
+        />
+      </symbol>
+      <symbol id="icon-droplet" viewBox="0 0 24 24">
+        <path
+          d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7Z"
+        />
+      </symbol>
+      <symbol id="icon-sparkles" viewBox="0 0 24 24">
+        <path
+          d="m12 3-1.91 5.81a2 2 0 0 1-1.28 1.28L3 12l5.81 1.91a2 2 0 0 1 1.28 1.28L12 21l1.91-5.81a2 2 0 0 1 1.28-1.28L21 12l-5.81-1.91a2 2 0 0 1-1.28-1.28Z"
+        />
+        <path d="M5 3v4M19 17v4M3 5h4M17 19h4" />
+      </symbol>
+      <symbol id="icon-handshake" viewBox="0 0 24 24">
+        <path d="m11 17 2 2a1 1 0 1 0 3-3" />
+        <path
+          d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"
+        />
+        <path d="m21 3 1 11h-2M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3M3 4h8" />
+      </symbol>
+
+      <!-- People -->
+      <symbol id="icon-user" viewBox="0 0 24 24">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+      </symbol>
+      <symbol id="icon-users" viewBox="0 0 24 24">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+      </symbol>
+      <symbol id="icon-award" viewBox="0 0 24 24">
+        <circle cx="12" cy="8" r="6" />
+        <path d="M15.48 12.89 17 22l-5-3-5 3 1.52-9.11" />
+      </symbol>
+      <symbol id="icon-shield" viewBox="0 0 24 24">
+        <path
+          d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+        />
+        <path d="m9 12 2 2 4-4" />
+      </symbol>
+      <symbol id="icon-lock" viewBox="0 0 24 24">
+        <rect width="18" height="11" x="3" y="11" rx="2" />
+        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+      </symbol>
+
+      <!-- Scheduling -->
+      <symbol id="icon-calendar" viewBox="0 0 24 24">
+        <rect width="18" height="18" x="3" y="4" rx="2" />
+        <path d="M16 2v4M8 2v4M3 10h18" />
+      </symbol>
+      <symbol id="icon-calendar-check" viewBox="0 0 24 24">
+        <path d="M8 2v4M16 2v4" />
+        <rect width="18" height="18" x="3" y="4" rx="2" />
+        <path d="m9 14 2 2 4-4" />
+      </symbol>
+      <symbol id="icon-clock" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 6v6l4 2" />
+      </symbol>
+
+      <!-- Contact -->
+      <symbol id="icon-phone" viewBox="0 0 24 24">
+        <path
+          d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.2 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.7 2.63a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.85.37 1.73.58 2.63.7A2 2 0 0 1 22 16.92Z"
+        />
+      </symbol>
+      <symbol id="icon-mail" viewBox="0 0 24 24">
+        <rect width="20" height="16" x="2" y="4" rx="2" />
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+      </symbol>
+      <symbol id="icon-map-pin" viewBox="0 0 24 24">
+        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+        <circle cx="12" cy="10" r="3" />
+      </symbol>
+      <symbol id="icon-navigation" viewBox="0 0 24 24">
+        <path d="m3 11 19-9-9 19-2-8Z" />
+      </symbol>
+
+      <!-- Status and feedback -->
+      <symbol id="icon-check" viewBox="0 0 24 24">
+        <path d="M20 6 9 17l-5-5" />
+      </symbol>
+      <symbol id="icon-hourglass" viewBox="0 0 24 24">
+        <path d="M5 22h14M5 2h14" />
+        <path
+          d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"
+        />
+      </symbol>
+      <symbol id="icon-user-check" viewBox="0 0 24 24">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="m16 11 2 2 4-4" />
+      </symbol>
+      <symbol id="icon-user-x" viewBox="0 0 24 24">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="m17 8 5 5M22 8l-5 5" />
+      </symbol>
+      <symbol id="icon-check-double" viewBox="0 0 24 24">
+        <path d="M18 6 7 17l-5-5" />
+        <path d="m22 10-7.5 7.5L13 16" />
+      </symbol>
+      <symbol id="icon-ban" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <path d="m4.9 4.9 14.2 14.2" />
+      </symbol>
+      <!-- Admin shell: section glyphs, chrome and form icons. -->
+      <symbol id="icon-layout-dashboard" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="7" height="9" rx="1" />
+        <rect x="14" y="3" width="7" height="5" rx="1" />
+        <rect x="14" y="12" width="7" height="9" rx="1" />
+        <rect x="3" y="16" width="7" height="5" rx="1" />
+      </symbol>
+      <symbol id="icon-list" viewBox="0 0 24 24">
+        <path d="M8 6h13M8 12h13M8 18h13" />
+        <path d="M3 6h.01M3 12h.01M3 18h.01" />
+      </symbol>
+      <symbol id="icon-contact" viewBox="0 0 24 24">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+        <path d="M17 12h4v8h-4zM9.5 12H5v8h4.5z" />
+      </symbol>
+      <symbol id="icon-bar-chart" viewBox="0 0 24 24">
+        <path d="M3 3v16a2 2 0 0 0 2 2h16" />
+        <path d="M7 16V11M12 16V7M17 16v-4" />
+      </symbol>
+      <symbol id="icon-log-out" viewBox="0 0 24 24">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+        <path d="M16 17 21 12l-5-5M21 12H9" />
+      </symbol>
+      <symbol id="icon-chevron-down" viewBox="0 0 24 24">
+        <path d="m6 9 6 6 6-6" />
+      </symbol>
+      <symbol id="icon-filter" viewBox="0 0 24 24">
+        <path d="M22 3H2l8 9.46V19l4 2v-8.54Z" />
+      </symbol>
+      <symbol id="icon-bell" viewBox="0 0 24 24">
+        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+      </symbol>
+      <symbol id="icon-credit-card" viewBox="0 0 24 24">
+        <rect x="2" y="5" width="20" height="14" rx="2" />
+        <path d="M2 10h20" />
+      </symbol>
+      <symbol id="icon-eye" viewBox="0 0 24 24">
+        <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+        <circle cx="12" cy="12" r="3" />
+      </symbol>
+      <symbol id="icon-eye-off" viewBox="0 0 24 24">
+        <path d="M10.7 5.1A10.9 10.9 0 0 1 12 5c6.5 0 10 7 10 7a18.5 18.5 0 0 1-3.2 4.1M6.6 6.6A18.5 18.5 0 0 0 2 12s3.5 7 10 7a10.8 10.8 0 0 0 5.4-1.4" />
+        <path d="M14.1 14.1a3 3 0 1 1-4.2-4.2M3 3l18 18" />
+      </symbol>
+      <symbol id="icon-shield-check" viewBox="0 0 24 24">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+        <path d="m9 12 2 2 4-4" />
+      </symbol>
+      <symbol id="icon-panel-right" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M15 3v18" />
+      </symbol>
+      <symbol id="icon-inbox" viewBox="0 0 24 24">
+        <path d="M22 12h-6l-2 3h-4l-2-3H2" />
+        <path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1Z" />
+      </symbol>
+      <!-- Admin shell: section glyphs, chrome and form icons. -->
+      <symbol id="icon-trending-up" viewBox="0 0 24 24">
+        <path d="M22 7 13.5 15.5 8.5 10.5 2 17" />
+        <path d="M16 7h6v6" />
+      </symbol>
+      <symbol id="icon-trending-down" viewBox="0 0 24 24">
+        <path d="M22 17 13.5 8.5 8.5 13.5 2 7" />
+        <path d="M16 17h6v-6" />
+      </symbol>
+      <symbol id="icon-activity" viewBox="0 0 24 24">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+      </symbol>
+      <symbol id="icon-clipboard" viewBox="0 0 24 24">
+        <rect width="8" height="4" x="8" y="2" rx="1" />
+        <path
+          d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+        />
+        <path d="M12 11h4M12 16h4M8 11h.01M8 16h.01" />
+      </symbol>
+      <symbol id="icon-ticket" viewBox="0 0 24 24">
+        <path
+          d="M2 9a3 3 0 0 0 0 6v3a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-3a3 3 0 0 0 0-6V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"
+        />
+        <path d="M13 5v2M13 17v2M13 11v2" />
+      </symbol>
+      <symbol id="icon-qr-code" viewBox="0 0 24 24">
+        <rect width="5" height="5" x="3" y="3" rx="1" />
+        <rect width="5" height="5" x="16" y="3" rx="1" />
+        <rect width="5" height="5" x="3" y="16" rx="1" />
+        <path d="M21 16h-3a2 2 0 0 0-2 2v3M16 21v-3a2 2 0 0 0-2-2h-3M21 21h.01" />
+      </symbol>
+      <symbol id="icon-check-circle" viewBox="0 0 24 24">
+        <path d="M21.8 11.1V12a10 10 0 1 1-5.93-9.14" />
+        <path d="M22 4 12 14.01l-3-3" />
+      </symbol>
+      <symbol id="icon-info" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 16v-4M12 8h.01" />
+      </symbol>
+      <symbol id="icon-alert-triangle" viewBox="0 0 24 24">
+        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+        <path d="M12 9v4M12 17h.01" />
+      </symbol>
+      <symbol id="icon-close" viewBox="0 0 24 24">
+        <path d="M18 6 6 18M6 6l12 12" />
+      </symbol>
+      <symbol id="icon-star" viewBox="0 0 24 24">
+        <path
+          d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01Z"
+        />
+      </symbol>
+      <symbol id="icon-heart" viewBox="0 0 24 24">
+        <path
+          d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+        />
+      </symbol>
+      <symbol id="icon-thumbs-up" viewBox="0 0 24 24">
+        <path d="M7 10v12" />
+        <path
+          d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"
+        />
+      </symbol>
+
+      <!-- Commerce -->
+      <symbol id="icon-banknote" viewBox="0 0 24 24">
+        <rect width="20" height="12" x="2" y="6" rx="2" />
+        <circle cx="12" cy="12" r="2.5" />
+        <path d="M6 12h.01M18 12h.01" />
+      </symbol>
+      <symbol id="icon-tag" viewBox="0 0 24 24">
+        <path
+          d="M12.59 2.59A2 2 0 0 0 11.17 2H4a2 2 0 0 0-2 2v7.17a2 2 0 0 0 .59 1.42l8.7 8.7a2.43 2.43 0 0 0 3.42 0l6.58-6.58a2.43 2.43 0 0 0 0-3.42Z"
+        />
+        <circle cx="7.5" cy="7.5" r=".8" />
+      </symbol>
+      <symbol id="icon-gift" viewBox="0 0 24 24">
+        <rect x="3" y="8" width="18" height="4" rx="1" />
+        <path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7" />
+        <path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5" />
+      </symbol>
+
+      <!-- Actions -->
+      <symbol id="icon-plus" viewBox="0 0 24 24">
+        <path d="M5 12h14M12 5v14" />
+      </symbol>
+      <symbol id="icon-minus" viewBox="0 0 24 24">
+        <path d="M5 12h14" />
+      </symbol>
+      <symbol id="icon-menu" viewBox="0 0 24 24">
+        <path d="M4 6h16M4 12h16M4 18h16" />
+      </symbol>
+      <symbol id="icon-search" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.3-4.3" />
+      </symbol>
+      <symbol id="icon-settings" viewBox="0 0 24 24">
+        <path
+          d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2Z"
+        />
+        <circle cx="12" cy="12" r="3" />
+      </symbol>
+      <symbol id="icon-chevron-left" viewBox="0 0 24 24">
+        <path d="m15 18-6-6 6-6" />
+      </symbol>
+      <symbol id="icon-chevron-right" viewBox="0 0 24 24">
+        <path d="m9 18 6-6-6-6" />
+      </symbol>
+      <symbol id="icon-refresh" viewBox="0 0 24 24">
+        <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8M21 3v5h-5" />
+        <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16M8 16H3v5" />
+      </symbol>
+      <symbol id="icon-zap" viewBox="0 0 24 24">
+        <path
+          d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14Z"
+        />
+      </symbol>
+      <symbol id="icon-wifi" viewBox="0 0 24 24">
+        <path d="M12 20h.01" />
+        <path d="M2 8.82a15 15 0 0 1 20 0M5 12.86a10 10 0 0 1 14 0" />
+        <path d="M8.5 16.43a5 5 0 0 1 7 0" />
+      </symbol>
+      <symbol id="icon-coffee" viewBox="0 0 24 24">
+        <path d="M10 2v2M14 2v2M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1Z" />
+        <path d="M6 2v2" />
+      </symbol>
+      <symbol id="icon-message" viewBox="0 0 24 24">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z" />
+        <path d="M8 9h8M8 13h5" />
+      </symbol>
+      <symbol id="icon-send" viewBox="0 0 24 24">
+        <path d="m22 2-7 20-4-9-9-4Z" />
+        <path d="M22 2 11 13" />
+      </symbol>
+
+      <!-- Theme -->
+      <symbol id="icon-sun" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="4" />
+        <path
+          d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+        />
+      </symbol>
+      <symbol id="icon-moon" viewBox="0 0 24 24">
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+      </symbol>
+
+      <!-- Social -->
+      <symbol id="icon-instagram" viewBox="0 0 24 24">
+        <rect width="20" height="20" x="2" y="2" rx="5" />
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z" />
+        <path d="M17.5 6.5h.01" />
+      </symbol>
+      <symbol id="icon-facebook" viewBox="0 0 24 24">
+        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3Z" />
+      </symbol>
+      <symbol id="icon-whatsapp" viewBox="0 0 24 24">
+        <path
+          d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8Z"
+        />
+      </symbol>
+      <symbol id="icon-x" viewBox="0 0 24 24">
+        <path
+          d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23Zm-1.16 17.52h1.83L7.08 4.13H5.12Z"
+        />
+      </symbol>
+    </svg>
+
+    <a class="skip-link-admin" href="#main">تخطَّ إلى المحتوى</a>
+
+    <!-- The shell is built by js/admin/shell.js and replaces this node. The
+         placeholder is what a visitor without JavaScript is left with, so it
+         says what to do rather than showing an empty page. -->
+    <div data-admin-shell>
+      <div class="login__body">
+        <div class="login__card">
+          <div class="login__head">
+            <h1 class="login__title">لوحة الإدارة</h1>
+            <p class="login__lede">
+              هذه الصفحة تحتاج إلى جافاسكربت. أضِفه من إعدادات المتصفح، أو
+              <a class="usermenu__item" href="login.html">سجّل الدخول من هنا</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/utils/dom.js"></script>
+    <script src="../js/utils/format.js"></script>
+    <script src="../js/supabase.js"></script>
+    <script src="../js/data/brand.js"></script>
+    <script src="../js/data/services.js"></script>
+    <script src="../js/data/team.js"></script>
+    <script src="../js/data/content.js"></script>
+    <script src="../js/data/availability.js"></script>
+    <script src="../js/data/demo-data.js"></script>
+    <script src="../js/components/theme.js"></script>
+    <script src="../js/components/toast.js"></script>
+    <script src="../js/components/booking-schedule.js"></script>
+    <script src="../js/components/booking-store.js"></script>
+    <script src="../js/components/booking-ticket.js"></script>
+    <script src="../js/components/modal.js"></script>
+
+    <script src="../js/admin/auth.js"></script>
+    <script src="../js/admin/data.js"></script>
+    <script src="../js/admin/nav.js"></script>
+    <script src="../js/admin/ui.js"></script>
+    <script src="../js/admin/roster.js"></script>
+    <script src="../js/admin/catalogue.js"></script>
+    <script src="../js/admin/settings-store.js"></script>
+    <script src="../js/admin/metrics.js"></script>
+    <script src="../js/admin/charts.js"></script>
+    <script src="../js/admin/shell.js"></script>
+    <script src="../js/admin/confirm.js"></script>
+    <script src="../js/admin/queue.js"></script>
+    <script src="../js/admin/team.js"></script>
+    <script src="../js/admin/services.js"></script>
+    <script src="../js/admin/customers.js"></script>
+    <script src="../js/admin/payments.js"></script>
+    <script src="../js/admin/reports.js"></script>
+    <script src="../js/admin/settings.js"></script>
+    <script src="../js/admin/sections.js"></script>
+    <script src="../js/admin/app.js"></script>
+  </body>
+</html>

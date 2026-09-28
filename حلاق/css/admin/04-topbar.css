@@ -1,0 +1,398 @@
+/* ==========================================================================
+   Halaq Admin — Topbar
+   ---------------------------------------------------------------------------
+   Sticky across the top of the content area. It answers three questions at a
+   glance, in this order: where am I, what day is it, and who is signed in.
+
+   The global search is a real input with a real label, not an icon. On a
+   tablet it collapses to an icon that expands on focus, because the space
+   between the title and the account menu is genuinely tight at that width.
+   ========================================================================== */
+
+.topbar {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 30;
+  min-width: 0;
+  background: var(--surface-page);
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.topbar__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: var(--admin-topbar-h);
+  inline-size: 100%;
+
+  /* The same measure and the same gutters as .shell__inner, at the same
+     breakpoints. Without this the bar spans the full width while the content
+     beneath it is centred and capped, so on a wide monitor the page title sits
+     a hundred pixels to the right of the card it is about — the one misalignment
+     that makes a whole workspace look assembled from parts. */
+  max-width: var(--admin-content-max);
+  margin-inline: auto;
+  padding-inline: var(--space-6);
+}
+
+/* ---- the sidebar toggle ---- */
+
+.topbar__toggle {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.topbar__toggle:hover,
+.topbar__icon-btn:hover {
+  color: var(--text-primary);
+  background: var(--surface-raised);
+}
+
+/* The press. A control that only lights up on hover feels like a label, not a
+   button — on a touch screen, where there is no hover at all, the tap has to
+   show something or the whole bar feels inert. */
+.topbar__toggle:active,
+.topbar__icon-btn:active,
+.usermenu__trigger:active {
+  color: var(--text-primary);
+  background: var(--surface-overlay);
+  box-shadow: var(--shadow-inset);
+}
+
+.topbar__toggle:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: 1px;
+}
+
+/* ---- current place and date ---- */
+
+.topbar__context {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  flex: 1;
+  line-height: var(--line-height-tight);
+}
+
+.topbar__title {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbar__date {
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- the right-hand group ---- */
+
+.topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: none;
+}
+
+.topbar__search {
+  display: none;
+}
+
+.topbar__kbd {
+  padding: 1px var(--space-2);
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-default);
+  background: var(--surface-overlay);
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: var(--font-size-2xs);
+  line-height: 1.4;
+}
+
+/* ---- notifications ---- */
+
+.topbar__icon-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.topbar__icon-btn:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: 1px;
+}
+
+/* The dot is a second cue beside the bell, not the only one: the button's
+   accessible name says there are unread notifications. */
+.topbar__dot {
+  position: absolute;
+  inset-block-start: 0.5rem;
+  inset-inline-end: 0.5rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--radius-pill);
+  background: var(--danger);
+  border: 2px solid var(--surface-page);
+}
+
+.topbar.is-read .topbar__dot {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Account menu
+
+   A <details> element, so open/close, the expanded state, and Escape are the
+   platform's job rather than this stylesheet's. The panel is positioned, not
+   revealed, so there is no height animation to get wrong.
+   -------------------------------------------------------------------------- */
+
+.usermenu {
+  position: relative;
+  flex: none;
+}
+
+.usermenu__trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  transition: background-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.usermenu__trigger::-webkit-details-marker {
+  display: none;
+}
+
+.usermenu__trigger:hover {
+  background: var(--surface-overlay);
+}
+
+.usermenu__trigger:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: 1px;
+}
+
+.usermenu__avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-2xs);
+  font-weight: 800;
+  color: var(--brand-mark-fg);
+  background: var(--brand-plate-bg);
+  box-shadow: var(--brand-plate-edge);
+}
+
+.usermenu__name {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: var(--line-height-tight);
+  text-align: start;
+}
+
+.usermenu__name-main {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.usermenu__name-role {
+  color: var(--text-muted);
+  font-size: var(--font-size-2xs);
+  white-space: nowrap;
+}
+
+.usermenu__chevron {
+  color: var(--text-muted);
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.usermenu[open] .usermenu__chevron {
+  transform: rotate(180deg);
+}
+
+.usermenu__panel {
+  position: absolute;
+  inset-block-start: calc(100% + var(--space-2));
+  inset-inline-end: 0;
+  z-index: 40;
+  width: 16rem;
+  padding: var(--space-2);
+  border-radius: var(--radius-lg);
+  background: var(--surface-overlay);
+  border: 1px solid var(--border-default);
+  box-shadow: var(--shadow-lg), var(--edge-light);
+}
+
+.usermenu__head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  margin-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.usermenu__head-name {
+  margin: 0;
+  font-weight: 700;
+}
+
+.usermenu__head-meta {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.usermenu__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.usermenu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  text-align: start;
+  text-decoration: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.usermenu__item:hover {
+  color: var(--text-primary);
+  background: var(--surface-raised);
+}
+
+.usermenu__item:active {
+  background: var(--surface-overlay);
+  box-shadow: var(--shadow-inset);
+}
+
+.usermenu__item:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+.usermenu__item .icon {
+  flex: none;
+  color: var(--text-muted);
+}
+
+.usermenu__item.is-current {
+  color: var(--brand);
+  font-weight: 700;
+  background: var(--brand-softer);
+}
+
+.usermenu__item--danger {
+  color: var(--danger);
+}
+
+.usermenu__item--danger .icon {
+  color: var(--danger);
+}
+
+.usermenu__item--danger:hover {
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+
+/* --------------------------------------------------------------------------
+   Room to breathe
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 30rem) {
+  .topbar__search {
+    display: block;
+  }
+
+  .topbar__search .input-group {
+    width: 13rem;
+  }
+
+  .topbar__search .input {
+    padding-block: var(--space-2);
+  }
+}
+
+@media (min-width: 64rem) {
+  .topbar__search .input-group {
+    width: 18rem;
+  }
+}
+
+/* Matches .shell__inner exactly, so the bar and the content below it share one
+   left edge and one right edge at every width. */
+@media (min-width: 80rem) {
+  .topbar__inner {
+    padding-inline: var(--space-8);
+  }
+}
+
+@media (max-width: 47.999rem) {
+  .topbar__inner {
+    padding-inline: var(--space-4);
+  }
+}
+
+@media (max-width: 29.999rem) {
+  .usermenu__name,
+  .topbar__date {
+    display: none;
+  }
+}

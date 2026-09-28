@@ -1,0 +1,401 @@
+/* ==========================================================================
+   Form — field, input, textarea, select, checkbox, radio, switch
+   Every control has a visible label; state is shown by border + icon +
+   text, never by colour alone.
+   ========================================================================== */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.field__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+}
+
+.field__required {
+  color: var(--danger);
+  font-weight: var(--font-weight-bold);
+}
+
+.field__optional {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-muted);
+}
+
+.field__hint {
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-snug);
+  color: var(--text-muted);
+}
+
+.field__error {
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-snug);
+  color: var(--danger);
+}
+
+.field__error .icon {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex: none;
+}
+
+.field.is-invalid .field__error {
+  display: flex;
+}
+
+/* ---------------------------------------------------------------------
+   Input / textarea / select base
+   ----------------------------------------------------------------------- */
+.input,
+.textarea,
+.select {
+  width: 100%;
+  min-height: 2.875rem;
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-inset);
+  transition: border-color var(--duration-base) var(--ease-out),
+    background-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--text-disabled);
+  opacity: 1;
+}
+
+.input:hover:not(:disabled),
+.textarea:hover:not(:disabled),
+.select:hover:not(:disabled) {
+  border-color: var(--border-strong);
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  outline: none;
+  border-color: var(--brand);
+  background: var(--surface-base);
+  box-shadow: 0 0 0 3px var(--brand-soft);
+}
+
+.input:focus-visible,
+.textarea:focus-visible,
+.select:focus-visible {
+  outline: none;
+}
+
+.input:disabled,
+.textarea:disabled,
+.select:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background: var(--surface-raised);
+}
+
+.input[readonly] {
+  cursor: default;
+  color: var(--text-secondary);
+}
+
+.textarea {
+  min-height: 7rem;
+  line-height: var(--line-height-base);
+  resize: vertical;
+}
+
+/* Autofill should not repaint the field in the wrong colour */
+.input:-webkit-autofill,
+.textarea:-webkit-autofill,
+.select:-webkit-autofill {
+  -webkit-text-fill-color: var(--text-primary);
+  -webkit-box-shadow: 0 0 0 1000px var(--surface-sunken) inset;
+  caret-color: var(--text-primary);
+}
+
+/* ---------------------------------------------------------------------
+   Invalid state — border thickens + message appears
+   ----------------------------------------------------------------------- */
+.field.is-invalid .input,
+.field.is-invalid .textarea,
+.field.is-invalid .select,
+.input[aria-invalid="true"],
+.textarea[aria-invalid="true"],
+.select[aria-invalid="true"] {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px var(--danger-soft);
+}
+
+/* ---------------------------------------------------------------------
+   Input with a leading / trailing slot
+   ----------------------------------------------------------------------- */
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input-group .input {
+  padding-inline-start: calc(var(--space-4) + 1.25rem + var(--space-3));
+}
+
+.input-group--trailing .input {
+  padding-inline-start: var(--space-4);
+  padding-inline-end: calc(var(--space-4) + 1.25rem + var(--space-3));
+}
+
+.input-group__icon {
+  position: absolute;
+  inset-inline-start: var(--space-4);
+  display: inline-flex;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.input-group--trailing .input-group__icon {
+  inset-inline: auto var(--space-4);
+}
+
+.input-group__icon .icon {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.input-group__addon {
+  position: absolute;
+  inset-inline-end: var(--space-2);
+  display: inline-flex;
+}
+
+.input-group:focus-within .input-group__icon {
+  color: var(--brand);
+}
+
+/* ---------------------------------------------------------------------
+   Select — chevron on the inline-end, aligned for RTL
+   ----------------------------------------------------------------------- */
+.select {
+  padding-inline-end: calc(var(--space-4) + 1.25rem + var(--space-3));
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239c948a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left var(--space-4) center;
+  background-size: 1.125rem 1.125rem;
+  cursor: pointer;
+}
+
+[dir="ltr"] .select {
+  background-position: right var(--space-4) center;
+}
+
+.select option {
+  background: var(--surface-overlay);
+  color: var(--text-primary);
+}
+
+/* ---------------------------------------------------------------------
+   Checkbox / radio
+   ----------------------------------------------------------------------- */
+.choice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  user-select: none;
+  transition: color var(--duration-base) var(--ease-out);
+}
+
+.choice input {
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-block-start: 0.18rem;
+  accent-color: var(--brand);
+  cursor: pointer;
+}
+
+.choice input[type="radio"] {
+  border-radius: 50%;
+}
+
+.choice:hover {
+  color: var(--text-primary);
+}
+
+.choice:has(input:checked) {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.choice:has(input:focus-visible) {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-xs);
+}
+
+/* ---------------------------------------------------------------------
+   Switch — pill track + visible check icon when on (not colour alone)
+   ----------------------------------------------------------------------- */
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+  user-select: none;
+}
+
+.switch input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch__track {
+  position: relative;
+  flex: none;
+  width: 2.75rem;
+  height: 1.5rem;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-inset);
+  transition: background-color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+.switch__thumb {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 2px;
+  width: 1.125rem;
+  height: 1.125rem;
+  transform: translateY(-50%);
+  background: var(--text-muted);
+  border-radius: 50%;
+  box-shadow: var(--shadow-xs);
+  transition: inset-inline-start var(--duration-base) var(--ease-spring),
+    background-color var(--duration-base) var(--ease-out);
+}
+
+.switch__state {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+}
+
+.switch__state .icon {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.switch__state--on,
+.switch__state--off {
+  display: none;
+}
+
+.switch input:checked ~ .switch__track {
+  background: var(--brand);
+  border-color: var(--brand);
+  box-shadow: var(--shadow-brand);
+}
+
+.switch input:checked ~ .switch__track .switch__thumb {
+  inset-inline-start: calc(100% - 1.25rem);
+  background: var(--text-on-primary);
+}
+
+.switch input:checked ~ .switch__label .switch__state--on {
+  display: inline-flex;
+}
+
+.switch input:not(:checked) ~ .switch__label .switch__state--off {
+  display: inline-flex;
+}
+
+.switch input:focus-visible ~ .switch__track {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* ---------------------------------------------------------------------
+   Form layout helpers
+   ----------------------------------------------------------------------- */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.form__grid {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 40rem) {
+  .form__grid--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.form__actions {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-3);
+  padding-block-start: var(--space-2);
+}
+
+@media (min-width: 40rem) {
+  .form__actions {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+.form__legend {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  padding-block-end: var(--space-1);
+  border-block-end: 1px solid var(--border-hairline);
+  margin-block-end: var(--space-1);
+  width: 100%;
+}
+
+fieldset {
+  border: 0;
+  min-width: 0;
+}

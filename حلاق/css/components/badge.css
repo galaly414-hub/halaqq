@@ -1,0 +1,264 @@
+/* ==========================================================================
+   Badge & Tag — compact status labels
+   Accessibility: every badge carries an icon and/or text, so meaning never
+   depends on the colour alone.
+   ---------------------------------------------------------------------------
+   Tones are quiet by design. A badge sits next to a price or a name, and if
+   it shouts, the thing it is labelling stops being readable. Weight, not
+   colour, is what separates a status from a label.
+   ========================================================================== */
+
+.badge {
+  --badge-bg: var(--surface-overlay);
+  --badge-fg: var(--text-secondary);
+  --badge-border: var(--border-hairline);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.5rem;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.45;
+  color: var(--badge-fg);
+  background: var(--badge-bg);
+  border: 1px solid var(--badge-border);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.badge .icon {
+  width: 0.8rem;
+  height: 0.8rem;
+  flex: none;
+  stroke-width: 2;
+}
+
+/* ---------------------------------------------------------------------
+   Tones
+   ----------------------------------------------------------------------- */
+.badge--brand {
+  --badge-bg: var(--brand-soft);
+  --badge-fg: var(--brand);
+  --badge-border: color-mix(in srgb, var(--brand) 22%, transparent);
+}
+
+.badge--success {
+  --badge-bg: var(--success-soft);
+  --badge-fg: var(--success);
+  --badge-border: color-mix(in srgb, var(--success) 22%, transparent);
+}
+
+.badge--warning {
+  --badge-bg: var(--warning-soft);
+  --badge-fg: var(--warning);
+  --badge-border: color-mix(in srgb, var(--warning) 22%, transparent);
+}
+
+.badge--danger {
+  --badge-bg: var(--danger-soft);
+  --badge-fg: var(--danger);
+  --badge-border: color-mix(in srgb, var(--danger) 22%, transparent);
+}
+
+.badge--info {
+  --badge-bg: var(--info-soft);
+  --badge-fg: var(--info);
+  --badge-border: color-mix(in srgb, var(--info) 22%, transparent);
+}
+
+.badge--solid {
+  --badge-bg: var(--brand);
+  --badge-fg: var(--text-on-primary);
+  --badge-border: transparent;
+}
+
+.badge--outline {
+  --badge-bg: transparent;
+  --badge-border: var(--border-strong);
+}
+
+/* ---------------------------------------------------------------------
+   Sizes
+   ----------------------------------------------------------------------- */
+.badge--lg {
+  font-size: var(--font-size-sm);
+  padding: var(--space-1) var(--space-3);
+}
+
+.badge--sm {
+  font-size: var(--font-size-2xs);
+  padding: 0.1rem var(--space-2);
+}
+
+.badge--pill {
+  border-radius: var(--radius-pill);
+}
+
+/* ---------------------------------------------------------------------
+   Tag — removable / filter chip
+   ----------------------------------------------------------------------- */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.3rem var(--space-3);
+  min-height: 2rem;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  background: var(--surface-raised);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-pill);
+  transition: border-color var(--duration-base) var(--ease-out),
+    color var(--duration-base) var(--ease-out),
+    background-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+a.tag:hover,
+button.tag:hover {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+  background: var(--surface-overlay);
+}
+
+.tag:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.tag[aria-pressed="true"],
+.tag.is-active {
+  color: var(--brand);
+  background: var(--brand-soft);
+  border-color: color-mix(in srgb, var(--brand) 42%, transparent);
+}
+
+.tag[aria-pressed="true"]:hover,
+.tag.is-active:hover {
+  border-color: var(--brand);
+}
+
+.tag__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+  padding: 0;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-radius: 50%;
+  opacity: 0.65;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.tag__remove:hover {
+  opacity: 1;
+}
+
+.tag__remove .icon {
+  width: 0.75rem;
+  height: 0.75rem;
+  stroke-width: 2.5;
+}
+
+/* Filter bar */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  padding: var(--space-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  background: var(--surface-raised);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.filter-bar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------------------------------------------------------------------
+   Rating — stars plus a numeric value, so it is not colour-only
+   ----------------------------------------------------------------------- */
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.rating__stars {
+  display: inline-flex;
+  gap: 0.1rem;
+  color: var(--brand);
+}
+
+.rating__stars .icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+.rating__stars .icon[data-filled="false"] {
+  fill: none;
+  stroke: var(--text-disabled);
+}
+
+.rating__value {
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.rating__count {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------------
+   Kicker / status dot with a text label
+   ----------------------------------------------------------------------- */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+}
+
+.status__dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  flex: none;
+  border-radius: 50%;
+  background: var(--text-muted);
+  box-shadow: 0 0 0 3px transparent;
+}
+
+.status--online .status__dot {
+  background: var(--success);
+  box-shadow: 0 0 0 3px var(--success-soft);
+}
+
+.status--busy .status__dot {
+  background: var(--warning);
+  box-shadow: 0 0 0 3px var(--warning-soft);
+}
+
+.status--offline .status__dot {
+  background: var(--text-disabled);
+}

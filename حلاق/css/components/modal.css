@@ -1,0 +1,276 @@
+/* ==========================================================================
+   Modal — dialog + drawer
+   Built on the native <dialog> element for focus trapping and inertness,
+   with a full JS controller in js/components/modal.js.
+   ========================================================================== */
+
+.modal {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  max-width: none;
+  max-height: none;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  color: inherit;
+}
+
+.modal::backdrop {
+  background: var(--surface-veil);
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.modal[open]::backdrop {
+  opacity: 1;
+}
+
+.modal:not([open]) {
+  display: none;
+}
+
+.modal__panel {
+  position: fixed;
+  inset-block-end: 0;
+  inset-inline: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  flex-direction: column;
+  max-height: min(90dvh, 44rem);
+  background: var(--surface-raised);
+  border: 1px solid var(--border-default);
+  border-block-end: 0;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  box-shadow: var(--shadow-xl), var(--edge-light);
+  overflow: hidden;
+  transform: translateY(100%);
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.modal[open] .modal__panel {
+  transform: translateY(0);
+}
+
+@media (min-width: 40rem) {
+  .modal__panel {
+    inset-block: auto;
+    inset-inline: 50% auto;
+    top: 50%;
+    inset-inline-start: 50%;
+    inset-inline-end: auto;
+    transform: translate(50%, calc(-50% + 16px));
+    width: min(100% - 2rem, var(--modal-width, 34rem));
+    max-height: min(88dvh, 46rem);
+    border-radius: var(--radius-xl);
+    border-block-end: 1px solid var(--border-default);
+    opacity: 0;
+  }
+
+  .modal[open] .modal__panel {
+    transform: translate(50%, -50%);
+    opacity: 1;
+  }
+}
+
+.modal--sm {
+  --modal-width: 26rem;
+}
+.modal--md {
+  --modal-width: 34rem;
+}
+.modal--lg {
+  --modal-width: 46rem;
+}
+.modal--xl {
+  --modal-width: 60rem;
+}
+
+/* ---------------------------------------------------------------------
+   Panel parts
+   ----------------------------------------------------------------------- */
+.modal__handle {
+  display: block;
+  width: 2.75rem;
+  height: 0.25rem;
+  margin: var(--space-3) auto 0;
+  border-radius: var(--radius-pill);
+  background: var(--border-strong);
+  flex: none;
+}
+
+@media (min-width: 40rem) {
+  .modal__handle {
+    display: none;
+  }
+}
+
+/* Two spellings of the same row exist in the app: the static dialogs in the
+   markup use .modal__header, and the dialogs built by the controllers use
+   .modal__head. They are the same element, so they are styled together. */
+.modal__header,
+.modal__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border-block-end: 1px solid var(--border-hairline);
+  flex: none;
+}
+
+.modal__title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-snug);
+  color: var(--text-primary);
+}
+
+.modal__desc,
+.modal__description {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-loose);
+  color: var(--text-secondary);
+  margin-block-start: var(--space-1);
+}
+
+.modal__description:empty {
+  display: none;
+}
+
+.modal__close {
+  flex: none;
+}
+
+.modal__body {
+  padding: var(--space-5);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  flex: 1 1 auto;
+}
+
+.modal__footer {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-block-start: 1px solid var(--border-hairline);
+  background: var(--surface-sunken);
+  flex: none;
+}
+
+@media (min-width: 40rem) {
+  .modal__footer {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+/* Actions that live at the end of the body rather than in the dialog's own
+   footer — a dialog built in script has no footer to fill, and a body whose
+   last element is a paragraph leaves the primary action looking like an
+   afterthought. Same rhythm as the footer, without the sunk band, because
+   there is nothing under it to separate from. */
+.modal__actions {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-3);
+  margin-block-start: var(--space-2);
+  padding-block-start: var(--space-5);
+  border-block-start: 1px solid var(--border-hairline);
+}
+
+@media (min-width: 40rem) {
+  .modal__actions {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Drawer — side panel, for navigation and filters
+   ----------------------------------------------------------------------- */
+.drawer {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  max-width: none;
+  max-height: none;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+}
+
+.drawer::backdrop {
+  background: var(--surface-veil);
+}
+
+.drawer__panel {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-end: 0;
+  z-index: var(--z-drawer);
+  display: flex;
+  flex-direction: column;
+  width: min(20rem, 86vw);
+  background: var(--surface-base);
+  border-inline-start: 1px solid var(--border-default);
+  box-shadow: var(--shadow-xl);
+  transform: translateX(-100%);
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+[dir="ltr"] .drawer__panel {
+  transform: translateX(100%);
+}
+
+.drawer[open] .drawer__panel {
+  transform: translateX(0);
+}
+
+.drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-block-end: 1px solid var(--border-hairline);
+  flex: none;
+}
+
+.drawer__body {
+  padding: var(--space-5);
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+.drawer__footer {
+  padding: var(--space-4) var(--space-5);
+  border-block-start: 1px solid var(--border-subtle);
+  flex: none;
+}
+
+/* ---------------------------------------------------------------------
+   Side sheet variant of the modal (slides in from the inline-end)
+   ----------------------------------------------------------------------- */
+.modal--side .modal__panel {
+  inset-block: 0;
+  inset-inline: auto 0;
+  top: 0;
+  bottom: 0;
+  width: min(24rem, 88vw);
+  max-height: none;
+  border-radius: 0;
+  border-inline-end: 0;
+  transform: translateX(-100%);
+  opacity: 1;
+}
+
+[dir="ltr"] .modal--side .modal__panel {
+  transform: translateX(100%);
+}
+
+.modal--side[open] .modal__panel {
+  transform: translateX(0);
+}

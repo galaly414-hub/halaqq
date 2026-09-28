@@ -1,0 +1,1154 @@
+/* ==========================================================================
+   Halaq — Booking flow (all six steps)
+   ---------------------------------------------------------------------------
+   A ruled, brass-accented progress rail, hairline option cards and a ledger
+   calendar. Selection is always expressed three ways at once — colour, a
+   check mark and a weight change on the border — so it never depends on hue
+   alone.
+
+   Everything below is presentation only. The class names mirror what
+   booking-flow.js toggles (is-active, is-done, is-selected, is-unavailable),
+   and no rule here changes which controls are reachable.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------
+   Panel header
+   -----------------------------------------------------------------------
+   The flow is the widest dialog in the product, so it gets the full
+   treatment: a brass hairline under the header that separates identity from
+   progress. */
+.booking-flow .modal__header {
+  position: relative;
+  padding-block-end: var(--space-4);
+  border-block-end: 1px solid var(--border-default);
+}
+
+.booking-flow .modal__header::after {
+  content: "";
+  position: absolute;
+  inset-block-end: -1px;
+  inset-inline-start: 0;
+  inline-size: 3.5rem;
+  block-size: 2px;
+  background: var(--brand);
+  border-start-start-radius: 2px;
+  border-end-start-radius: 2px;
+}
+
+.booking-flow__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-block-end: var(--space-2);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-arabic);
+  color: var(--brand);
+}
+
+/* A short rule after the eyebrow, so the label reads as a printed kicker
+   rather than a coloured sentence. */
+.booking-flow__eyebrow::after {
+  content: "";
+  flex: none;
+  inline-size: 1.5rem;
+  block-size: 1px;
+  background: var(--border-strong);
+}
+
+.booking-flow .modal__title {
+  font-size: var(--font-size-2xl);
+  line-height: var(--line-height-tight);
+}
+
+.booking-flow .modal__desc {
+  max-inline-size: 42ch;
+  margin-block-start: var(--space-2);
+}
+
+/* ---------------------------------------------------------------------
+   Progress rail
+   -----------------------------------------------------------------------
+   Six steps laid out as nodes on one hairline. The line is drawn by the
+   list, not by the items, so it can never be interrupted by a long label —
+   the failure the earlier per-item bottom border had. */
+.booking-flow__stepper {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4) var(--space-3);
+  padding: var(--space-5) var(--space-5) var(--space-4);
+  flex: none;
+  list-style: none;
+  margin: 0;
+}
+
+.booking-flow__stepper::before {
+  content: "";
+  position: absolute;
+  inset-block-start: calc(var(--space-5) + 0.9375rem);
+  inset-inline: calc(100% / 6);
+  block-size: 1px;
+  background: var(--border-default);
+}
+
+/* The rail only describes a single row. Once the steps wrap to two rows of
+   three it would connect the wrong nodes, so it is dropped entirely and the
+   spacing carries the reading order instead. */
+@media (max-width: 47.9375rem) {
+  .booking-flow__stepper::before {
+    content: none;
+  }
+}
+
+@media (min-width: 48rem) {
+  .booking-flow__stepper {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+}
+
+.booking-flow__step {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  text-align: center;
+  color: var(--text-muted);
+  transition: color var(--duration-base) var(--ease-out);
+}
+
+.booking-flow__step-marker {
+  display: grid;
+  place-items: center;
+  inline-size: 1.875rem;
+  block-size: 1.875rem;
+  flex: none;
+  border-radius: var(--radius-pill);
+  /* The panel behind the rail is --surface-raised, so the halo has to be
+     painted in that same colour or the node shows a dark ring. */
+  background: var(--surface-raised);
+  border: 1px solid var(--border-default);
+  color: var(--text-muted);
+  box-shadow: 0 0 0 4px var(--surface-raised);
+  transition: background-color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+.booking-flow__step-icon,
+.booking-flow__step-done {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+.booking-flow__step-text {
+  display: grid;
+  gap: 0.1rem;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+/* The name must be able to give way, or a long label widens its grid track
+   and pushes the whole rail past the panel edge. */
+.booking-flow__step-name {
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-snug);
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.booking-flow__step-note {
+  font-size: var(--font-size-2xs);
+  color: var(--text-muted);
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Pending steps carry no note; collapsing them keeps the active label from
+   shifting down as the flow advances. */
+.booking-flow__step-note:empty {
+  display: none;
+}
+
+.booking-flow__step.is-active {
+  color: var(--text-primary);
+}
+
+.booking-flow__step.is-active .booking-flow__step-marker {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: var(--text-on-primary);
+  box-shadow: 0 0 0 4px var(--surface-raised), var(--shadow-brand);
+}
+
+.booking-flow__step.is-active .booking-flow__step-name {
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
+
+.booking-flow__step.is-active .booking-flow__step-note {
+  color: var(--text-secondary);
+}
+
+.booking-flow__step.is-done .booking-flow__step-marker {
+  background: var(--surface-raised);
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.booking-flow__step.is-done .booking-flow__step-name {
+  color: var(--text-secondary);
+}
+
+.booking-flow__step.is-done .booking-flow__step-note {
+  color: var(--text-muted);
+}
+
+/* ---------------------------------------------------------------------
+   Body and groups
+   ----------------------------------------------------------------------- */
+.booking-flow__body {
+  gap: var(--space-5);
+}
+
+.booking-flow__options {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.pick-group {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-inline-size: 0;
+}
+
+.pick-group[hidden] {
+  display: none;
+}
+
+.pick-group__hint {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  margin-block-end: var(--space-4);
+  padding-inline-start: var(--space-3);
+  border-inline-start: 2px solid var(--border-default);
+}
+
+.pick-group__section {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.pick-group__label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-arabic);
+  color: var(--text-muted);
+}
+
+.pick-group__count {
+  display: inline-grid;
+  place-items: center;
+  min-inline-size: 1.25rem;
+  block-size: 1.25rem;
+  padding-inline: var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  font-size: var(--font-size-2xs);
+  color: var(--text-muted);
+}
+
+.pick-list {
+  display: grid;
+  gap: var(--space-2);
+}
+
+/* ---------------------------------------------------------------------
+   Option card
+   ----------------------------------------------------------------------- */
+.pick-card {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  min-inline-size: 0;
+}
+
+.pick-card__input {
+  position: absolute;
+  inset-block-start: var(--space-4);
+  inset-inline-end: var(--space-4);
+  inline-size: 1.125rem;
+  block-size: 1.125rem;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pick-card__inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-base);
+  box-shadow: var(--shadow-xs), var(--edge-light);
+  overflow: hidden;
+  transition: border-color var(--duration-base) var(--ease-out),
+    background-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.pick-card:hover .pick-card__inner {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-sm), var(--edge-light);
+  transform: translateY(-1px);
+}
+.pick-card:active .pick-card__inner {
+  transform: translateY(0);
+}
+
+/* The check badge occupies the end corner of the card */
+.pick-card__check {
+  position: absolute;
+  inset-block-start: var(--space-4);
+  inset-inline-end: var(--space-4);
+  display: grid;
+  place-items: center;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: transparent;
+  transition: background-color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    color var(--duration-base) var(--ease-out);
+}
+
+.pick-card__check .icon {
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+}
+
+.pick-card__body {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-inline-size: 0;
+}
+
+.pick-card__icon {
+  display: grid;
+  place-items: center;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  flex: none;
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  transition: background-color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    color var(--duration-base) var(--ease-out);
+}
+
+.pick-card__text {
+  display: grid;
+  gap: 0.1rem;
+  min-inline-size: 0;
+}
+
+.pick-card__name {
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  line-height: var(--line-height-snug);
+}
+
+.pick-card__subtitle {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+.pick-card__side {
+  display: grid;
+  gap: var(--space-1);
+  justify-items: end;
+  text-align: end;
+  /* Keep clear of the absolute check badge */
+  padding-inline-end: 1.75rem;
+}
+
+.pick-card__price {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-black);
+  color: var(--text-primary);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  transition: color var(--duration-base) var(--ease-out);
+}
+
+.pick-card__duration {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.pick-card__hint {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.pick-card__note {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-block-start: var(--space-3);
+  border-block-start: 1px solid var(--border-hairline);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+/* --- Selected -------------------------------------------------------
+   Three cues at once: a brass edge bar, a brass hairline, and the check
+   badge. The bar and the badge mean the same thing, so the state survives
+   greyscale and forced-colours. */
+.pick-card.is-selected .pick-card__inner {
+  border-color: var(--brand);
+  background: var(--brand-softer);
+  box-shadow: var(--shadow-brand), var(--edge-light);
+  transform: none;
+}
+
+.pick-card.is-selected .pick-card__inner::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: 3px;
+  background: var(--brand);
+}
+
+.pick-card.is-selected .pick-card__check {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: var(--text-on-primary);
+}
+
+.pick-card.is-selected .pick-card__icon {
+  background: var(--brand-soft);
+  border-color: transparent;
+  color: var(--brand);
+}
+
+.pick-card.is-selected .pick-card__price {
+  color: var(--brand);
+}
+
+.pick-card.is-selected .pick-card__name {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+/* --- Unavailable ---------------------------------------------------- */
+.pick-card.is-unavailable {
+  cursor: not-allowed;
+}
+
+.pick-card.is-unavailable .pick-card__inner {
+  background: var(--surface-sunken);
+  box-shadow: none;
+  opacity: 0.6;
+  transform: none;
+}
+
+.pick-card.is-unavailable:hover .pick-card__inner {
+  border-color: var(--border-subtle);
+  box-shadow: none;
+  transform: none;
+}
+
+/* --- Focus ----------------------------------------------------------
+   Two rules on purpose: :focus-within catches the keyboard path for every
+   engine, the sibling selector is the fallback where :has() is missing. */
+.pick-card:has(.pick-card__input:focus-visible) .pick-card__inner {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.pick-card__input:focus-visible ~ .pick-card__inner {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------
+   Service offers under a barber
+   ----------------------------------------------------------------------- */
+.pick-card__offers {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding-block-start: var(--space-1);
+}
+
+.pick-card__offers .tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+}
+
+.tag__price {
+  color: var(--brand);
+  font-weight: var(--font-weight-semibold);
+  padding-inline-start: var(--space-2);
+  border-inline-start: 1px solid var(--border-default);
+}
+
+.pick-card__status {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+/* ---------------------------------------------------------------------
+   "Any available barber" option
+   -----------------------------------------------------------------------
+   Dashed reads as "optional / not a person", which is exactly what this
+   row means. It firms up the moment it is chosen. */
+.pick-card--any .pick-card__inner {
+  border-style: dashed;
+  border-color: var(--border-strong);
+  background: var(--surface-sunken);
+}
+
+.pick-card--any.is-selected .pick-card__inner {
+  border-style: solid;
+  border-color: var(--brand);
+  background: var(--brand-softer);
+}
+
+.pick-card--barber .pick-card__inner {
+  padding-block-end: var(--space-3);
+}
+
+/* ---------------------------------------------------------------------
+   Chosen-service context above the barber list
+   -----------------------------------------------------------------------
+   A ledger strip: sunken ground, hairline rule, brass edge. It restates
+   step 1 so the barber list is never read out of context. */
+.booking-flow__context-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  margin-block-end: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-inline-start: 2px solid var(--brand);
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  min-inline-size: 0;
+}
+
+.booking-flow__context-label {
+  font-size: var(--font-size-2xs);
+  color: var(--text-muted);
+}
+
+.booking-flow__context-name {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-snug);
+}
+
+.booking-flow__context-side {
+  margin-inline-start: auto;
+  display: grid;
+  justify-items: end;
+  text-align: end;
+  font-weight: var(--font-weight-bold);
+  color: var(--brand);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.booking-flow__context-side .text-muted {
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-xs);
+}
+
+/* ---------------------------------------------------------------------
+   Step 3 — calendar
+   -----------------------------------------------------------------------
+   Sunken ground, raised tiles. The plate is deliberately quiet so the
+   brass selection is the only thing that lifts. */
+.calendar {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  padding: var(--space-4);
+}
+
+.calendar__bar {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-2);
+  margin-block-end: var(--space-4);
+  padding-block-end: var(--space-3);
+  border-block-end: 1px solid var(--border-subtle);
+}
+
+.calendar__month {
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  text-align: center;
+  min-width: 0;
+}
+
+.calendar__nav {
+  flex: none;
+}
+
+.calendar__weekdays,
+.calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--space-1);
+}
+
+.calendar__weekdays {
+  margin-block-end: var(--space-2);
+}
+
+.calendar__weekday {
+  text-align: center;
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-muted);
+  padding-block: var(--space-1);
+}
+
+.calendar__cell {
+  min-inline-size: 0;
+  display: flex;
+}
+
+.calendar__day {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  min-block-size: 2.75rem;
+  padding: var(--space-1) 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background-color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+.calendar__day:hover:not(:disabled) {
+  border-color: var(--brand);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-xs);
+}
+
+.calendar__day:disabled {
+  cursor: not-allowed;
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-disabled);
+}
+
+.calendar__day-number {
+  line-height: 1.2;
+}
+
+/* "today" reads as a brass ring, not just a colour */
+.calendar__day.is-today {
+  border-color: var(--brand);
+  color: var(--text-primary);
+}
+
+.calendar__day-today {
+  font-size: 0.5625rem;
+  line-height: 1;
+  color: var(--brand);
+  font-weight: var(--font-weight-bold);
+}
+
+/* free days carry a dot, so availability is not colour-only */
+.calendar__day-dot {
+  inline-size: 0.25rem;
+  block-size: 0.25rem;
+  border-radius: var(--radius-pill);
+  background: var(--brand);
+}
+
+.calendar__day.is-closed,
+.calendar__day.is-outside {
+  opacity: 0.45;
+}
+
+.calendar__day.is-full {
+  color: var(--text-disabled);
+}
+
+.calendar__day.is-selected,
+.calendar__day.is-selected:hover {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: var(--text-on-primary);
+  font-weight: var(--font-weight-bold);
+  box-shadow: var(--shadow-brand);
+}
+
+.calendar__day.is-selected .calendar__day-today {
+  color: var(--text-on-primary);
+}
+
+.calendar__day.is-selected .calendar__day-dot {
+  background: var(--text-on-primary);
+}
+
+.calendar__day:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------
+   Step 3 — time slots
+   ----------------------------------------------------------------------- */
+.slots {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.slots__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding-block-end: var(--space-3);
+  border-block-end: 1px solid var(--border-subtle);
+}
+
+.slots__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  min-inline-size: 0;
+}
+
+.slots__title .icon {
+  color: var(--brand);
+}
+
+.slots__legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+.slots__legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* A non-interactive copy of the slot chip, for the legend only */
+.slot--sample {
+  min-inline-size: 0;
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-2xs);
+  cursor: default;
+}
+
+.slots__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5.25rem, 1fr));
+  gap: var(--space-2);
+}
+
+.slot {
+  display: grid;
+  place-items: center;
+  min-block-size: 2.75rem;
+  padding: var(--space-2) var(--space-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+.slot:hover:not(:disabled) {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+.slot:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Taken slots stay visible so the shape of the day is readable, but they
+   are struck through, dimmed and removed from the tab order. */
+.slot.is-taken,
+.slot.is-taken:disabled {
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--border-subtle);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.slot.is-selected,
+.slot.is-selected:hover {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: var(--text-on-primary);
+  font-weight: var(--font-weight-bold);
+  box-shadow: var(--shadow-brand);
+}
+
+.slot.is-selected.is-taken {
+  background: transparent;
+  color: var(--text-disabled);
+  box-shadow: none;
+}
+
+.slots__empty {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-4);
+  border: 1px dashed var(--border-default);
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+.slots__empty .icon {
+  flex: none;
+  color: var(--text-muted);
+}
+
+/* ---------------------------------------------------------------------
+   "There is nothing here"
+
+   A step that has no options says so, rather than showing a panel with
+   nothing in it. Same construction as the empty time-grid above — dashed,
+   sunken, quiet — so the two never read as different products, but with a
+   heading and an icon because this one has to carry a message rather than
+   just acknowledge a gap.
+   --------------------------------------------------------------------- */
+
+.pick-empty {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-6) var(--space-5);
+  border: 1px dashed var(--border-default);
+  border-radius: var(--radius-lg);
+  background: var(--surface-sunken);
+}
+
+.pick-empty__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  background: var(--surface-raised);
+  border: 1px solid var(--border-hairline);
+}
+
+.pick-empty__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.pick-empty__title {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+}
+
+.pick-empty__text {
+  margin: 0;
+  max-width: 44ch;
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-base);
+}
+
+/* ---------------------------------------------------------------------
+   Step 4 — booking recap
+   -----------------------------------------------------------------------
+   A receipt, not a card: no tint, just ruled rows. */
+.recap {
+  display: grid;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--surface-base);
+}
+
+.recap__row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-3);
+  border-block-end: 1px solid var(--border-hairline);
+}
+
+.recap__row:last-child {
+  border-block-end: 0;
+}
+
+.recap__icon {
+  display: grid;
+  place-items: center;
+  inline-size: 1.875rem;
+  block-size: 1.875rem;
+  flex: none;
+  border-radius: var(--radius-sm);
+  background: var(--brand-softer);
+  border: 1px solid var(--brand-soft);
+  color: var(--brand);
+}
+
+.recap__text {
+  display: grid;
+  gap: 0.1rem;
+  min-inline-size: 0;
+}
+
+.recap__label {
+  font-size: var(--font-size-2xs);
+  color: var(--text-muted);
+}
+
+.recap__value {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-snug);
+  overflow-wrap: anywhere;
+}
+
+.recap__note {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-align: end;
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------
+   Footer
+   -----------------------------------------------------------------------
+   The action bar is separated from the panel by a brass-tinted rule so the
+   two buttons read as a fixed, deliberate terminus. */
+.booking-flow__footer {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  border-block-start: 1px solid var(--border-default);
+}
+
+.booking-flow__hint {
+  font-size: var(--font-size-xs);
+  color: var(--warning);
+  text-align: center;
+  min-height: 1em;
+  line-height: var(--line-height-snug);
+}
+
+/* The hint carries two different messages, and they must not share a colour: a
+   blocking instruction is worth the warning tone, while a step that is merely
+   resolving is ordinary progress. Amber for both would make every network
+   round-trip look like a fault. */
+.booking-flow__hint.is-busy {
+  color: var(--text-muted);
+}
+
+/* ---------------------------------------------------------------------
+   Small screens: side column stacks under the meta
+   ----------------------------------------------------------------------- */
+@media (max-width: 30rem) {
+  .booking-flow .modal__header,
+  .booking-flow__stepper {
+    padding-inline: var(--space-4);
+  }
+
+  .booking-flow__stepper {
+    gap: var(--space-3) var(--space-2);
+  }
+
+  .booking-flow__step-marker {
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+  }
+
+  .booking-flow__step-name {
+    font-size: var(--font-size-xs);
+  }
+
+  .pick-card__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pick-card__side {
+    justify-items: start;
+    text-align: start;
+    padding-inline-end: 1.75rem;
+    padding-inline-start: calc(2.25rem + var(--space-3));
+  }
+
+  .booking-flow__footer {
+    grid-template-columns: auto minmax(0, 1fr);
+    justify-content: space-between;
+    row-gap: var(--space-2);
+  }
+
+  .booking-flow__hint {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  /* Keep seven days legible on a narrow phone without horizontal scroll */
+  .calendar {
+    padding: var(--space-2);
+  }
+
+  .calendar__weekdays,
+  .calendar__grid {
+    gap: 2px;
+  }
+
+  .calendar__day {
+    min-block-size: 2.5rem;
+    font-size: var(--font-size-xs);
+  }
+
+  .calendar__weekday {
+    font-size: 0.5625rem;
+    letter-spacing: -0.01em;
+  }
+
+  .slots__grid {
+    grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr));
+  }
+
+  .recap {
+    padding-inline: var(--space-3);
+  }
+
+  .recap__row {
+    grid-template-columns: auto minmax(0, 1fr);
+    row-gap: var(--space-1);
+  }
+
+  .recap__note {
+    grid-column: 2;
+    text-align: start;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Very narrow phones: seven day cells must stay tappable
+   ----------------------------------------------------------------------- */
+@media (max-width: 23rem) {
+  .booking-flow__body {
+    padding-inline: var(--space-1);
+  }
+
+  .calendar {
+    padding: 2px;
+  }
+
+  .calendar__weekdays,
+  .calendar__grid {
+    gap: 1px;
+  }
+
+  .calendar__day {
+    min-block-size: 2.5rem;
+    font-size: 0.6875rem;
+  }
+
+  .slots__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

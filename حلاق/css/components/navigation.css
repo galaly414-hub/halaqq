@@ -1,0 +1,358 @@
+/* ==========================================================================
+   Header & Navigation
+   Mobile-first: brand + actions + hamburger. Full nav at 64rem.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------
+   Header shell
+
+   Solid, not frosted. A blur behind a 72px bar costs a compositing layer on
+   every scroll frame and reads as a phone menu rather than as a desk. The
+   bar simply gets more opaque as the page scrolls.
+   ----------------------------------------------------------------------- */
+.site-header {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: var(--z-header);
+  background: color-mix(in srgb, var(--surface-page) 88%, transparent);
+  border-block-end: 1px solid var(--border-subtle);
+  transition: background-color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+/* Scroll state — added by js/components/header.js */
+.site-header.is-scrolled {
+  background: var(--surface-page);
+  box-shadow: var(--shadow-md);
+  border-block-end-color: var(--border-hairline);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  height: var(--header-height);
+}
+
+/* ---------------------------------------------------------------------
+   Brand
+   ----------------------------------------------------------------------- */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--text-primary);
+  flex: none;
+  border-radius: var(--radius-md);
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.brand:hover {
+  opacity: 0.85;
+}
+
+.brand:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.brand__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  border-radius: var(--radius-md);
+  background: var(--brand-plate-bg);
+  box-shadow: var(--shadow-brand), var(--brand-plate-edge);
+  color: var(--brand-mark-fg);
+}
+
+.brand__mark .icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  stroke-width: 1.75;
+}
+
+.brand__text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.brand__name {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-black);
+  color: var(--text-primary);
+  line-height: 1.15;
+}
+
+.brand__tagline {
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+@media (max-width: 25rem) {
+  .brand__text {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Desktop navigation
+   ----------------------------------------------------------------------- */
+.nav {
+  display: none;
+}
+
+@media (min-width: 64rem) {
+  .nav {
+    display: block;
+  }
+}
+
+.nav__list {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  list-style: none;
+}
+
+.nav__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  transition: color var(--duration-base) var(--ease-out),
+    background-color var(--duration-base) var(--ease-out);
+}
+
+.nav__link:hover {
+  color: var(--text-primary);
+  background: var(--surface-raised);
+}
+
+.nav__link .icon {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.nav__link:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Active page — weight and an underline rule, not a tinted pill. A pill behind
+   every nav item turns a navigation bar into a row of buttons. */
+.nav__link.is-active,
+.nav__link[aria-current="page"] {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.nav__link.is-active::after,
+.nav__link[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  inset-block-end: -1px;
+  inset-inline: var(--space-3);
+  height: 2px;
+  border-radius: var(--radius-pill);
+  background: var(--brand);
+}
+
+.nav__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  padding-inline: 0.25rem;
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-on-primary);
+  background: var(--brand);
+  border-radius: var(--radius-pill);
+}
+
+/* ---------------------------------------------------------------------
+   Header actions
+   ----------------------------------------------------------------------- */
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: none;
+}
+
+.header-cta {
+  display: none;
+}
+
+@media (min-width: 30rem) {
+  .header-cta {
+    display: inline-flex;
+  }
+}
+
+.header-burger {
+  display: inline-flex;
+}
+
+/* The burger is the only navigation a phone has, so the press is the only
+   feedback it will ever get on a touch screen. */
+.header-burger:active {
+  background: var(--surface-overlay);
+  box-shadow: var(--shadow-inset);
+}
+
+@media (min-width: 64rem) {
+  .header-burger {
+    display: none;
+  }
+}
+
+/* Icon animation on the burger when the drawer is open */
+.header-burger .icon--close {
+  display: none;
+}
+
+.header-burger[aria-expanded="true"] .icon--menu {
+  display: none;
+}
+
+.header-burger[aria-expanded="true"] .icon--close {
+  display: block;
+}
+
+/* ---------------------------------------------------------------------
+   Mobile drawer navigation (inside <dialog class="drawer">)
+   ----------------------------------------------------------------------- */
+.drawer-nav__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  list-style: none;
+}
+
+.drawer-nav__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  transition: color var(--duration-base) var(--ease-out),
+    background-color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out);
+}
+
+.drawer-nav__link .icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: none;
+  color: var(--text-muted);
+  transition: color var(--duration-base) var(--ease-out);
+}
+
+.drawer-nav__link:hover {
+  color: var(--text-primary);
+  background: var(--surface-raised);
+}
+
+.drawer-nav__link:active {
+  background: var(--surface-overlay);
+  box-shadow: var(--shadow-inset);
+}
+
+.drawer-nav__link:hover .icon {
+  color: var(--text-secondary);
+}
+
+.drawer-nav__link.is-active,
+.drawer-nav__link[aria-current="page"] {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-semibold);
+  background: var(--brand-soft);
+  border-color: color-mix(in srgb, var(--brand) 26%, transparent);
+}
+
+.drawer-nav__link.is-active .icon,
+.drawer-nav__link[aria-current="page"] .icon {
+  color: var(--brand);
+}
+
+.drawer-nav__section {
+  padding-block-start: var(--space-5);
+}
+
+.drawer-nav__heading {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-muted);
+  padding: var(--space-2) var(--space-4);
+  margin-block-end: var(--space-1);
+}
+
+/* ---------------------------------------------------------------------
+   Breadcrumb
+   ----------------------------------------------------------------------- */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  list-style: none;
+}
+
+.breadcrumb__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.breadcrumb__item + .breadcrumb__item::before {
+  content: "";
+  width: 0.35rem;
+  height: 0.35rem;
+  border-block-start: 1.5px solid var(--border-strong);
+  border-inline-end: 1.5px solid var(--border-strong);
+  transform: rotate(-45deg);
+  flex: none;
+  opacity: 0.7;
+}
+
+[dir="ltr"] .breadcrumb__item + .breadcrumb__item::before {
+  transform: rotate(45deg);
+}
+
+.breadcrumb__link:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+
+.breadcrumb__current {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+}

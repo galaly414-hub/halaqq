@@ -1,0 +1,385 @@
+/* ==========================================================================
+   Halaq Admin — Sign in
+   ---------------------------------------------------------------------------
+   A full-bleed split: the form on the start side, a quiet brand panel on the
+   end side. On a phone the panel goes away entirely, because the point of the
+   screen is to get past it.
+
+   The form is the only thing on the page that scrolls, and the demo
+   credentials are shown rather than hidden — this is a stand-in for a real
+   sign-in, and pretending otherwise would only make the demo harder to reach.
+   ========================================================================== */
+
+.login {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  background: var(--surface-page);
+}
+
+.login__form-side {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6) var(--space-5);
+}
+
+.login__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.login__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  text-decoration: none;
+}
+
+.login__back:hover {
+  color: var(--text-primary);
+}
+
+.login__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+  color: inherit;
+}
+
+.login__brand-mark {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-md);
+  color: var(--brand-mark-fg);
+  background: var(--brand-plate-bg);
+  box-shadow: var(--shadow-brand), var(--brand-plate-edge);
+}
+
+.login__brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: var(--line-height-tight);
+}
+
+.login__brand-name {
+  font-size: var(--font-size-lg);
+  font-weight: 800;
+}
+
+.login__brand-sub {
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+}
+
+/* ---- the card ---- */
+
+.login__body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.login__card {
+  width: 100%;
+  max-width: 26rem;
+  margin-inline: auto;
+  padding: var(--space-8) var(--space-6);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-base);
+  box-shadow: var(--shadow-xl), var(--edge-light);
+}
+
+.login__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+.login__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  align-self: flex-start;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--brand);
+  background: var(--brand-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand) 22%, transparent);
+}
+
+.login__title {
+  margin: 0;
+  font-family: var(--font-editorial);
+  font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.25;
+}
+
+.login__lede {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
+}
+
+/* ---- fields ---- */
+
+.login__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.login__form .field {
+  margin: 0;
+}
+
+.login__password {
+  position: relative;
+}
+
+.login__password .input {
+  padding-inline-end: calc(var(--space-4) + 1.75rem + var(--space-2));
+}
+
+.login__reveal {
+  position: absolute;
+  inset-inline-end: var(--space-2);
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  background: transparent;
+  cursor: pointer;
+}
+
+.login__reveal:hover {
+  color: var(--text-primary);
+  background: var(--surface-overlay);
+}
+
+.login__reveal:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: 1px;
+}
+
+.login__submit {
+  margin-top: var(--space-2);
+}
+
+/* ---- the standing failure message ---- */
+
+.login__error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  background: var(--danger-soft);
+  border: 1px solid color-mix(in srgb, var(--danger) 34%, transparent);
+}
+
+.login__error[hidden] {
+  display: none;
+}
+
+.login__error .icon {
+  flex: none;
+  color: var(--danger);
+  margin-top: 2px;
+}
+
+/* ---- demo notice ---- */
+
+.login__demo {
+  margin-top: var(--space-6);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-hairline);
+  background: var(--surface-sunken);
+  font-size: var(--font-size-sm);
+}
+
+.login__demo-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.login__demo-title .icon {
+  color: var(--info);
+}
+
+.login__demo-accounts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.login__demo-account {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-base);
+  color: var(--text-secondary);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: background-color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    color var(--duration-base) var(--ease-out);
+}
+
+.login__demo-account:hover {
+  color: var(--text-primary);
+  border-color: color-mix(in srgb, var(--brand) 40%, transparent);
+  background: var(--brand-softer);
+}
+
+.login__demo-account:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: 1px;
+}
+
+.login__demo-role {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+.login__demo-creds {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+}
+
+.login__demo-creds code {
+  padding: 1px var(--space-2);
+  border-radius: var(--radius-xs);
+  background: var(--surface-overlay);
+  color: var(--text-primary);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  direction: ltr;
+}
+
+.login__foot {
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   The brand panel
+
+   Decorative, and hidden on a phone. It carries the salon name and one
+   sentence about what the workspace is for — no stock photography, because
+   there is no photography to use and a grey placeholder would be worse than
+   nothing.
+   -------------------------------------------------------------------------- */
+
+.login__panel {
+  display: none;
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-12) var(--space-10);
+  background: var(--surface-sunken);
+  border-inline-start: 1px solid var(--border-hairline);
+}
+
+.login__panel-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-6);
+  height: 100%;
+  max-width: 24rem;
+}
+
+.login__panel-quote {
+  margin: 0;
+  font-family: var(--font-editorial);
+  font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.3;
+  color: var(--text-primary);
+}
+
+.login__panel-text {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-loose);
+}
+
+.login__panel-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.login__panel-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
+}
+
+.login__panel-item .icon {
+  flex: none;
+  color: var(--brand);
+}
+
+/* ---- tablet and up: show the panel ---- */
+
+@media (min-width: 64rem) {
+  .login {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .login__panel {
+    display: flex;
+  }
+
+  .login__form-side {
+    padding: var(--space-8) var(--space-10);
+  }
+}

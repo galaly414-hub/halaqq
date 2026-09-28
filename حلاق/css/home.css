@@ -1,0 +1,503 @@
+/* ==========================================================================
+   Home page composition
+   ---------------------------------------------------------------------------
+   Loaded by index.html only. Everything here is about how the customer page
+   is put together — section rhythm, the shape of each grid, the weight of
+   the calls to action. The components themselves live in
+   css/components/ and are shared with the rest of the product.
+
+   The organising idea: the page is a sales argument, so it is set like a
+   printed page. One dominant action per screen, hairlines instead of boxes,
+   and figures presented in bands rather than as widgets.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Section heads
+
+   Every section states what it is, then what it means for the reader. The
+   eyebrow is a hairline and a label; the title is the second-largest type
+   on the page after the hero; the description is the smallest voice in
+   primary ink rather than muted grey, because it is the argument, not the
+   caption.
+   -------------------------------------------------------------------------- */
+.page-home .section__desc {
+  color: var(--text-secondary);
+  max-width: 58ch;
+}
+
+.page-home .section__head--split > .btn {
+  flex: none;
+}
+
+/* --------------------------------------------------------------------------
+   Numbers — one ruled band
+
+   Four figures a visitor is meant to compare. Boxing each of them makes
+   them four widgets; a single band with hairlines between the cells makes
+   them one line of evidence.
+   -------------------------------------------------------------------------- */
+.stat-band {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  border-block: 1px solid var(--border-subtle);
+}
+
+@media (min-width: 52rem) {
+  .stat-band {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Vertical hairlines between cells. On the two-up phone layout the rule
+   between the second cell and the third would fall on a row edge, so the
+   row separator is drawn instead. */
+.stat-cell {
+  position: relative;
+}
+
+.stat-cell + .stat-cell::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block: var(--space-4);
+  width: 1px;
+  background: var(--border-hairline);
+}
+
+@media (min-width: 52rem) {
+  .stat-cell + .stat-cell::before {
+    inset-block: var(--space-6);
+  }
+}
+
+/* Row rule between the two phone rows */
+.stat-cell:nth-child(2n)::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  height: 1px;
+  background: var(--border-hairline);
+}
+
+@media (min-width: 52rem) {
+  .stat-cell:nth-child(2n)::after {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Why choose us — pillars, not boxes
+
+   Four short arguments. They get hairline separation from the grid and no
+   surface of their own, so they never compete with the service cards.
+   -------------------------------------------------------------------------- */
+.pillars {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  border-block: 1px solid var(--border-hairline);
+}
+
+@media (min-width: 40rem) {
+  .pillars {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 68rem) {
+  .pillars {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.pillar {
+  position: relative;
+  border-inline-start: 1px solid var(--border-hairline);
+}
+
+.pillar:first-child {
+  border-inline-start: 0;
+}
+
+/* Horizontal rules where a row wraps, so the grid reads as ruled columns
+   rather than as a stack of unrelated blocks. */
+@media (max-width: 39.999rem) {
+  .pillar + .pillar {
+    border-block-start: 1px solid var(--border-hairline);
+  }
+}
+
+@media (min-width: 40rem) and (max-width: 67.999rem) {
+  .pillar:nth-child(2n)::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    height: 1px;
+    background: var(--border-hairline);
+  }
+
+  .pillar:nth-child(2n + 1)::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 0;
+    height: 1px;
+    background: var(--border-hairline);
+  }
+}
+
+@media (min-width: 68rem) {
+  .pillar + .pillar {
+    border-block-start: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Team
+   -------------------------------------------------------------------------- */
+.barber-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+
+@media (min-width: 34rem) {
+  .barber-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .barber-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+}
+
+.barber-card {
+  height: 100%;
+  transition: border-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out),
+    transform var(--duration-base) var(--ease-out);
+}
+
+.barber-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-lg), var(--edge-light);
+  transform: translateY(-3px);
+}
+
+/* --------------------------------------------------------------------------
+   Reviews
+   -------------------------------------------------------------------------- */
+.review-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+
+@media (min-width: 52rem) {
+  .review-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+}
+
+.review-card {
+  height: 100%;
+  transition: border-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out),
+    transform var(--duration-base) var(--ease-out);
+}
+
+.review-card:hover {
+  border-color: var(--border-default);
+  box-shadow: var(--shadow-md), var(--edge-light);
+  transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   Gallery
+   -------------------------------------------------------------------------- */
+.page-home .card__media {
+  aspect-ratio: 3 / 2;
+}
+
+/* --------------------------------------------------------------------------
+   The hero calls to action
+
+   One dominant control, one quiet alternative. Two equal buttons ask the
+   reader to choose, which is a question they did not come here to answer.
+
+   The primary carries a second line — how long it takes — because "fast"
+   is the actual objection the button has to overcome, and a promise of time
+   is more persuasive than an adjective.
+   -------------------------------------------------------------------------- */
+.hero__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.hero__cta {
+  position: relative;
+  overflow: hidden;
+  justify-content: flex-start;
+  gap: var(--space-3);
+  min-height: 4rem;
+  padding-inline: var(--space-6);
+}
+
+.hero__cta-label {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+/* The time promise, set small and quiet on the far side of the label. */
+.hero__cta-note {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3;
+  text-align: start;
+  padding-inline-start: var(--space-3);
+  margin-inline-start: var(--space-1);
+  border-inline-start: 1px solid currentColor;
+  opacity: 0.72;
+}
+
+@media (max-width: 26rem) {
+  .hero__cta-note {
+    display: none;
+  }
+}
+
+/* A single sheen, on hover only. Looping is what made this device look
+   cheap the first time; one pass, once, on intent, reads as a highlight. */
+.hero__cta::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: -60%;
+  width: 45%;
+  pointer-events: none;
+  background: linear-gradient(
+    to left,
+    transparent,
+    rgba(255, 255, 255, 0.32),
+    transparent
+  );
+  transform: skewX(-18deg);
+  opacity: 0;
+}
+
+.hero__cta:hover::after {
+  animation: cta-sheen 900ms var(--ease-out);
+}
+
+@keyframes cta-sheen {
+  0% {
+    inset-inline-start: -60%;
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    inset-inline-start: 130%;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__cta::after {
+    display: none;
+  }
+}
+
+/* The quiet alternative: a text link with a rule, not a second button. */
+.hero__alt {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-1);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-muted);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: color var(--duration-base) var(--ease-out);
+}
+
+.hero__alt .icon {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+
+.hero__alt:hover {
+  color: var(--text-primary);
+}
+
+.hero__alt:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* The arrow slides on hover, which is the whole hover behaviour: it says
+   "this goes somewhere" without a border or a fill to say it with. */
+.hero__alt-arrow {
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.hero__alt:hover .hero__alt-arrow {
+  transform: translateX(-4px);
+}
+
+[dir="ltr"] .hero__alt:hover .hero__alt-arrow {
+  transform: translateX(4px);
+}
+
+/* Booking button inside the availability panel — the contextual entry
+   point, sitting directly under the times it relates to. */
+.hero__panel-cta {
+  width: 100%;
+  margin-block-start: var(--space-4);
+}
+
+/* --------------------------------------------------------------------------
+   Booking process
+
+   A ruled procedure rather than three boxes. The section reads top to
+   bottom on a phone and left to right on a desktop, with the connector
+   carrying the sequence between the numerals.
+   -------------------------------------------------------------------------- */
+.page-home .steps {
+  border-block: 1px solid var(--border-hairline);
+}
+
+/* On desktop the rule that joins one numeral to the next is the separator.
+   Adding a second rule at the cell edge as well would draw two lines
+   between the same two things. */
+@media (min-width: 48rem) {
+  .page-home .step + .step {
+    border-inline-start: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Closing band
+
+   The last thing on the page is one action, stated as plainly as the first
+   one. A visitor who scrolls the whole page should meet the same promise
+   twice, in the same words.
+   -------------------------------------------------------------------------- */
+.page-home .cta-band__actions {
+  align-items: center;
+}
+
+.page-home .cta-band__actions .btn--outline {
+  border-color: var(--border-default);
+}
+
+/* --------------------------------------------------------------------------
+   Footer
+
+   A commercial footer opens with the shop and a way to act on it, then
+   settles into the directory. The action comes first because the footer is
+   where doubt gets resolved.
+   -------------------------------------------------------------------------- */
+.site-footer__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  padding-block-end: var(--space-8);
+  margin-block-end: var(--space-8);
+  border-block-end: 1px solid var(--border-hairline);
+}
+
+.site-footer__pitch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  max-width: 34ch;
+}
+
+.site-footer__pitch-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-snug);
+  color: var(--text-primary);
+}
+
+.site-footer__pitch-text {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  line-height: var(--line-height-snug);
+}
+
+.site-footer__top-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+/* The trust row: four short claims, each with its own icon, in the same
+   band. They are the same promises as the hero, restated as credentials. */
+.site-footer__trust {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4) var(--space-6);
+  padding-block: var(--space-6);
+  margin-block-end: var(--space-8);
+  border-block-end: 1px solid var(--border-hairline);
+}
+
+@media (min-width: 52rem) {
+  .site-footer__trust {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.site-footer__trust-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: var(--line-height-snug);
+}
+
+.site-footer__trust-item .icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex: none;
+  color: var(--brand);
+  stroke-width: 2;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive
+
+   Below 40rem the page is a single column of stacked sections. The one
+   rule that matters there is that nothing sits closer than a comfortable
+   thumb target: the smallest tappable element on the page is 44px.
+   -------------------------------------------------------------------------- */
+@media (max-width: 39.999rem) {
+  .page-home .section__head {
+    margin-block-end: var(--space-6);
+  }
+
+  .page-home .barber-card:hover,
+  .page-home .review-card:hover {
+    transform: none;
+  }
+}

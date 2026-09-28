@@ -1,0 +1,223 @@
+/* ==========================================================================
+   Barber card — the team
+   ---------------------------------------------------------------------------
+   A monogram plate, not a photograph.
+
+   There is no photography to show. A grey box with a broken-image glyph
+   reads as a defect, and a small circular avatar reads as a directory
+   listing. So the plate is a brass object in its own right: a wide field,
+   the initial set large, a presence marker, and a hairline frame. It holds
+   its own weight at the top of the card and needs no picture to work.
+
+   When real portraits arrive, replace the plate with a .barber-card__media
+   figure and keep everything below it unchanged.
+   ========================================================================== */
+
+.barber-card {
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------------------
+   Monogram plate
+   --------------------------------------------------------------------- */
+.barber-card__plate {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 5 / 4;
+  overflow: hidden;
+  background: var(--surface-sunken);
+  border-block-end: 1px solid var(--border-hairline);
+  isolation: isolate;
+}
+
+/* One shallow wash of light, off-centre, so the plate has a direction.
+   Subtle enough to be felt rather than seen. */
+.barber-card__plate::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  z-index: -1;
+  background: radial-gradient(
+    62% 58% at 68% 22%,
+    var(--brand-softer) 0%,
+    transparent 70%
+  );
+}
+
+/* A hairline frame inset from the plate edge: the same device as the
+   brass plate on the logo, which ties the two together. */
+.barber-card__plate::after {
+  content: "";
+  position: absolute;
+  inset: var(--space-3);
+  z-index: 1;
+  pointer-events: none;
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-sm);
+}
+
+.barber-card__monogram {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 8vw, 4.75rem);
+  font-weight: var(--font-weight-black);
+  line-height: 1;
+  color: var(--brand);
+  opacity: 0.9;
+  user-select: none;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.barber-card:hover .barber-card__monogram {
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* ---------------------------------------------------------------------
+   Availability
+
+   The dot is the fast signal; the label beside it is what makes it
+   readable without colour, and it is the accessible name too.
+   --------------------------------------------------------------------- */
+.barber-card__presence {
+  position: absolute;
+  inset-block-start: var(--space-4);
+  inset-inline-end: var(--space-4);
+  z-index: 2;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  background: var(--text-disabled);
+  box-shadow: 0 0 0 3px var(--surface-sunken);
+}
+
+.barber-card__presence--online {
+  background: var(--success);
+  box-shadow: 0 0 0 3px var(--surface-sunken),
+    0 0 0 5px var(--success-soft);
+}
+
+.barber-card__presence--busy {
+  background: var(--warning);
+  box-shadow: 0 0 0 3px var(--surface-sunken),
+    0 0 0 5px var(--warning-soft);
+}
+
+.barber-card__presence--offline {
+  background: var(--text-disabled);
+}
+
+.barber-card__status {
+  position: absolute;
+  inset-block-end: var(--space-4);
+  inset-inline-start: var(--space-4);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0.2rem var(--space-3);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--surface-raised) 88%, transparent);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-pill);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.barber-card__status .icon {
+  width: 0.75rem;
+  height: 0.75rem;
+  color: var(--success);
+  stroke-width: 2.5;
+}
+
+/* ---------------------------------------------------------------------
+   Body
+   --------------------------------------------------------------------- */
+.barber-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  flex: 1 1 auto;
+}
+
+.barber-card__id {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.barber-card__name {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-snug);
+  color: var(--text-primary);
+}
+
+.barber-card__title {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  line-height: var(--line-height-snug);
+}
+
+/* Rating and experience, divided by a hairline. Two facts, one rule. */
+.barber-card__facts {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  padding-block: var(--space-3);
+  border-block: 1px solid var(--border-hairline);
+}
+
+.barber-card__fact {
+  display: flex;
+  align-items: center;
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}
+
+.barber-card__fact + .barber-card__fact {
+  position: relative;
+  padding-inline-start: var(--space-4);
+}
+
+.barber-card__fact + .barber-card__fact::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block: 0.15rem;
+  width: 1px;
+  background: var(--border-hairline);
+}
+
+.barber-card__specialties {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-block-start: auto;
+  padding-block-start: var(--space-1);
+}
+
+/* ---------------------------------------------------------------------
+   Featured barber — a brass edge, not a filled card
+   --------------------------------------------------------------------- */
+.barber-card--featured {
+  border-color: var(--border-default);
+  box-shadow: var(--shadow-md), var(--edge-light);
+}
+
+.barber-card--featured::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 2px;
+  background: var(--brand);
+}

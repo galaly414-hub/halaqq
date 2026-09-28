@@ -1,0 +1,68 @@
+/* ==========================================================================
+   Showcase — documentation surface for the design system
+   ---------------------------------------------------------------------------
+   Used by showcase.html only. Keeping it out of hero.css lets that file stay
+   focused on the customer-facing landing section.
+   ========================================================================== */
+
+.showcase {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  background: var(--surface-base);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm), var(--edge-light);
+}
+
+@media (min-width: 48rem) {
+  .showcase {
+    padding: var(--space-6);
+  }
+}
+
+.showcase__label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-muted);
+  padding-block-end: var(--space-3);
+  border-block-end: 1px solid var(--border-hairline);
+  width: 100%;
+}
+
+.showcase__label .icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  color: var(--brand);
+}
+
+/* ---------------------------------------------------------------------
+   Inline notice used on demo screens
+   --------------------------------------------------------------------- */
+.demo-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-snug);
+  color: var(--warning);
+  background: var(--warning-soft);
+  border: 1px solid color-mix(in srgb, var(--warning) 32%, transparent);
+  border-radius: var(--radius-md);
+}
+
+.demo-banner .icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: none;
+}
+
+.demo-banner strong {
+  color: var(--text-primary);
+}

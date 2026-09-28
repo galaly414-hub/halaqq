@@ -1,0 +1,45 @@
+/* ==========================================================================
+   Halaq — Admin
+   ---------------------------------------------------------------------------
+   Entry point for admin/login.html and admin/index.html.
+
+   Separate from css/main.css on purpose. The public site and the admin shell
+   share the same base — tokens, reset, typography, buttons, fields, badges,
+   icons — but they do not share a layout: the public site is a single scrolling
+   column for customers, and the admin is a fixed workspace for staff. Keeping
+   two entry points means a change to one cannot reflow the other, and it keeps
+   the customer's page weight honest.
+
+   Import order matters: the base first so the admin can use the same custom
+   properties and components, then the admin's own layers in cascade order.
+   ========================================================================== */
+
+/* --- shared base, identical to the public site ------------------------ */
+@import url("./base/01-tokens.css");
+@import url("./base/02-reset.css");
+@import url("./base/03-typography.css");
+@import url("./base/04-utilities.css");
+@import url("./base/05-motion.css");
+@import url("./base/06-skeleton.css");
+
+/* --- reused components ------------------------------------------------ */
+@import url("./components/icon.css");
+@import url("./components/button.css");
+@import url("./components/badge.css");
+@import url("./components/form.css");
+@import url("./components/toast.css");
+@import url("./components/modal.css");
+
+/* --- admin ------------------------------------------------------------ */
+@import url("./admin/01-login.css");
+@import url("./admin/02-shell.css");
+@import url("./admin/03-sidebar.css");
+@import url("./admin/04-topbar.css");
+@import url("./admin/05-drawer.css");
+@import url("./admin/06-ui.css");
+@import url("./admin/07-forms.css");
+@import url("./admin/08-queue.css");
+@import url("./admin/09-team.css");
+@import url("./admin/10-catalogue.css");
+@import url("./admin/11-reports.css");
+@import url("./admin/12-dashboard.css");

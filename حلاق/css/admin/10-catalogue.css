@@ -1,0 +1,602 @@
+/* ==========================================================================
+   Halaq Admin — services, customers, payments
+   ---------------------------------------------------------------------------
+   Three screens, one layer, because they share their shapes: a grid of cards
+   that is a table on a wide screen and a stack on a narrow one, and a set of
+   numbers along the top.
+
+   Where they deliberately differ
+   ------------------------------
+   A service card leads with its price, because the question on a service is
+   "what does it cost". A customer card leads with the person's name and ends
+   with what they have spent, because the question is "who is this and do they
+   matter". A payment row leads with the amount and puts the button last,
+   because the question is "what is owed and who is standing here".
+
+   Nothing on this screen is carried by colour alone. A collected payment is a
+   green card *and* the word "محصَّل"; an unpaid one is amber *and* "غير محصَّل".
+   That is the whole reason the words are on the row rather than inferred from
+   the card.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Services
+   -------------------------------------------------------------------------- */
+
+.service-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  align-items: start;
+}
+
+.service-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface-base);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-xs);
+}
+
+/* Disabled, not deleted. Desaturated but every word still readable — this card
+   is how a manager checks what a service was before it came off the menu. */
+.service-card.is-off {
+  background: var(--surface-sunken);
+  border-style: dashed;
+  opacity: 0.75;
+}
+
+.service-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.service-card__id {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+/* The service's own icon, in a fixed box so cards with and without a long
+   description still line up across the grid. */
+.service-card__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-md);
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+.service-card.is-off .service-card__icon {
+  background: var(--surface-overlay);
+  color: var(--text-muted);
+}
+
+.service-card__titles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.service-card__name {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.service-card__category {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.service-card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.service-card__desc {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-loose);
+}
+
+.service-card__facts {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  padding-block: var(--space-3);
+  border-block: 1px solid var(--border-subtle);
+}
+
+.service-card__fact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.service-card__fact dt {
+  color: var(--text-muted);
+  font-size: var(--font-size-2xs);
+  font-weight: 700;
+}
+
+.service-card__fact dd {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.service-card__assign {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.service-card__sub {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+}
+
+.service-card__count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.5rem;
+  height: 1.25rem;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--surface-overlay);
+  color: var(--text-secondary);
+  font-size: var(--font-size-2xs);
+}
+
+/* The barber assignment list. A grid rather than a stack, so a salon with six
+   barbers does not turn every service card into a list as long as the team. */
+.assign {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+}
+
+.assign__choice {
+  min-width: 0;
+}
+
+.service-card__foot {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--font-size-2xs);
+  line-height: var(--line-height-loose);
+}
+
+.service-card__none {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.service-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-block-start: auto;
+}
+
+.service-card__actions .btn {
+  flex: 1 1 auto;
+}
+
+/* The description field in the service dialog. */
+.service-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.service-form .form__grid {
+  gap: var(--space-4);
+}
+
+@media (min-width: 34rem) {
+  .service-form .form__grid--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.textarea {
+  width: 100%;
+  min-height: 5.5rem;
+  padding: var(--space-3);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--surface-base);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-loose);
+  resize: vertical;
+}
+
+.textarea:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 1px;
+}
+
+/* --------------------------------------------------------------------------
+   Customers
+   -------------------------------------------------------------------------- */
+
+.customer-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  align-items: start;
+}
+
+.customer-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface-base);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-xs);
+}
+
+.customer-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.customer-card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.customer-card__phone {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  letter-spacing: var(--letter-spacing-arabic);
+}
+
+.customer-card__facts {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+}
+
+.customer-card__fact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.customer-card__fact--wide {
+  grid-column: 1 / -1;
+  padding-block-start: var(--space-2);
+  border-block-start: 1px solid var(--border-subtle);
+}
+
+.customer-card__fact dt {
+  color: var(--text-muted);
+  font-size: var(--font-size-2xs);
+  font-weight: 700;
+}
+
+.customer-card__fact dd {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  font-weight: 800;
+}
+
+.customer-card__missed {
+  color: var(--text-muted);
+  font-size: var(--font-size-2xs);
+  font-weight: 500;
+}
+
+/* The per-customer booking history, collapsed by default. Twelve customers
+   with their full histories open is a wall nobody can scan; the card is the
+   summary and this is the detail, one disclosure at a time. */
+.customer-card__more {
+  border-block-start: 1px solid var(--border-subtle);
+  padding-block-start: var(--space-3);
+}
+
+.customer-card__summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  list-style: none;
+}
+
+.customer-card__summary::-webkit-details-marker {
+  display: none;
+}
+
+.customer-card__summary:hover {
+  color: var(--text-primary);
+}
+
+.customer-card__history {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.history-row {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  font-size: var(--font-size-xs);
+}
+
+.history-row__date {
+  color: var(--text-muted);
+}
+
+.history-row__service {
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.history-row__paid {
+  grid-column: 1 / -1;
+  color: var(--text-muted);
+  text-align: end;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Payments
+   -------------------------------------------------------------------------- */
+
+.pay-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* A row, not a card grid: a payment list is a ledger and is read top to
+   bottom in the order it was written, and the order it is written is the
+   order money is owed. */
+.pay-row {
+  display: grid;
+  gap: var(--space-3);
+  align-items: center;
+  grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--surface-base);
+  border: 1px solid var(--border-subtle);
+  border-inline-start: 3px solid var(--border-subtle);
+}
+
+/* The inline-start edge carries the state as well as the badge does, so a row
+   can be found by scanning the left edge from across the desk. Never the only
+   signal: the badge word is always there too. */
+.pay-row.is-unpaid {
+  border-inline-start-color: var(--warning);
+}
+
+.pay-row.is-paid {
+  border-inline-start-color: var(--success);
+}
+
+.pay-row__state {
+  display: flex;
+  align-items: center;
+}
+
+.pay-row__who {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.pay-row__line {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.pay-row__name {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.pay-row__phone {
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.pay-row__what,
+.pay-row__when {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+}
+
+.pay-row__when {
+  color: var(--text-muted);
+}
+
+.pay-row__dot {
+  color: var(--text-disabled);
+}
+
+.pay-row__method {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+}
+
+.pay-row__method-label {
+  color: var(--text-muted);
+  font-size: var(--font-size-2xs);
+  font-weight: 700;
+}
+
+.pay-row__amount {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  min-width: 5.5rem;
+}
+
+.pay-row__value {
+  color: var(--text-primary);
+  font-size: var(--font-size-md);
+  font-weight: 800;
+}
+
+.pay-row__action {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* The one method statement, at the top of the screen. */
+.method-note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.method-note__text {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+/* --------------------------------------------------------------------------
+   Narrow screens
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 56rem) {
+  /* Below this the five columns of a payment row cannot hold a name, a
+     service, a method, an amount and a button side by side. The state badge
+     goes full width on its own line — it is what a person scans for — and the
+     rest wraps underneath it. */
+  .pay-row {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .pay-row__state {
+    grid-column: 1 / -1;
+  }
+
+  .pay-row__method,
+  .pay-row__amount {
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .pay-row__amount {
+    min-width: 0;
+  }
+
+  .pay-row__action {
+    grid-column: 1 / -1;
+    justify-content: stretch;
+  }
+
+  .pay-row__action .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 34rem) {
+  .service-grid,
+  .customer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Price, duration and bookings cannot share 320px legibly. Two across, with
+     the booking count beside the duration. */
+  .service-card__facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .customer-card__actions,
+  .service-card__actions {
+    flex-direction: column;
+  }
+
+  .service-card__actions .btn {
+    width: 100%;
+  }
+
+  .history-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .history-row__date {
+    grid-column: 1 / -1;
+  }
+}

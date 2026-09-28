@@ -1,0 +1,62 @@
+/* ==========================================================================
+   حلاق — Stylesheet entry point
+   Load order: tokens -> reset -> typography -> utilities -> layout -> components
+   Add new component files at the end of the components block.
+   ========================================================================== */
+
+/* --- Foundation ------------------------------------------------------- */
+@import url("./base/01-tokens.css");
+@import url("./base/02-reset.css");
+@import url("./base/03-typography.css");
+@import url("./base/04-utilities.css");
+@import url("./base/05-motion.css");
+@import url("./base/06-skeleton.css");
+
+/* --- Layout ----------------------------------------------------------- */
+@import url("./layout/01-layout.css");
+@import url("./layout/02-grid.css");
+@import url("./layout/03-footer.css");
+
+/* --- Components (cascade order matters) ------------------------------ */
+@import url("./components/icon.css");
+@import url("./components/button.css");
+@import url("./components/badge.css");
+@import url("./components/form.css");
+@import url("./components/card.css");
+@import url("./components/barber.css");
+@import url("./components/navigation.css");
+@import url("./components/modal.css");
+@import url("./components/toast.css");
+
+/* --- Customer-facing sections ---------------------------------------- */
+@import url("./components/hero.css");
+@import url("./components/service-menu.css");
+@import url("./components/steps.css");
+@import url("./components/booking-bar.css");
+@import url("./components/booking-flow.css");
+@import url("./components/booking-ticket.css");
+@import url("./components/booking-tracker.css");
+
+/* --- Design-system documentation (showcase page) --------------------- */
+@import url("./components/showcase.css");
+
+/* ==========================================================================
+   Print
+   ========================================================================== */
+@media print {
+  .site-header,
+  .site-footer,
+  .toast-region,
+  .no-print {
+    display: none !important;
+  }
+
+  .app-main {
+    padding-block-start: 0;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+}

@@ -1,0 +1,308 @@
+/* ==========================================================================
+   Button — single base + modifier set
+   Variants: primary | secondary | outline | ghost | danger | link
+   Sizes:    sm | md | lg
+   States:   hover | active | focus-visible | disabled | loading
+   Icon-only buttons keep a 1:1 box and always need aria-label.
+   ========================================================================== */
+
+.btn {
+  --btn-bg: transparent;
+  --btn-fg: var(--text-primary);
+  --btn-border: transparent;
+  --btn-shadow: none;
+  --btn-edge: none;
+  --btn-pad-inline: var(--space-5);
+  --btn-pad-block: var(--space-3);
+  --btn-font-size: var(--font-size-base);
+  --btn-radius: var(--radius-md);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--btn-pad-block) var(--btn-pad-inline);
+  min-height: 2.75rem;
+  font-family: var(--font-sans);
+  font-size: var(--btn-font-size);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.2;
+  letter-spacing: var(--letter-spacing-arabic);
+  text-align: center;
+  white-space: nowrap;
+  color: var(--btn-fg);
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-border);
+  border-radius: var(--btn-radius);
+  box-shadow: var(--btn-shadow), var(--btn-edge);
+  text-decoration: none;
+  transition: background-color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Filled buttons get a one-pixel light edge along the top, the same detail
+   the cards use, so a button and the card it sits on share a material. */
+.btn--primary,
+.btn--danger {
+  --btn-edge: var(--edge-light);
+}
+
+.btn:hover:not(:disabled):not([aria-disabled="true"]) {
+  transform: translateY(-1px);
+}
+
+.btn:active:not(:disabled):not([aria-disabled="true"]) {
+  transform: translateY(0);
+}
+
+.btn:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------
+   Variants
+   ----------------------------------------------------------------------- */
+.btn--primary {
+  --btn-bg: var(--brand);
+  --btn-fg: var(--text-on-primary);
+  --btn-border: var(--brand);
+  --btn-shadow: var(--shadow-brand);
+}
+
+.btn--primary:hover:not(:disabled) {
+  --btn-bg: var(--brand-strong);
+  --btn-border: var(--brand-strong);
+  --btn-shadow: 0 12px 32px -10px rgba(211, 173, 85, 0.42);
+}
+
+[data-theme="light"] .btn--primary:hover:not(:disabled) {
+  --btn-shadow: 0 12px 30px -12px rgba(125, 95, 22, 0.46);
+}
+
+.btn--secondary {
+  --btn-bg: var(--surface-raised);
+  --btn-fg: var(--text-primary);
+  --btn-border: var(--border-default);
+  --btn-shadow: var(--shadow-xs);
+  --btn-edge: var(--edge-light);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  --btn-border: var(--border-strong);
+  --btn-bg: var(--surface-overlay);
+  --btn-shadow: var(--shadow-sm);
+}
+
+.btn--outline {
+  --btn-bg: transparent;
+  --btn-fg: var(--text-primary);
+  --btn-border: var(--border-strong);
+}
+
+.btn--outline:hover:not(:disabled) {
+  --btn-border: var(--brand);
+  --btn-fg: var(--brand);
+  --btn-bg: var(--brand-softer);
+}
+
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--text-secondary);
+  --btn-border: transparent;
+}
+
+.btn--ghost:hover:not(:disabled) {
+  --btn-bg: var(--surface-raised);
+  --btn-fg: var(--text-primary);
+}
+
+/* Destructive, used for removing a record. Destructive actions are quiet by
+   default: solid red on every screen turns a list of buttons into a wall of
+   alarms, so the fill only arrives on hover. */
+.btn--danger {
+  --btn-bg: transparent;
+  --btn-fg: var(--danger);
+  --btn-border: color-mix(in srgb, var(--danger) 38%, transparent);
+  --btn-shadow: none;
+  --btn-edge: none;
+}
+
+.btn--danger:hover:not(:disabled) {
+  --btn-bg: var(--danger);
+  --btn-fg: #2a0a0a;
+  --btn-border: var(--danger);
+  --btn-shadow: 0 8px 24px -10px rgba(247, 158, 156, 0.4);
+  --btn-edge: var(--edge-light);
+}
+
+[data-theme="light"] .btn--danger:hover:not(:disabled) {
+  --btn-fg: #ffffff;
+}
+
+.btn--link {
+  --btn-bg: transparent;
+  --btn-fg: var(--brand);
+  --btn-border: transparent;
+  --btn-pad-inline: 0;
+  --btn-pad-block: 0;
+  min-height: auto;
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--border-strong);
+}
+
+.btn--link:hover:not(:disabled) {
+  --btn-bg: transparent;
+  text-decoration-color: currentColor;
+  transform: none;
+}
+
+/* ---------------------------------------------------------------------
+   Sizes
+   ----------------------------------------------------------------------- */
+.btn--sm {
+  --btn-pad-inline: var(--space-3);
+  --btn-pad-block: var(--space-2);
+  --btn-font-size: var(--font-size-sm);
+  --btn-radius: var(--radius-sm);
+  min-height: 2.25rem;
+}
+
+.btn--lg {
+  --btn-pad-inline: var(--space-8);
+  --btn-pad-block: var(--space-4);
+  --btn-font-size: var(--font-size-lg);
+  --btn-radius: var(--radius-md);
+  min-height: 3.25rem;
+}
+
+.btn--block {
+  display: flex;
+  width: 100%;
+}
+
+/* ---------------------------------------------------------------------
+   Icon-only
+   ----------------------------------------------------------------------- */
+.btn--icon {
+  --btn-pad-inline: 0;
+  padding-inline: 0;
+  width: 2.75rem;
+  min-height: 2.75rem;
+  flex: none;
+}
+
+.btn--icon.btn--sm {
+  width: 2.25rem;
+  min-height: 2.25rem;
+}
+
+.btn--icon.btn--lg {
+  width: 3.25rem;
+  min-height: 3.25rem;
+}
+
+.btn .icon {
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.btn--sm .icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.btn--lg .icon {
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+/* ---------------------------------------------------------------------
+   Leading icon sits on the inline-start (right in RTL)
+   ----------------------------------------------------------------------- */
+.btn .icon--end {
+  margin-inline-start: 0;
+}
+
+.btn:not(.btn--link) .icon--start {
+  margin-inline-end: calc(var(--space-2) * -0.25);
+}
+
+/* ---------------------------------------------------------------------
+   Loading state — label stays for screen readers, spinner is decorative
+   ----------------------------------------------------------------------- */
+.btn[data-loading="true"] {
+  pointer-events: none;
+  color: transparent !important;
+}
+
+/* A button that is working is not a button that is unavailable, so it keeps its
+   full weight. The generic disabled rule dims it, and a dimmed spinner reads as
+   a control that has given up rather than one that is about to answer. */
+.btn[data-loading="true"]:disabled,
+.btn[data-loading="true"][aria-disabled="true"] {
+  opacity: 1;
+}
+
+.btn[data-loading="true"]::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin: -0.5625rem 0 0 -0.5625rem;
+  border: 2px solid currentColor;
+  border-block-start-color: transparent;
+  border-radius: 50%;
+  color: var(--btn-fg);
+  animation: btn-spin 640ms linear infinite;
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Button group
+   ----------------------------------------------------------------------- */
+.btn-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.btn-group--attached {
+  flex-wrap: nowrap;
+  gap: 0;
+}
+
+.btn-group--attached .btn {
+  border-radius: 0;
+}
+
+.btn-group--attached .btn:first-child {
+  border-start-start-radius: var(--radius-md);
+  border-end-start-radius: var(--radius-md);
+}
+
+.btn-group--attached .btn:last-child {
+  border-start-end-radius: var(--radius-md);
+  border-end-end-radius: var(--radius-md);
+}

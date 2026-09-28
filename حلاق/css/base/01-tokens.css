@@ -1,0 +1,363 @@
+/* ==========================================================================
+   Design Tokens — the single source of truth for the design system.
+   Every colour, size, font and motion value used by the UI lives here.
+   To re-brand the app, change values in this file only.
+
+   The palette is deliberately warm. A barbershop reads as leather, brass and
+   wood, and a blue-grey neutral ramp makes every screen look like a dashboard
+   template. The whole ramp below is the same warm grey, only the mix changes.
+   ========================================================================== */
+
+:root {
+  /* ---------------------------------------------------------------------
+     1. Colour palette — Brand (antique brass)
+     --------------------------------------------------------------------- */
+  --color-primary-50: #fbf7ee;
+  --color-primary-100: #f6eed6;
+  --color-primary-200: #ecdcae;
+  --color-primary-300: #e0c47e; /* primary on dark surfaces */
+  --color-primary-400: #d3ad55; /* brand */
+  --color-primary-500: #bb9237;
+  --color-primary-600: #9a7422;
+  --color-primary-700: #78591c;
+  --color-primary-800: #4f3a13;
+  --color-primary-900: #2a1f0b;
+
+  /* ---------------------------------------------------------------------
+     2. Colour palette — Neutrals (warm charcoal)
+     --------------------------------------------------------------------- */
+  --color-neutral-0: #fffdfa;
+  --color-neutral-50: #f3eee6;
+  --color-neutral-100: #e7e1d8;
+  --color-neutral-200: #d1c9bd;
+  --color-neutral-300: #b0a699;
+  --color-neutral-400: #8b8175;
+  --color-neutral-500: #6b6259;
+  --color-neutral-600: #4d463f;
+  --color-neutral-700: #363029;
+  --color-neutral-800: #24211e;
+  --color-neutral-850: #1b1917;
+  --color-neutral-900: #141312;
+  --color-neutral-950: #0e0d0c;
+  --color-neutral-1000: #080807;
+
+  /* ---------------------------------------------------------------------
+     3. Colour palette — Semantic status
+     --------------------------------------------------------------------- */
+  --color-success-100: #d2f3e2;
+  --color-success-300: #6fdcae;
+  --color-success-500: #10a877;
+  --color-success-700: #04785a;
+
+  --color-warning-100: #faedca;
+  --color-warning-300: #f5c85c;
+  --color-warning-500: #dd9a06;
+  --color-warning-700: #a86a06;
+
+  --color-danger-100: #fbdedd;
+  --color-danger-300: #f79e9c;
+  --color-danger-500: #e04541;
+  --color-danger-700: #b32521;
+
+  --color-info-100: #d9e7fb;
+  --color-info-300: #8bbcf8;
+  --color-info-500: #3478e6;
+  --color-info-700: #1c54c4;
+
+  /* ---------------------------------------------------------------------
+     4. Semantic surface tokens
+     ---------------------------------------------------------------------
+     A four-step ladder: page, base (resting card), raised (lifted card or
+     panel), overlay (menus, popovers). Keeping the steps close together is
+     what makes a dark interface read as calm instead of stripey.
+     --------------------------------------------------------------------- */
+  --surface-page: var(--color-neutral-950);
+  --surface-base: #161514;
+  --surface-raised: var(--color-neutral-850);
+  --surface-overlay: var(--color-neutral-800);
+  --surface-sunken: var(--color-neutral-1000);
+  --surface-inverse: var(--color-neutral-50);
+  /* Scrim behind modals, drawers and the mobile booking bar */
+  --surface-veil: rgba(6, 6, 5, 0.72);
+
+  --border-subtle: rgba(247, 244, 239, 0.06);
+  --border-default: rgba(247, 244, 239, 0.1);
+  --border-strong: rgba(247, 244, 239, 0.18);
+  --border-inverse: rgba(14, 13, 12, 0.12);
+  /* The faintest edge there is: a table rule inside an already-bordered card */
+  --border-hairline: rgba(247, 244, 239, 0.045);
+
+  --text-primary: #f7f4ef; /* 16.5:1 on --surface-page */
+  --text-secondary: #c9c2b7; /* 10.4:1 */
+  --text-muted: #9c948a; /* 6.3:1   */
+  --text-disabled: #6b655e; /* non-text, paired with aria-disabled */
+  --text-on-primary: #1a1405; /* on brass — 11.2:1 */
+  --text-inverse: #141312;
+
+  --brand: var(--color-primary-400);
+  --brand-strong: var(--color-primary-300);
+  --brand-soft: rgba(211, 173, 85, 0.13);
+  --brand-softer: rgba(211, 173, 85, 0.07);
+  --focus-ring: var(--color-primary-300);
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 3px;
+
+  /* Filled brass surfaces: logo mark, avatar, initials.
+     Kept separate from --brand so the fill stays legible in both themes. */
+  --brand-mark-from: #e2c479;
+  --brand-mark-to: #b48a2c;
+  --brand-mark-fg: #171104; /* against the darkest stop */
+  /* The plate itself: a shallow shade, a hairline of light along the top edge
+     and a bright inner rim. Three details, and it stops looking like a
+     coloured square with a glyph in it. */
+  --brand-plate-bg: linear-gradient(
+    160deg,
+    var(--brand-mark-from) 0%,
+    var(--brand-mark-to) 100%
+  );
+  --brand-plate-edge: inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+
+  /* An ink plate: a warm charcoal band that keeps its polarity in both
+     themes — lighter than the surface it sits on in the dark theme, darker
+     than it in the light one — so an inked band always reads as inked.
+     Brass on ink is far stronger than ink-on-light, which is what makes it
+     the right ground for a number that has to be read across a room. */
+  --surface-ink: #221f1a;
+  --surface-ink-edge: rgba(211, 173, 85, 0.42);
+  --on-ink: #f4eee2;
+  --on-ink-muted: #a8a094;
+  --brand-on-ink: #d9b264; /* 8.6:1 against --surface-ink */
+
+  --success: var(--color-success-300);
+  --success-soft: rgba(111, 220, 174, 0.13);
+  --warning: var(--color-warning-300);
+  --warning-soft: rgba(245, 200, 92, 0.13);
+  --danger: var(--color-danger-300);
+  --danger-soft: rgba(247, 158, 156, 0.13);
+  --info: var(--color-info-300);
+  --info-soft: rgba(139, 188, 248, 0.13);
+
+  /* ---------------------------------------------------------------------
+     5. Typography
+
+     Three families, each with one job:
+
+       sans      IBM Plex Sans Arabic — interface and body copy. It has
+                 proper Latin and Arabic in one design, so the digits, prices
+                 and codes in a table sit on the same rhythm as the words.
+       display   Cairo — headings. Geometric, wide, and heavy enough to carry
+                 a headline at 3rem without going soft.
+       editorial Noto Naskh Arabic — a serif naskh, used sparingly on the one
+                 or two large statements that should read as a printed page
+                 rather than a screen.
+     --------------------------------------------------------------------- */
+  --font-sans: "IBM Plex Sans Arabic", "Tajawal", "Noto Sans Arabic", "Dubai",
+    "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-display: "Cairo", "IBM Plex Sans Arabic", "Tajawal", "Segoe UI",
+    system-ui, sans-serif;
+  --font-editorial: "Noto Naskh Arabic", "Cairo", "Tajawal", "Times New Roman",
+    serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "SF Mono", "Segoe UI Mono",
+    Menlo, Consolas, monospace;
+
+  --font-size-2xs: 0.6875rem; /* 11px */
+  --font-size-xs: 0.75rem; /* 12px */
+  --font-size-sm: 0.8125rem; /* 13px */
+  --font-size-base: 0.9375rem; /* 15px */
+  --font-size-md: 1rem; /* 16px */
+  --font-size-lg: 1.125rem; /* 18px */
+  --font-size-xl: 1.375rem; /* 22px */
+  --font-size-2xl: 1.75rem; /* 28px */
+  --font-size-3xl: 2.25rem; /* 36px */
+  --font-size-4xl: 3rem; /* 48px */
+  --font-size-5xl: 3.75rem; /* 60px */
+
+  /* Fluid sizes. Anything that has to hold a headline on a phone and still
+     fill a 27" monitor uses one of these rather than a fixed step. */
+  --text-section: clamp(1.65rem, 1.15rem + 2.1vw, 2.6rem);
+  --text-display: clamp(2.35rem, 1.35rem + 4.4vw, 4.1rem);
+  --text-lede: clamp(1rem, 0.95rem + 0.32vw, 1.15rem);
+
+  --line-height-tight: 1.14;
+  --line-height-snug: 1.35;
+  --line-height-base: 1.65;
+  --line-height-loose: 1.8;
+
+  --letter-spacing-tight: -0.01em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.02em;
+  --letter-spacing-wider: 0.08em;
+  --letter-spacing-arabic: 0; /* Arabic must not be letter-spaced */
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-black: 800;
+
+  /* ---------------------------------------------------------------------
+     6. Spacing scale (4px base)
+     --------------------------------------------------------------------- */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  /* Fluid section rhythm — mobile-first, grows with viewport */
+  --section-padding-block: clamp(3.5rem, 7vw, 7rem);
+  --section-gap: clamp(2.25rem, 4vw, 3.75rem);
+
+  /* ---------------------------------------------------------------------
+     7. Radii
+
+     Tighter than a typical card kit. Sharp corners are the masculine signal
+     here; a 28px radius on everything is what makes a product look like a
+     template.
+     --------------------------------------------------------------------- */
+  --radius-none: 0;
+  --radius-xs: 3px;
+  --radius-sm: 6px;
+  --radius-md: 9px;
+  --radius-lg: 13px;
+  --radius-xl: 18px;
+  --radius-2xl: 24px;
+  --radius-3xl: 32px;
+  --radius-pill: 999px;
+
+  /* ---------------------------------------------------------------------
+     8. Elevation
+
+     Every step is two layers: a tight contact shadow that says the surface
+     is resting on something, and a wide diffuse one that says how high it is.
+     One-layer shadows are what make dark interfaces look like stickers.
+     --------------------------------------------------------------------- */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 2px 5px -1px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 10px 24px -8px rgba(0, 0, 0, 0.62), 0 2px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 22px 46px -14px rgba(0, 0, 0, 0.7), 0 6px 14px -4px rgba(0, 0, 0, 0.44);
+  --shadow-xl: 0 38px 82px -22px rgba(0, 0, 0, 0.8), 0 12px 26px -8px rgba(0, 0, 0, 0.5);
+  --shadow-brand: 0 8px 24px -8px rgba(211, 173, 85, 0.3);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.045);
+  /* A hairline of light along the top edge — the single detail that makes a
+     dark card read as a physical surface rather than a hole. */
+  --edge-light: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  /* ---------------------------------------------------------------------
+     9. Motion
+
+     One easing vocabulary. Anything that moves on this product uses
+     --ease-out; --ease-spring is reserved for a control that physically
+     moves, such as a switch thumb.
+     --------------------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  --duration-fast: 130ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+  --duration-slower: 520ms;
+
+  /* Short aliases. The admin shell refers to these and a component never
+     should hard-code a millisecond count. */
+  --motion-fast: var(--duration-fast);
+  --motion-base: var(--duration-base);
+  --motion-slow: var(--duration-slow);
+
+  /* ---------------------------------------------------------------------
+     10. Layout metrics
+     --------------------------------------------------------------------- */
+  --container-max: 1200px;
+  --container-narrow: 780px;
+  --container-wide: 1400px;
+  --container-pad-inline: clamp(1.125rem, 4vw, 2.5rem);
+
+  --header-height: 4.5rem;
+  --z-base: 1;
+  --z-sticky: 100;
+  --z-header: 200;
+  --z-drawer: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+}
+
+/* ---------------------------------------------------------------------
+   11. Light theme override (opt-in via [data-theme="light"])
+
+   Not white. A hair-warm ivory, because a pure white page under brass reads
+   as a spreadsheet, and because the tint is what stops the light theme
+   looking like an unstyled fallback of the dark one.
+   ----------------------------------------------------------------------- */
+[data-theme="light"] {
+  --surface-page: var(--color-neutral-50);
+  --surface-base: var(--color-neutral-0);
+  --surface-raised: var(--color-neutral-0);
+  --surface-overlay: var(--color-neutral-0);
+  --surface-sunken: var(--color-neutral-100);
+  --surface-inverse: var(--color-neutral-900);
+  --surface-veil: rgba(28, 24, 20, 0.42);
+
+  --border-subtle: rgba(20, 19, 18, 0.08);
+  --border-default: rgba(20, 19, 18, 0.14);
+  --border-strong: rgba(20, 19, 18, 0.26);
+  --border-inverse: rgba(255, 255, 255, 0.2);
+  --border-hairline: rgba(20, 19, 18, 0.07);
+
+  --text-primary: #191714; /* 15.2:1 on --surface-page */
+  --text-secondary: #3b3733;
+  --text-muted: #5c564e;
+  --text-disabled: #9a938a;
+  --text-on-primary: #fffdfa;
+  --text-inverse: #f7f4ef;
+
+  /* Darkened brass so accent text stays well above AA on ivory: 5.3:1 */
+  --brand: #7d5f16;
+  --brand-strong: #63490f;
+  --brand-soft: rgba(125, 95, 22, 0.1);
+  --brand-softer: rgba(125, 95, 22, 0.055);
+  --focus-ring: #7d5f16;
+
+  --success: var(--color-success-700);
+  --success-soft: rgba(4, 120, 90, 0.1);
+  --warning: var(--color-warning-700);
+  --warning-soft: rgba(168, 106, 6, 0.11);
+  --danger: var(--color-danger-700);
+  --danger-soft: rgba(179, 37, 33, 0.09);
+  --info: var(--color-info-700);
+  --info-soft: rgba(28, 84, 196, 0.09);
+
+  --shadow-xs: 0 1px 2px rgba(46, 36, 24, 0.07);
+  --shadow-sm: 0 2px 5px -1px rgba(46, 36, 24, 0.09), 0 1px 2px rgba(46, 36, 24, 0.05);
+  --shadow-md: 0 10px 24px -10px rgba(46, 36, 24, 0.18), 0 2px 6px rgba(46, 36, 24, 0.07);
+  --shadow-lg: 0 22px 46px -16px rgba(46, 36, 24, 0.22), 0 6px 14px -6px rgba(46, 36, 24, 0.12);
+  --shadow-xl: 0 38px 80px -24px rgba(46, 36, 24, 0.28), 0 12px 26px -10px rgba(46, 36, 24, 0.14);
+  --shadow-brand: 0 8px 24px -10px rgba(125, 95, 22, 0.34);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --edge-light: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  --brand-mark-from: #b1892a;
+  --brand-mark-to: #6d5016;
+  --brand-mark-fg: #fffdfa; /* 7.2:1 against the darkest stop */
+  --brand-plate-edge: inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+
+  /* The ink plate inverts with the theme: on ivory it must be darker than
+     the paper, in the dark theme lighter than the surface. The brass on it
+     gets lighter too, because --brand is already darkened for the light
+     theme and would vanish against charcoal. */
+  --surface-ink: #17150f;
+  --surface-ink-edge: rgba(125, 95, 22, 0.5);
+  --on-ink: #f4eee2;
+  --on-ink-muted: #a8a094;
+  --brand-on-ink: #e3c67e;
+}

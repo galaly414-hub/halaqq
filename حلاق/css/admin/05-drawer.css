@@ -1,0 +1,140 @@
+/* ==========================================================================
+   Halaq Admin — Mobile drawer
+   ---------------------------------------------------------------------------
+   The sidebar on a phone. It is a <dialog> opened with showModal(), which the
+   browser already does the right things for: it moves focus inside, traps Tab
+   at the edges, closes on Escape, and marks the rest of the page inert so a
+   screen reader cannot wander into content behind the panel.
+
+   What is left to do here is the sliding, the backdrop, and letting the
+   sidebar inside it use its full form rather than the rail.
+   ========================================================================== */
+
+.drawer {
+  /* Reset the UA dialog box: the panel is the thing that gets laid out. */
+  padding: 0;
+  border: 0;
+  max-width: none;
+  max-height: none;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+.drawer::backdrop {
+  background: var(--surface-veil);
+}
+
+.drawer__panel {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  display: flex;
+  flex-direction: column;
+  width: min(19rem, 86vw);
+  background: var(--surface-base);
+  border-inline-start: 1px solid var(--border-default);
+  box-shadow: var(--shadow-xl), var(--edge-light);
+  transform: translateX(100%);
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+/* Logical direction: the panel enters from the inline-end edge, which is the
+   left in RTL and the right in LTR. translateX needs the sign flipped by hand,
+   so the open state is written for RTL and the LTR case corrects it. */
+[dir="ltr"] .drawer__panel {
+  transform: translateX(-100%);
+}
+
+.drawer[open] .drawer__panel {
+  transform: translateX(0);
+}
+
+/* Until the panel has finished sliding, it must not take clicks. */
+.drawer:not([open]) .drawer__panel {
+  visibility: hidden;
+}
+
+.drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex: none;
+  height: var(--admin-topbar-h);
+  padding-inline: var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.drawer__title {
+  margin: 0;
+  font-size: var(--font-size-md);
+  font-weight: 800;
+}
+
+.drawer__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* The sidebar inside a drawer is always the full version, whatever the user
+   had pinned on a desktop. A rail on a phone would be unusable. */
+.sidebar--in-drawer .sidebar__inner {
+  width: 100%;
+}
+
+.sidebar--in-drawer .sidebar__label,
+.sidebar--in-drawer .sidebar__group-title,
+.sidebar--in-drawer .sidebar__brand-text,
+.sidebar--in-drawer .sidebar__site-link span {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: inherit;
+  overflow: visible;
+  clip-path: none;
+}
+
+.sidebar--in-drawer .sidebar__group-title {
+  height: auto;
+  margin-block: 0 var(--space-2);
+  background: transparent;
+}
+
+.sidebar--in-drawer .sidebar__brand,
+.sidebar--in-drawer .sidebar__link,
+.sidebar--in-drawer .sidebar__site-link {
+  justify-content: flex-start;
+  padding-inline: var(--space-3);
+}
+
+.sidebar--in-drawer .sidebar__nav {
+  padding-inline: var(--space-3);
+}
+
+.sidebar--in-drawer .sidebar__inner {
+  border: 0;
+  background: transparent;
+}
+
+/* The brand lockup belongs to the page, and the drawer already has its own
+   heading, so it is not repeated. */
+.sidebar--in-drawer .sidebar__brand {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Motion
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer__panel {
+    transition: none;
+  }
+}

@@ -1,0 +1,307 @@
+/* ==========================================================================
+   Halaq Admin — the queue
+   ---------------------------------------------------------------------------
+   One card per barber, each holding three things in a fixed order: who is in
+   the chair, who is next, and who else is waiting. The order is the whole
+   design. A receptionist reads top to bottom, so the person being served is
+   the largest thing on the card and the rest is detail hanging off it.
+
+   The columns collapse to one on a phone, in the same order. Nobody scrolls
+   sideways to find out who is in the chair.
+
+   The "now" row is the only place the brand colour appears as a surface. It is
+   the one row a receptionist must not be able to walk past, and it is also
+   the one row a customer standing at the desk can be shown to.
+   ========================================================================== */
+
+.lanes {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  align-items: start;
+}
+
+/* --------------------------------------------------------------------------
+   A barber's column
+   -------------------------------------------------------------------------- */
+
+.lane {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-lg);
+  background: var(--surface-base);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+}
+
+.lane__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--surface-sunken);
+}
+
+.lane__id {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.lane__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.lane__wait {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.125rem;
+  text-align: end;
+}
+
+.lane__wait-label {
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.lane__wait-value {
+  color: var(--text-primary);
+  font-size: var(--font-size-md);
+  font-weight: 800;
+}
+
+.lane__now,
+.lane__called,
+.lane__next,
+.lane__rest {
+  padding: var(--space-4);
+}
+
+.lane__called,
+.lane__next,
+.lane__rest {
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* The called customer keeps the accent. They are the one the front desk is
+   looking at right now — a person is standing in front of them. */
+.lane__called .queue-person--now {
+  border-color: var(--info);
+  background: var(--info-soft);
+}
+
+.lane__called .queue-person__estimate.is-current {
+  background: var(--info-soft);
+  color: var(--info);
+}
+
+.lane__sub {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: var(--letter-spacing-arabic);
+}
+
+.lane__sub-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--surface-overlay);
+  color: var(--text-secondary);
+  font-size: var(--font-size-2xs);
+}
+
+/* An empty chair is a real state with a real word, not a blank gap. */
+.lane__idle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* --------------------------------------------------------------------------
+   One customer
+   -------------------------------------------------------------------------- */
+
+.queue-person {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-base);
+}
+
+.queue-person--now {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+  box-shadow: var(--shadow-xs);
+}
+
+.queue-person__pos {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--radius-pill);
+  background: var(--surface-overlay);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+}
+
+.queue-person__who {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+  flex: 1 1 12rem;
+}
+
+.queue-person__line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.queue-person__name {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.queue-person__what,
+.queue-person__ticket {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+}
+
+.queue-person__ticket {
+  color: var(--text-muted);
+}
+
+.queue-person__dot {
+  color: var(--text-disabled);
+}
+
+.queue-person__wait {
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+
+/* The estimate is a projection, so it is written with a qualifier every time
+   and never shown as a bare number. */
+.queue-person__estimate {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.queue-person__estimate.is-current {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.queue-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  flex: 1 1 100%;
+  padding-block-start: var(--space-1);
+}
+
+.queue-rest {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.queue-rest__item {
+  display: block;
+}
+
+/* The expected list is the same row with no position number and no estimate
+   column, so it only needs the list reset. */
+.queue-rest--expected .queue-person {
+  background: var(--surface-sunken);
+}
+
+/* --------------------------------------------------------------------------
+   Narrow screens
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 34rem) {
+  .lanes {
+    grid-template-columns: 1fr;
+  }
+
+  .lane__head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .lane__wait {
+    align-items: flex-start;
+    text-align: start;
+    padding-block-start: var(--space-2);
+    border-block-start: 1px solid var(--border-subtle);
+  }
+
+  .queue-person__wait {
+    width: 100%;
+  }
+
+  /* Two per row at 320px puts the shortest button — "بدء الخدمة" — at about
+     116px, which still fits its icon and its label. One per row would double
+     the height of a long queue for no gain. */
+  .queue-actions .btn {
+    flex: 1 1 8rem;
+  }
+
+  .queue-actions .btn--ghost {
+    flex-basis: 6.5rem;
+  }
+}

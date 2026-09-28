@@ -1,0 +1,210 @@
+/* ==========================================================================
+   Toast — transient notifications
+   Region is aria-live="polite"; each toast also has role="status".
+   Status is conveyed by icon + title text, not colour alone.
+   ========================================================================== */
+
+.toast-region {
+  position: fixed;
+  inset-block-end: var(--space-4);
+  inset-inline: var(--space-4);
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  pointer-events: none;
+}
+
+@media (min-width: 40rem) {
+  .toast-region {
+    inset-block-end: var(--space-6);
+    inset-inline-start: auto;
+    inset-inline-end: var(--space-6);
+    width: min(24rem, calc(100vw - 2rem));
+  }
+}
+
+.toast {
+  --toast-accent: var(--brand);
+  --toast-soft: var(--brand-soft);
+
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  padding-inline-start: calc(var(--space-4) + 2px);
+  background: var(--surface-raised);
+  border: 1px solid var(--border-default);
+  border-inline-start: 2px solid var(--toast-accent);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg), var(--edge-light);
+  pointer-events: auto;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(10px) scale(0.985);
+  transition: opacity var(--duration-base) var(--ease-out),
+    transform var(--duration-base) var(--ease-out);
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.toast--success {
+  --toast-accent: var(--success);
+  --toast-soft: var(--success-soft);
+}
+.toast--warning {
+  --toast-accent: var(--warning);
+  --toast-soft: var(--warning-soft);
+}
+.toast--danger {
+  --toast-accent: var(--danger);
+  --toast-soft: var(--danger-soft);
+}
+.toast--info {
+  --toast-accent: var(--info);
+  --toast-soft: var(--info-soft);
+}
+
+.toast__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: none;
+  margin-block-start: 0.1rem;
+  color: var(--toast-accent);
+  background: var(--toast-soft);
+  border-radius: var(--radius-sm);
+}
+
+.toast__icon .icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  stroke-width: 2.25;
+}
+
+.toast__content {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.toast__title {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.toast__message {
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-snug);
+  color: var(--text-secondary);
+}
+
+.toast__close {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  background: none;
+  border: 0;
+  border-radius: var(--radius-sm);
+  transition: color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+
+.toast__close:hover {
+  color: var(--text-primary);
+  background: var(--surface-raised);
+}
+
+.toast__close .icon {
+  width: 0.875rem;
+  height: 0.875rem;
+  stroke-width: 2.25;
+}
+
+.toast__progress {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  height: 2px;
+  width: 100%;
+  background: var(--toast-accent);
+  transform-origin: inline-start;
+  animation: toast-progress linear forwards;
+}
+
+@keyframes toast-progress {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Tooltip — CSS only, description is not the sole source of info
+   ----------------------------------------------------------------------- */
+.tooltip {
+  position: relative;
+  display: inline-flex;
+}
+
+.tooltip__content {
+  position: absolute;
+  inset-block-end: calc(100% + var(--space-2));
+  inset-inline-start: 50%;
+  transform: translateX(50%) translateY(4px);
+  z-index: var(--z-toast);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+  white-space: nowrap;
+  color: var(--text-primary);
+  background: var(--surface-overlay);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  opacity: 0;  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out),
+    visibility var(--duration-fast);
+}
+
+[dir="ltr"] .tooltip__content {
+  transform: translateX(-50%) translateY(4px);
+}
+
+.tooltip:hover .tooltip__content,
+.tooltip:focus-within .tooltip__content {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(50%) translateY(0);
+}
+
+[dir="ltr"] .tooltip:hover .tooltip__content,
+[dir="ltr"] .tooltip:focus-within .tooltip__content {
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (hover: none) {
+  .tooltip__content {
+    display: none;
+  }
+}

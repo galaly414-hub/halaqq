@@ -1,0 +1,236 @@
+/* ==========================================================================
+   Layout — container, stack, section primitives
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------
+   Container
+   ----------------------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: calc(var(--container-max) + var(--container-pad-inline) * 2);
+  margin-inline: auto;
+  padding-inline: var(--container-pad-inline);
+}
+
+.container--narrow {
+  max-width: calc(var(--container-narrow) + var(--container-pad-inline) * 2);
+}
+
+.container--wide {
+  max-width: calc(var(--container-wide) + var(--container-pad-inline) * 2);
+}
+
+.container--flush {
+  padding-inline: 0;
+  max-width: none;
+}
+
+/* ---------------------------------------------------------------------
+   App shell — keeps the footer pinned on short pages
+   ----------------------------------------------------------------------- */
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.app-main {
+  flex: 1 0 auto;
+  /* clears the sticky header */
+  padding-block-start: var(--header-height);
+}
+
+/* Anything reachable by an in-page anchor gets the header's height as a
+   scroll margin, so a jump never parks the section's own heading underneath
+   the fixed bar. */
+:target,
+[id] {
+  scroll-margin-block-start: calc(var(--header-height) + var(--space-4));
+}
+
+/* ---------------------------------------------------------------------
+   Section
+
+   The hairline between sections does the work that a colour change would
+   otherwise have to do. Alternating fills is a cheap rhythm; a ruled edge is
+   the one a printed page uses, and it keeps the page from looking like a
+   stack of differently coloured divs.
+   ----------------------------------------------------------------------- */
+.section {
+  position: relative;
+  padding-block: var(--section-padding-block);
+}
+
+.section--tight {
+  padding-block: clamp(2rem, 4vw, 3.5rem);
+}
+
+.section--flush {
+  padding-block: 0;
+}
+
+.section--sunken {
+  background: var(--surface-sunken);
+  border-block: 1px solid var(--border-hairline);
+}
+
+.section--raised {
+  background: var(--surface-base);
+  border-block: 1px solid var(--border-hairline);
+}
+
+.section--bordered {
+  border-block: 1px solid var(--border-subtle);
+}
+
+.section__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-block-end: var(--section-gap);
+  max-width: 68ch;
+}
+
+.section__head--center {
+  align-items: center;
+  text-align: center;
+  margin-inline: auto;
+}
+
+.section__title {
+  font-size: var(--text-section);
+}
+
+.section__desc {
+  color: var(--text-secondary);
+  line-height: var(--line-height-loose);
+  max-width: 56ch;
+}
+
+.section__head--split {
+  flex-direction: column;
+  max-width: none;
+  gap: var(--space-5);
+}
+
+@media (min-width: 48rem) {
+  .section__head--split {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Stack — vertical rhythm
+   ----------------------------------------------------------------------- */
+.stack > * + * {
+  margin-block-start: var(--stack-gap, var(--space-4));
+}
+
+.stack--1 {
+  --stack-gap: var(--space-1);
+}
+.stack--2 {
+  --stack-gap: var(--space-2);
+}
+.stack--3 {
+  --stack-gap: var(--space-3);
+}
+.stack--4 {
+  --stack-gap: var(--space-4);
+}
+.stack--5 {
+  --stack-gap: var(--space-5);
+}
+.stack--6 {
+  --stack-gap: var(--space-6);
+}
+.stack--8 {
+  --stack-gap: var(--space-8);
+}
+.stack--10 {
+  --stack-gap: var(--space-10);
+}
+.stack--12 {
+  --stack-gap: var(--space-12);
+}
+
+/* ---------------------------------------------------------------------
+   Cluster — inline flow with wrapping
+   ----------------------------------------------------------------------- */
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cluster-gap, var(--space-3));
+}
+
+.cluster--1 {
+  --cluster-gap: var(--space-1);
+}
+.cluster--2 {
+  --cluster-gap: var(--space-2);
+}
+.cluster--3 {
+  --cluster-gap: var(--space-3);
+}
+.cluster--4 {
+  --cluster-gap: var(--space-4);
+}
+.cluster--6 {
+  --cluster-gap: var(--space-6);
+}
+
+/* ---------------------------------------------------------------------
+   Divider
+   ----------------------------------------------------------------------- */
+.divider {
+  height: 1px;
+  border: 0;
+  background: var(--border-hairline);
+  margin-block: var(--space-6);
+}
+
+.divider--vertical {
+  width: 1px;
+  height: auto;
+  align-self: stretch;
+  background: var(--border-hairline);
+}
+
+/* ---------------------------------------------------------------------
+   Background decoration
+
+   Kept, but toned down to almost nothing. Used on one or two sections at
+   most; on every section it becomes wallpaper and the content stops being
+   the point.
+   ----------------------------------------------------------------------- */
+.bg-grid-lines {
+  background-image: linear-gradient(
+      to right,
+      var(--border-hairline) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, var(--border-hairline) 1px, transparent 1px);
+  background-size: 72px 72px;
+  background-position: center;
+}
+
+.bg-radial-glow {
+  position: relative;
+  isolation: isolate;
+}
+
+.bg-radial-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    58% 52% at 78% 8%,
+    var(--brand-softer) 0%,
+    transparent 72%
+  );
+}
